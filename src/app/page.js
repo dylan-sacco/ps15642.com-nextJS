@@ -1,4 +1,4 @@
-import ZoomContainerBS from "@/compoents/ZoomContainerBS";
+import ZoomContainerBS from "@/components/ZoomContainerBS";
 import Image from "next/image";
 
 export default function Home() {
@@ -26,8 +26,10 @@ export default function Home() {
           buttonURL={"/contracting"}
           imageURL={"/home-image-1.jpg"}
         />
-        <ZoomContainerBS/>
-        <ZoomContainerBS/>
+        <ZoomContainerBS
+        imageURL={"/home-image-2.jpg"}/>
+        <ZoomContainerBS
+        imageURL={"/home-image-3.jpg"}/>
 
       </div>
 
