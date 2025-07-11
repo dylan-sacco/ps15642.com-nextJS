@@ -23,9 +23,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <socials className="justify-center space-x-12 p-4  text-white flex flex-col md:flex-row
+        <div className="justify-center space-x-12 p-4  text-white flex flex-col md:flex-row
         bg-linear-to-t to-lime-400 from-lime-600">
-          <div class="flex space-x-2">
+          <div className="flex space-x-2">
             <a href="https://www.facebook.com/PandSContractingandLandscape/" target="_blank">FB</a>
             <a href="https://www.instagram.com/p.s.contracting/  " target="_blank">IG</a>
             <a href="https://www.bbb.org/us/pa/irwin/profile/landscape-contractors/ps-contracting-and-landscape-0141-71031381" target="_blank">BBB</a>
@@ -38,14 +38,14 @@ export default function RootLayout({ children }) {
           <div>
             <p> pscontractingandLandscape@gmail.com</p>
           </div>
-        </socials>
+        </div>
         <NavBar />
         {children}
         <footer className="bg-green-600 text-white text-center p-4">
           <p>&copy; {new Date().getFullYear()} P & S Contracting and Landscape. All rights reserved.</p>
           <p className="text-sm">
             Website by
-            <a href="https://github.com/dmsacco" className="text-lime-400 hover:underline"> dmsacco</a>
+            <a href="https://github.com/dylan-sacco" target="_blank" className="text-lime-400 hover:underline"> Dylan Sacco</a>
           </p>
         </footer>
       </body>

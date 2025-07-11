@@ -1,3 +1,4 @@
+import ZoomContainerBS from "@/compoents/ZoomContainerBS";
 import Image from "next/image";
 
 export default function Home() {
@@ -16,35 +17,18 @@ export default function Home() {
       </div>
 
       {/* hoverZoom section */}
-      <div className="max-w-6xl flex flex-row space-x-4 p-6 justify-center mx-auto">
-        <div className="relative group overflow-hidden rounded-lg shadow-md text-white text-center w-1/3">
-          {/* Zoomable Background */}
-          <div
-            className="absolute inset-0 bg-center bg-cover bg-no-repeat transition-transform duration-500 scale-100 group-hover:scale-110"
-            style={{ backgroundImage: `url('/hs1.jpg')` }}
-          ></div>
+      <div className="max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-4 p-6 mx-auto">
 
-          {/* Foreground Content */}
-          <div className="relative z-10 flex flex-col items-center bg-black/50 p-4 rounded h-full">
-            <h2 className="text-2xl font-semibold">Contracting</h2>
+        <ZoomContainerBS 
+          title={"Contracting"} 
+          description={"Whether you need a railing built for your deck or shelves for your garage, we can help you."}
+          buttonText={"Learn More"}
+          buttonURL={"/contracting"}
+          imageURL={"/home-image-1.jpg"}
+        />
+        <ZoomContainerBS/>
+        <ZoomContainerBS/>
 
-            {/* Content that fades in on hover but always takes up space */}
-            <div
-              className="opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-300 flex flex-col justify-between flex-grow"
-              style={{ minHeight: "150px" }} // Reserve height so no jump
-            >
-              <hr className="w-full border-white/50" />
-              <p>
-                Whether you need a railing built for your deck or shelves for your
-                garage, we can help you.
-              </p>
-              <hr className="w-full border-white/50" />
-              <button className="bg-lime-500 hover:bg-lime-600 text-white px-4 rounded transition">
-                Learn More
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Contact Section */}
@@ -59,8 +43,6 @@ export default function Home() {
       <div className="max-w-6xl mx-auto p-6 text-center">
         <h1>proudly serving the following areas</h1>
         <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto p-6">
-
-
           <div>North Huntingdon, PA</div>
           <div>North Irwin, PA</div>
           <div>Larimer, PA</div>

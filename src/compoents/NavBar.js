@@ -15,7 +15,10 @@ export default function NavBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-row justify-between items-center p-4 bg-white text-black max-w-6xl mx-auto">
+    <div className='bg-white shadow-md sticky top-0 z-50 bg-white shadow'>
+      <nav className="flex flex-row justify-between items-center p-4 bg-white text-black max-w-6xl mx-auto
+    
+    ">
       <img src="https://ps15642.com/img/logo.png" alt="Logo" className="h-10" />
       <ul className="flex space-x-4">
         {navItems.map((item) => (
@@ -32,5 +35,6 @@ export default function NavBar() {
         ))}
       </ul>
     </nav>
+    </div>
   );
 }
