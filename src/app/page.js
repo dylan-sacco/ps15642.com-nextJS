@@ -1,10 +1,13 @@
+import GreenCard from "@/components/GreenCard";
+import H1Drop from "@/components/H1Drop";
 import ParallaxCard from "@/components/ParallaxCard";
+import TextSpan from "@/components/TextSpan";
 import ZoomContainerBS from "@/components/ZoomContainerBS";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <>
+    <div>
       {/* Paralax effect */}
       <ParallaxCard imgUrl={"/hs1.jpg"} >
         <h1 className="text-white text-4xl font-bold">P & S</h1>
@@ -12,9 +15,9 @@ export default function Home() {
       </ParallaxCard>
       
       {/* About Section */}
-      <div className="max-w-6xl mx-auto p-6">
-        <p className="text-[20px]">For 15 years, P&S Contracting and Landscape has been the premier landscaping company throughout all of Westmoreland County, Pennsylvania. By providing stellar landscaping services in all facets: design, maintenance, soft-scaping and installation for all of our commercial and residential clients, we are now largely regarded as the absolute best landscaping company in the business!</p>
-      </div>
+      <TextSpan>
+        For 15 years, P&S Contracting and Landscape has been the premier landscaping company throughout all of Westmoreland County, Pennsylvania. By providing stellar landscaping services in all facets: design, maintenance, soft-scaping and installation for all of our commercial and residential clients, we are now largely regarded as the absolute best landscaping company in the business!
+      </TextSpan>
 
       {/* hoverZoom section */}
       <div className="max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-4 p-6 mx-auto">
@@ -39,17 +42,15 @@ export default function Home() {
       
 
       {/* Contact Section */}
-      <div className="bg-green-600">
-        <section className="max-w-6xl mx-auto p-6">
-          <p className="text-white text-[30px] font-bold text-center">
-            In need of a complete overhaul of your current landscaping layout; or maybe just a few additions for that added elegance, such as a mini grove of trees or a tasteful flower bed? Feel free to give us a call for your cost-free consultation!
-          </p>
-        </section>
-      </div>
+      <GreenCard>
+        In need of a complete overhaul of your current landscaping layout; or maybe just a few additions for that added elegance, such as a mini grove of trees or a tasteful flower bed? Feel free to give us a call for your cost-free consultation!
+      </GreenCard>
 
       <div className="max-w-6xl mx-auto p-6 text-center">
-        <h1>proudly serving the following areas</h1>
-        <div className="grid grid-cols-3 gap-4 max-w-4xl mx-auto p-6">
+          <H1Drop>
+            proudly serving the following areas
+          </H1Drop>
+        <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto p-6">
           <div>North Huntingdon, PA</div>
           <div>North Irwin, PA</div>
           <div>Larimer, PA</div>
@@ -76,6 +77,6 @@ export default function Home() {
           <div>Darragh, PA</div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

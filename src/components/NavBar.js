@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const navItems = [
@@ -16,11 +16,46 @@ const navItems = [
 export default function NavBar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [showNav, setShowNav] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  // Check if mobile once on load and on resize
+  useEffect(() => {
+    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  // Scroll detection (only on mobile)
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setShowNav(false); // scrolling down
+      } else {
+        setShowNav(true); // scrolling up
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY, isMobile]);
+
   return (
-    <div className="bg-white shadow-md sticky top-0 z-50">
+    <div
+      className={`bg-white shadow-md sticky top-0 z-50 transition-transform duration-300 ${
+        isMobile && !showNav ? '-translate-y-full' : 'translate-y-0'
+      }`}
+    >
       <nav className="flex justify-between items-center p-4 max-w-6xl mx-auto">
         {/* Logo */}
         <Link href="/">
@@ -33,8 +68,9 @@ export default function NavBar() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={`hover:underline transition ${pathname === item.href ? 'font-bold underline text-lime-700' : ''
-                  }`}
+                className={`hover:underline transition ${
+                  pathname === item.href ? 'font-bold underline text-lime-700' : ''
+                }`}
               >
                 {item.name}
               </Link>
@@ -56,11 +92,11 @@ export default function NavBar() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`block py-2 px-3 rounded transition ${pathname === item.href
+                  className={`block py-2 px-3 rounded transition ${
+                    pathname === item.href
                       ? 'bg-gray-800 text-white font-semibold'
                       : 'hover:bg-gray-100'
-                    }`}
-
+                  }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
