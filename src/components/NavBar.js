@@ -51,26 +51,21 @@ export default function NavBar() {
   }, [lastScrollY, isMobile]);
 
   return (
-    <div
-      className={`bg-white shadow-md sticky top-0 z-50 transition-transform duration-300 ${
-        isMobile && !showNav ? '-translate-y-full' : 'translate-y-0'
-      }`}
-    >
-      <nav className="flex justify-between items-center p-4 max-w-6xl mx-auto">
+    <div className="bg-white shadow-md sticky top-0 z-50">
+      <nav className="flex justify-between items-center p-4 max-w-6xl mx-auto lg:text-[30px] overflow-hidden ">
         {/* Logo */}
         <Link href="/">
           <img src="https://ps15642.com/img/logo.png" alt="Logo" className="h-10" />
         </Link>
 
         {/* Desktop Nav */}
-        <ul className="hidden md:flex space-x-6">
+        <ul className="hidden md:flex">
           {navItems.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={`hover:underline transition ${
-                  pathname === item.href ? 'font-bold underline text-lime-700' : ''
-                }`}
+                className={`transition p-4 py-10 lg:p-6 ${pathname === item.href ? 'bg-lime-600 text-white' : ''
+                  }`}
               >
                 {item.name}
               </Link>
