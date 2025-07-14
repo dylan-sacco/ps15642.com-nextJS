@@ -16,7 +16,7 @@ export default function Home() {
       </div>
 
       {/* hoverZoom section */}
-      <div className="max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-4 p-6 mx-auto">
+      <div className="max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-4 p-6 mx-auto">
 
         <ZoomContainerBS
           title={"Contracting"}
