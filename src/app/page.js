@@ -1,3 +1,4 @@
+import ParallaxCard from "@/components/ParallaxCard";
 import ZoomContainerBS from "@/components/ZoomContainerBS";
 import Image from "next/image";
 
@@ -5,12 +6,10 @@ export default function Home() {
   return (
     <>
       {/* Paralax effect */}
-      <div className="h-[400px] bg-fixed bg-center bg-cover" style={{ backgroundImage: `url('hs1.jpg')` }}>
-        <div className="h-full w-full  bg-opacity-40 flex flex-col items-center justify-center drop-shadow-lg bg-[#0005]">
-          <h1 className="text-white text-4xl font-bold">P & S</h1>
-          <p className="text-white text-2xl">Contracting and Landscape</p>
-        </div>
-      </div>
+      <ParallaxCard imgUrl={"/hs1.jpg"}>
+        <h1 className="text-white text-4xl font-bold">P & S</h1>
+        <p className="text-white text-2xl">Contracting and Landscape</p>
+      </ParallaxCard>
       {/* About Section */}
       <div className="max-w-6xl mx-auto p-6">
         <p className="text-[20px]">For 15 years, P&S Contracting and Landscape has been the premier landscaping company throughout all of Westmoreland County, Pennsylvania. By providing stellar landscaping services in all facets: design, maintenance, soft-scaping and installation for all of our commercial and residential clients, we are now largely regarded as the absolute best landscaping company in the business!</p>
@@ -19,17 +18,17 @@ export default function Home() {
       {/* hoverZoom section */}
       <div className="max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-4 p-6 mx-auto">
 
-        <ZoomContainerBS 
-          title={"Contracting"} 
+        <ZoomContainerBS
+          title={"Contracting"}
           description={"Whether you need a railing built for your deck or shelves for your garage, we can help you."}
           buttonText={"Learn More"}
           buttonURL={"/contracting"}
           imageURL={"/home-image-1.jpg"}
         />
         <ZoomContainerBS
-        imageURL={"/home-image-2.jpg"}/>
+          imageURL={"/home-image-2.jpg"} />
         <ZoomContainerBS
-        imageURL={"/home-image-3.jpg"}/>
+          imageURL={"/home-image-3.jpg"} />
 
       </div>
 
@@ -71,7 +70,6 @@ export default function Home() {
           <div>Darragh, PA</div>
         </div>
       </div>
-
     </>
   );
 }

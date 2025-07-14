@@ -1,9 +1,20 @@
+import ParallaxCard from "@/components/ParallaxCard";
+
 export default function AboutPage() {
   return (
     <div>
-      <h1>About Us</h1>
-      <p>Welcome to our website! We are dedicated to providing the best service possible.</p>
-      <p>Our team is passionate about what we do and we strive to exceed your expectations.</p>
+      <ParallaxCard imgUrl="/hs1.jpg">
+        <div className="relative">
+          {/* Shadow Text Behind */}
+          <h1 className="text-3xl font-bold absolute text-black translate-x-[2px] translate-y-[2px]">
+            About P&S Contracting and Landscape
+          </h1>
+          {/* Foreground Text */}
+          <h1 className="text-3xl font-bold text-white relative">
+            About P&S Contracting and Landscape
+          </h1>
+        </div>
+      </ParallaxCard>
     </div>
   );
 }
