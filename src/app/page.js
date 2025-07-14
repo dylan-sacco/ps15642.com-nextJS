@@ -6,10 +6,11 @@ export default function Home() {
   return (
     <>
       {/* Paralax effect */}
-      <ParallaxCard imgUrl={"/hs1.jpg"}>
+      <ParallaxCard imgUrl={"/hs1.jpg"} >
         <h1 className="text-white text-4xl font-bold">P & S</h1>
         <p className="text-white text-2xl">Contracting and Landscape</p>
       </ParallaxCard>
+      
       {/* About Section */}
       <div className="max-w-6xl mx-auto p-6">
         <p className="text-[20px]">For 15 years, P&S Contracting and Landscape has been the premier landscaping company throughout all of Westmoreland County, Pennsylvania. By providing stellar landscaping services in all facets: design, maintenance, soft-scaping and installation for all of our commercial and residential clients, we are now largely regarded as the absolute best landscaping company in the business!</p>
@@ -20,17 +21,22 @@ export default function Home() {
 
         <ZoomContainerBS
           title={"Contracting"}
-          description={"Whether you need a railing built for your deck or shelves for your garage, we can help you."}
+          description={"Whether you need a railing built for your deck or shelves foWhether you need a railing built for your deck or shelves for your garage, we can help you.  "}
           buttonText={"Learn More"}
           buttonURL={"/contracting"}
           imageURL={"/home-image-1.jpg"}
         />
         <ZoomContainerBS
+          title="Tree Service"
+          description="Expert tree care with a focus on safety and precision — even for the toughest jobs."
           imageURL={"/home-image-2.jpg"} />
         <ZoomContainerBS
+          title="Hard And Soft Scape"
+          description="Whether it's durable stone patios and walkways or lush plant beds, we create a perfect balance of structure and nature to transform your outdoor space."
           imageURL={"/home-image-3.jpg"} />
 
       </div>
+      
 
       {/* Contact Section */}
       <div className="bg-green-600">

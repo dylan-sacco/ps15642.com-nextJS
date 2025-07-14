@@ -61,7 +61,7 @@ export default function RootLayout({ children }) {
         </div>
         <NavBar />
         {children}
-        <footer className="bg-green-600 text-white text-center p-4">
+        <footer className="bg-green-600 text-white text-center p-4 py-12">
           <p>&copy; {new Date().getFullYear()} P & S Contracting and Landscape. All rights reserved.</p>
 
           <p className="text-sm flex items-center justify-center gap-1 mt-1">

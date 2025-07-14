@@ -1,11 +1,15 @@
+"use client";
+import { Parallax, ParallaxBanner, ParallaxBannerLayer, ParallaxProvider, useParallax } from "react-scroll-parallax";
+
 export default function ParallaxCard({ imgUrl, children }) {
   return (
-    <div className="h-[150px] md:h-[400px] bg-fixed bg-center bg-cover " style={{ backgroundImage: `url('${imgUrl}')` }}>
-        <div className="h-full w-full  bg-opacity-40 flex flex-col items-center justify-center drop-shadow-lg bg-[#0005] text-white text-center">
+    <ParallaxProvider>
+      <ParallaxBanner style={{ aspectRatio: '3 / 1', maxHeight:400 }}>
+        <ParallaxBannerLayer image={imgUrl} speed={-20} />
+        <ParallaxBannerLayer className="h-full w-full  bg-opacity-40 flex flex-col items-center justify-center drop-shadow-lg bg-[#0005] text-white text-center">
           {children}
-          {/* <h1 className="text-white text-4xl font-bold">P & S</h1>
-          <p className="text-white text-2xl">Contracting and Landscape</p> */}
-        </div>
-      </div>
+        </ParallaxBannerLayer>
+      </ParallaxBanner>
+    </ParallaxProvider>
   );
 }
