@@ -22,7 +22,7 @@ export default function ZoomContainerBS({
             className="
               text-2xl font-semibold absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2
               transition-all duration-500
-              group-hover:top-8 group-hover:-translate-y-0
+              group-hover:-translate-y-[7rem]
             "
           >
             {title}
@@ -30,7 +30,7 @@ export default function ZoomContainerBS({
 
           {/* Hover Content */}
           <div className="
-            opacity-0 translate-y-6 group-hover:opacity-100 group-hover:translate-y-0 
+            opacity-0 translate-y-6 group-hover:opacity-100 group-hover:-translate-y-6
             transition-all duration-500 flex flex-col items-center gap-2 pt-24
           ">
             <hr className="w-full border-white/50 border-dashed border-[2px]" />
