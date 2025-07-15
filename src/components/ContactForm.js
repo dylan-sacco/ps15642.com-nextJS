@@ -92,8 +92,10 @@ export default function ContactForm() {
 
 function FormField({ label, id, type, placeholder, required = false, icon = null, maxLength, onChange }) {
   return (
-    <div>
-      <label htmlFor={id} className="block font-medium text-gray-700 text-lg mb-1">{label}</label>
+    <div className="w-full overflow-hidden">
+      <label htmlFor={id} className="block font-medium text-gray-700 text-lg mb-1 break-words">
+        {label}
+      </label>
       <div className="flex items-center border border-gray-300 rounded px-3 py-2 focus-within:ring-2 focus-within:ring-lime-400 divide-x-2 divide-gray-300">
         <input
           type={type}
@@ -103,8 +105,10 @@ function FormField({ label, id, type, placeholder, required = false, icon = null
           placeholder={placeholder}
           maxLength={maxLength}
           onChange={onChange}
-          className="flex-1 outline-none bg-transparent text-base"
+          className={`w-full min-w-0 flex-1 outline-none bg-transparent text-base ${icon ? '' : 'pl-2'
+            }`}
         />
+
         {icon && <span className="ml-2 text-gray-500">{icon}</span>}
       </div>
     </div>
