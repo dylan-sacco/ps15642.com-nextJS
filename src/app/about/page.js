@@ -19,7 +19,10 @@ export default function AboutPage() {
         <div className="relative">
           {/* Shadow Text Behind */}
           <H1Drop color="text-white" size="text-3xl md:text-4xl">
-            About P&S Contracting and Landscape
+            About P&S
+          </H1Drop>
+          <H1Drop color="text-white" size="text-3xl md:text-4xl">
+            Contracting and Landscape
           </H1Drop>
         </div>
       </ParallaxCard>

@@ -1,4 +1,6 @@
 import Gallery from '@/components/Gallery';
+import H1Drop from '@/components/H1Drop';
+import ParallaxCard from '@/components/ParallaxCard';
 import fs from 'fs';
 import path from 'path';
 
@@ -7,8 +9,13 @@ export default async function GalleryPage() {
   const images = await getGalleryImages();
 
   return (
-    <div className="p-4">
-      <Gallery images={images}  />
+    <div className="">
+      <ParallaxCard>
+        <H1Drop color="text-white" size="text-4xl md:text-6xl">
+          Our Gallery
+        </H1Drop>
+      </ParallaxCard>
+      <Gallery images={images} />
     </div>
   );
 }

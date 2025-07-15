@@ -29,7 +29,7 @@ export default function Home() {
           title={"Contracting"}
           description={"Whether you need a railing built for your deck or shelves foWhether you need a railing built for your deck or shelves for your garage, we can help you.  "}
           buttonText={"Learn More"}
-          buttonURL={"/contracting"}
+          buttonURL={"/"}
           imageURL={"/home-image-1.jpg"}
         />
         <ZoomContainerBS

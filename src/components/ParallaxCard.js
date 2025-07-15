@@ -7,7 +7,7 @@ import {
 } from "react-scroll-parallax";
 import { useEffect, useState } from "react";
 
-export default function ParallaxCard({ imgUrl, children }) {
+export default function ParallaxCard({ imgUrl = '/hs1.jpg', children }) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
