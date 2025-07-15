@@ -10,8 +10,11 @@ export default function Home() {
     <div>
       {/* Paralax effect */}
       <ParallaxCard imgUrl={"/hs1.jpg"} >
-        <h1 className="text-white text-4xl font-bold">P & S</h1>
-        <p className="text-white text-2xl">Contracting and Landscape</p>
+      <H1Drop color="text-white">
+        <h1 className=" text-4xl md:text-6xl font-bold font-serif">P & S</h1>
+        <p className=" text-2xl md:text-4xl font-serif">Contracting and Landscape</p>
+      </H1Drop>
+        
       </ParallaxCard>
       
       {/* About Section */}
@@ -46,7 +49,7 @@ export default function Home() {
         In need of a complete overhaul of your current landscaping layout; or maybe just a few additions for that added elegance, such as a mini grove of trees or a tasteful flower bed? Feel free to give us a call for your cost-free consultation!
       </GreenCard>
 
-      <div className="max-w-6xl mx-auto p-6 text-center">
+      <div className=" max-w-6xl mx-auto p-6 text-center">
           <H1Drop>
             proudly serving the following areas
           </H1Drop>

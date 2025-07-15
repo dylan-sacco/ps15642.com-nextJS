@@ -52,10 +52,10 @@ export default function NavBar() {
 
   return (
     <div className="bg-white shadow-md sticky top-0 z-50">
-      <nav className="flex justify-between items-center p-4 max-w-6xl mx-auto lg:text-[30px] overflow-hidden ">
+      <nav className="flex justify-between items-center p-4 max-w-6xl mx-auto lg:text-[30px] md:text-[20px] overflow-hidden ">
         {/* Logo */}
         <Link href="/">
-          <img src="https://ps15642.com/img/logo.png" alt="Logo" className="h-10" />
+          <img src="https://ps15642.com/img/logo.png" alt="Logo" className="max-h-10 md:max-h-16" />
         </Link>
 
         {/* Desktop Nav */}
@@ -64,7 +64,7 @@ export default function NavBar() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={`transition p-4 py-10 lg:p-6 ${pathname === item.href ? 'bg-lime-600 text-white' : ''
+                className={`transition py-10 lg:px-6 px-4 ${pathname === item.href ? 'bg-lime-600 text-white' : ''
                   }`}
               >
                 {item.name}

@@ -21,7 +21,7 @@ export default function ParallaxCard({ imgUrl, children }) {
     // 📱 Static fallback for mobile
     return (
       <div
-        className="w-full flex items-center justify-center text-white text-center bg-cover bg-center overflow-hidden"
+        className="w-full flex items-center justify-center text-white text-center bg-cover bg-center overflow-hidden "
         style={{
           backgroundImage: `url(${imgUrl})`,
           aspectRatio: "1 / 1",
@@ -38,10 +38,10 @@ export default function ParallaxCard({ imgUrl, children }) {
 
   // 💻 Parallax for desktop/tablet
   return (
-    <ParallaxProvider>
+    <ParallaxProvider >
       <ParallaxBanner style={{ aspectRatio: "2 / 1", maxHeight: 400 }}>
         <ParallaxBannerLayer image={imgUrl} speed={-20} />
-        <ParallaxBannerLayer className="h-full w-full bg-opacity-40 flex flex-col items-center justify-center drop-shadow-lg bg-[#0005] text-white text-center">
+        <ParallaxBannerLayer className="h-full w-full bg-opacity-40 flex flex-col items-center justify-center drop-shadow-lg bg-[#0005] text-white text-center font-serif">
           {children}
         </ParallaxBannerLayer>
       </ParallaxBanner>
