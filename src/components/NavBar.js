@@ -64,7 +64,7 @@ export default function NavBar() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={`transition py-10 lg:px-6 px-4 ${pathname === item.href ? 'bg-lime-600 text-white' : ''
+                className={`transition py-10 lg:px-6 px-4 ${pathname === item.href ? 'bg-lime-600 text-white' : ' hover:bg-green-100'
                   }`}
               >
                 {item.name}
@@ -81,16 +81,16 @@ export default function NavBar() {
 
       {/* Mobile Tray Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-inner">
-          <ul className="flex flex-col space-y-2 px-4 py-4">
+        <div className="md:hidden bg-white border-t border-gray-200 shadow-inner shadow-xl">
+          <ul className="flex flex-col ">
             {navItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className={`block py-2 px-3 rounded transition ${
+                  className={`block transition p-4 ${
                     pathname === item.href
-                      ? 'bg-gray-800 text-white font-semibold'
-                      : 'hover:bg-gray-100'
+                      ? 'bg-amber-700 text-white font-semibold border-b-4 border-amber-500  '
+                      : 'hover:bg-green-100'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
