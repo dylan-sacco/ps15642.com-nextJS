@@ -52,7 +52,7 @@ export default function NavBar() {
 
   return (
     <div className="bg-white shadow-md sticky top-0 z-50">
-      <nav className="flex justify-between items-center p-4 max-w-6xl mx-auto lg:text-[30px] md:text-[20px] overflow-hidden ">
+      <nav className="flex justify-between items-center py-2 max-w-6xl mx-auto lg:text-[30px] md:text-[20px] overflow-hidden ">
         {/* Logo */}
         <Link href="/">
           <img src="https://ps15642.com/img/logo.png" alt="Logo" className="max-h-10 md:max-h-16" />

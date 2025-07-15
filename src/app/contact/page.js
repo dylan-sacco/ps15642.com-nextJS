@@ -24,7 +24,7 @@ export default function ContactPage() {
             <Phone size={30} /> (724) 382-8201
           </p>
           <p className="flex justify-center xl:justify-start items-center gap-2 md:text-[1.5rem] break-all">
-            <Mail size={30} /> pscontractingandLandscape@gmail.com
+            <Mail size={30} /> psContractingAndLandscape@gmail.com
           </p>
 
         </section>
