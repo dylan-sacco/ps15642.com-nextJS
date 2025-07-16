@@ -25,7 +25,7 @@ export async function POST(req) {
     git fetch origin && git reset --hard origin/main &&
     npm install --include=dev &&
     NODE_ENV=production npm run build &&
-    pm2 restart smx-apps
+    pm2 restart ps15642
   `;
 
   exec(command, { shell: '/bin/bash' }, (err, stdout, stderr) => {
