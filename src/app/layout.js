@@ -56,9 +56,9 @@ export default function RootLayout({ children }) {
             <span>(724) 382-8201</span>
           </a>
 
-          <a href="mailto:pscontractingandLandscape@gmail.com" className="flex items-center gap-2 hover:text-lime-900 transition">
+          <a href="mailto:pscontractingandlandscape@gmail.com" className="flex items-center gap-2 hover:text-lime-900 transition">
             <Mail size={24} />
-            <span>pscontractingandLandscape@gmail.com</span>
+            <span>pscontractingandlandscape@gmail.com</span>
           </a>
         </div>
         <NavBar />
