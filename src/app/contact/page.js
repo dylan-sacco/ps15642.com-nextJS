@@ -20,12 +20,20 @@ export default function ContactPage() {
         <section className="space-y-4 text-center xl:text-left ">
           <h1 className="text-[3rem] font-bold">Find Us</h1>
           <p className="text-[1.5rem]">Irwin, Pennsylvania</p>
-          <p className="flex justify-center xl:justify-start items-center gap-2 text-[1.5rem]">
+          <a
+            href="tel:7243828201"
+            className="flex justify-center xl:justify-start items-center gap-2 text-[1.5rem] text-blue-600 hover:underline"
+          >
             <Phone size={30} /> (724) 382-8201
-          </p>
-          <p className="flex justify-center xl:justify-start items-center gap-2 md:text-[1.5rem] break-all">
-            <Mail size={30} /> psContractingAndLandscape@gmail.com
-          </p>
+          </a>
+
+          <a
+            href="mailto:psContractingAndLandscape@gmail.com"
+            className="flex justify-center xl:justify-start items-center gap-2 md:text-[1.5rem] text-blue-600 hover:underline break-all"
+          >
+            <Mail size={30} /> pscontractingandlandscape@gmail.com
+          </a>
+
 
         </section>
 
