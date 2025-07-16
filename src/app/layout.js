@@ -2,9 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import { FaFacebookSquare, FaGithub, FaGoogle, FaInstagram } from "react-icons/fa";
-import Image from 'next/image';
 import { Mail, Phone } from "lucide-react";
-import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
