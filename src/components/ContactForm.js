@@ -36,24 +36,12 @@ export default function ContactForm() {
     }
   };
 
-  //removes the badge
-  useEffect(() => {
-    return () => {
-      // This cleanup runs when you leave the contact page
-      const badge = document.querySelector('.grecaptcha-badge');
-      if (badge && badge.parentNode) {
-        badge.parentNode.removeChild(badge);
-      }
-    };
-  }, []);
-
 
   return (
     <>
       <Script
         src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-        // strategy="afterInteractive"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
       />
       <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto border border-gray-300 bg-white p-6 md:p-8 rounded shadow-lg">
         <input type="text" name="_gotcha" className="hidden" />
