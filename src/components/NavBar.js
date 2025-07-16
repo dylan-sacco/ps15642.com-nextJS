@@ -55,7 +55,7 @@ export default function NavBar() {
       <nav className="flex justify-between items-center py-2 max-w-6xl mx-auto lg:text-[30px] md:text-[20px] overflow-hidden ">
         {/* Logo */}
         <Link href="/">
-          <img src="https://ps15642.com/img/logo.png" alt="Logo" className="max-h-10 md:max-h-16" />
+          <img src="/logo.png" alt="Logo" className="max-h-10 md:max-h-16" />
         </Link>
 
         {/* Desktop Nav */}
