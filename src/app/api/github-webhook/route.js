@@ -17,7 +17,7 @@ export async function POST(req) {
   }
 
   const command = `
-    cd /home/smatrix/smx-apps &&
+    cd /home/ubuntu/ps15642.com-nextJS/ &&
     echo "Node: $(which node)" &&
     echo "NPM: $(which npm)" &&
     echo "USER: $(whoami)" &&
