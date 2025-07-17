@@ -4,9 +4,26 @@ import ParallaxCard from "@/components/ParallaxCard";
 
 // ✅ Metadata for SEO (App Router format)
 export const metadata = {
-  title: "Our Services | P&S Contracting and Landscape",
+  title: "Services | P&S Contracting and Landscape",
   description:
-    "Explore expert landscaping services including design, installation, and softscaping. Serving Westmoreland County with personalized and professional care.",
+    "Explore our landscaping, hardscaping, drainage, and maintenance services tailored for homes and businesses in Westmoreland County, PA.",
+  openGraph: {
+    title: "Services | P&S Contracting and Landscape",
+    description:
+      "Professional landscaping, hardscaping, and maintenance services by P&S Contracting and Landscape.",
+    url: "https://ps15642.com/services",
+    siteName: "P&S Contracting and Landscape",
+    images: [
+      {
+        url: "https://ps15642.com/hs1.jpg",
+        width: 1800,
+        height: 800,
+        alt: "Our Services - P&S Contracting and Landscape",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function servicePage() {

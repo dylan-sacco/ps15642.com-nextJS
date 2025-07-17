@@ -4,8 +4,26 @@ import { UserRound, Mail, Phone, FileText } from "lucide-react";
 export const metadata = {
   title: "Contact Us | P&S Contracting and Landscape",
   description:
-    "Reach out to P&S Contracting and Landscape. Call, email, or use the contact form to start planning your next outdoor project.",
+    "Get in touch with P&S Contracting and Landscape for quotes, inquiries, and service appointments in Westmoreland County, PA.",
+  openGraph: {
+    title: "Contact Us | P&S Contracting and Landscape",
+    description:
+      "Reach out to P&S Contracting and Landscape for expert landscaping services.",
+    url: "https://ps15642.com/contact",
+    siteName: "P&S Contracting and Landscape",
+    images: [
+      {
+        url: "https://ps15642.com/hs1.jpg",
+        width: 1800,
+        height: 800,
+        alt: "Contact P&S Contracting and Landscape",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
+
 
 export default function ContactPage() {
   return (

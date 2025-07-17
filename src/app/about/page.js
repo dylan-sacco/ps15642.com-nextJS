@@ -6,7 +6,33 @@ export const metadata = {
   title: "About Us | P&S Contracting and Landscape",
   description:
     "Learn about P&S Contracting and Landscape, our mission, values, and commitment to quality landscaping services in Westmoreland County, PA.",
+  openGraph: {
+    title: "About Us | P&S Contracting and Landscape",
+    description:
+      "Discover P&S Contracting and Landscape's values and services across Westmoreland County, PA.",
+    url: "https://ps15642.com/about",
+    siteName: "P&S Contracting and Landscape",
+    images: [
+      {
+        url: "https://ps15642.com/hs1.jpg", 
+        width: 1800,
+        height: 800,
+        alt: "P&S Contracting and Landscape",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  // twitter: {
+  //   card: "summary_large_image",
+  //   title: "About Us | P&S Contracting and Landscape",
+  //   description:
+  //     "Discover P&S Contracting and Landscape's mission, values, and expert services.",
+  //   images: ["https://ps15642.com/hs1.jpg"], // same as OG image
+  //   site: "@yourTwitterHandle", // optional
+  // },
 };
+
 
 export default function AboutPage() {
   const content =[

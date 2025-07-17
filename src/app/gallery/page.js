@@ -6,8 +6,27 @@ import path from 'path';
 
 export const metadata = {
   title: "Gallery | P&S Contracting and Landscape",
-  description: "Browse our gallery to see real examples of the expert landscaping, hardscaping, and outdoor designs provided by P&S Contracting and Landscape.",
+  description:
+    "View completed landscaping, hardscaping, and property maintenance projects by P&S Contracting and Landscape in Westmoreland County.",
+  openGraph: {
+    title: "Gallery | P&S Contracting and Landscape",
+    description:
+      "Take a look at our finished projects showcasing quality work and craftsmanship.",
+    url: "https://ps15642.com/gallery",
+    siteName: "P&S Contracting and Landscape",
+    images: [
+      {
+        url: "https://ps15642.com/hs1.jpg",
+        width: 1800,
+        height: 800,
+        alt: "Gallery - P&S Contracting and Landscape",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
+
 
 export default async function GalleryPage() {
   const images = await getGalleryImages();

@@ -23,3 +23,4 @@ EMAIL_PASS=
 Revert to Previous Commit
 git reset --hard <commit-hash>
 git push origin HEAD --force
+

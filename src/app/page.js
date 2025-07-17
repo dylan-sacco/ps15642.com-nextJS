@@ -5,6 +5,30 @@ import TextSpan from "@/components/TextSpan";
 import ZoomContainerBS from "@/components/ZoomContainerBS";
 import Image from "next/image";
 
+export const metadata = {
+  title: "P&S Contracting and Landscape | Westmoreland County, PA",
+  description:
+    "Professional landscaping, hardscaping, and property maintenance services in Westmoreland County, PA. Contact P&S Contracting and Landscape today.",
+  openGraph: {
+    title: "P&S Contracting and Landscape | Westmoreland County, PA",
+    description:
+      "Transform your property with expert landscaping from P&S Contracting and Landscape.",
+    url: "https://ps15642.com/",
+    siteName: "P&S Contracting and Landscape",
+    images: [
+      {
+        url: "https://ps15642.com/hs1.jpg",
+        width: 1800,
+        height: 800,
+        alt: "Home page preview - P&S Contracting",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+};
+
+
 export default function Home() {
   return (
     <div>
