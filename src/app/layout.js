@@ -56,9 +56,9 @@ export default function RootLayout({ children }) {
             <span>(724) 382-8201</span>
           </a>
 
-          <a href="mailto:pscontractingandLandscape@gmail.com" className="flex items-center gap-2 hover:text-lime-900 transition">
+          <a href="mailto:pscontractingandlandscape@gmail.com" className="flex items-center gap-2 hover:text-lime-900 transition">
             <Mail size={24} />
-            <span>pscontractingandLandscape@gmail.com</span>
+            <span>pscontractingandlandscape@gmail.com</span>
           </a>
         </div>
         <NavBar />
@@ -69,13 +69,14 @@ export default function RootLayout({ children }) {
           <p className="text-sm flex items-center justify-center gap-1 mt-1">
             Website by
             <a
-              href="https://github.com/dylan-sacco"
+              href="https://github.com/dylan-sacco/ps15642.com-nextJS"
               target="_blank"
               rel="noopener noreferrer"
               className="text-lime-900 hover:underline flex items-center gap-1"
             >
               Dylan Sacco <FaGithub />
             </a>
+            v{process.env.NEXT_PUBLIC_APP_VERSION}
           </p>
         </footer>
       </body>

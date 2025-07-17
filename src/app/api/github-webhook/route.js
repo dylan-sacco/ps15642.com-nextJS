@@ -17,7 +17,7 @@ export async function POST(req) {
   }
 
   const command = `
-    cd /home/smatrix/smx-apps &&
+    cd /home/ubuntu/ps15642.com-nextJS/ &&
     echo "Node: $(which node)" &&
     echo "NPM: $(which npm)" &&
     echo "USER: $(whoami)" &&
@@ -25,7 +25,7 @@ export async function POST(req) {
     git fetch origin && git reset --hard origin/main &&
     npm install --include=dev &&
     NODE_ENV=production npm run build &&
-    pm2 restart smx-apps
+    pm2 restart ps15642
   `;
 
   exec(command, { shell: '/bin/bash' }, (err, stdout, stderr) => {

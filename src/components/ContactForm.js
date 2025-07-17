@@ -14,6 +14,18 @@ export default function ContactForm() {
     }));
   };
 
+  const clearForm = () => {
+  // Clear form fields
+  document.querySelector('form')?.reset();
+  setFormData({});
+
+  // Keep status for a few seconds, then clear it
+  setTimeout(() => {
+    setStatus(null);
+  }, 3000); // 3 seconds
+};
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('Sending...');
@@ -31,6 +43,7 @@ export default function ContactForm() {
     const result = await res.json();
     if (result.success) {
       setStatus('Message sent successfully!');
+      clearForm();
     } else {
       setStatus('Error sending message.');
     }
