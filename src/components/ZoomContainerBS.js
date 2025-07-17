@@ -1,12 +1,13 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function ZoomContainerBS({
   title = "Default Text",
   description = "Default Text",
   buttonText = "Learn More",
   buttonURL = "/",
-  imageURL,
+  imageURL = "/home-image-1.jpg", // ensure this is a public path or imported static image
 }) {
   const [isActive, setIsActive] = useState(false);
 
@@ -15,20 +16,27 @@ export default function ZoomContainerBS({
 
   return (
     <div
-      className="relative group overflow-hidden rounded-lg shadow-md text-white text-center h-[300px]"
+      className="relative group overflow-hidden rounded-lg shadow-md text-white text-center h-[300px] w-full"
       tabIndex={0}
       onClick={toggleActive}
       onBlur={deactivate}
     >
-      {/* Background */}
+      {/* Background wrapper for transform */}
       <div
-        className={`absolute inset-0 bg-center bg-cover bg-no-repeat transition-transform duration-500 ${
+        className={`absolute inset-0 z-0 transition-transform duration-500 ease-in-out ${
           isActive ? 'scale-110' : 'scale-100'
         } group-hover:scale-110`}
-        style={{ backgroundImage: `url('${imageURL || 'home-image-1.jpg'}')` }}
-      />
+      >
+        <Image
+          src={imageURL}
+          alt={title}
+          fill
+          priority
+          className="object-cover"
+        />
+      </div>
 
-      {/* Foreground Overlay */}
+      {/* Overlay */}
       <div className="relative z-10 h-full bg-black/50 flex items-center justify-center p-4">
         <div
           className={`text-white text-center transition-all duration-500 ease-out transform ${
@@ -37,14 +45,12 @@ export default function ZoomContainerBS({
         >
           <p className="text-2xl font-semibold mb-2">{title}</p>
 
-          {/* 👇 Mobile-only bait text */}
           {!isActive && (
             <p className="text-sm text-lime-200 italic transition-opacity duration-500 block md:hidden">
               {buttonText}
             </p>
           )}
 
-          {/* Expanded content on tap or hover */}
           <div
             className={`transition-opacity duration-500 ${
               isActive ? 'opacity-100' : 'opacity-0'

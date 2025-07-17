@@ -1,4 +1,5 @@
 'use client';
+import { X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -14,14 +15,14 @@ export default function Gallery({ images }) {
             className="cursor-pointer overflow-hidden rounded-lg shadow-lg"
             onClick={() => setSelectedImage(src)}
           >
-            <div className="aspect-square">
+            <div className="aspect-square relative">
               <Image
                 src={src}
                 alt={`Gallery image ${i + 1}`}
-                width={400}
-                height={400}
+                fill
                 className="rounded-lg object-cover hover:scale-105 transition-transform duration-300"
-                style={{ aspectRatio: '1 / 1' }}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                priority={i < 3} // preload top 3 images for LCP
               />
             </div>
           </div>
@@ -34,18 +35,23 @@ export default function Gallery({ images }) {
           className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center"
           onClick={() => setSelectedImage(null)}
         >
-          <img
-            src={selectedImage}
-            alt="Fullscreen view"
-            className="max-w-full max-h-full object-contain"
-          />
-          <button
-            onClick={() => setSelectedImage(null)}
-            className="absolute top-5 right-5 text-white text-3xl font-bold"
-            aria-label="Close fullscreen image"
-          >
-            ×
-          </button>
+          <div className="relative w-full h-full max-w-screen-lg max-h-screen">
+            <Image
+              src={selectedImage}
+              alt="Fullscreen view"
+              fill
+              className="object-contain"
+              sizes="100vw"
+              priority
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-5 right-5 text-white text-3xl font-bold outline outline-gray-300 rounded bg-[#0005] p-1"
+              aria-label="Close fullscreen image"
+            >
+              <X/>
+            </button>
+          </div>
         </div>
       )}
     </>
