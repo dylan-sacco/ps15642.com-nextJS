@@ -15,10 +15,16 @@ export default function ContactForm() {
   };
 
   const clearForm = () => {
-    setFormData({});
+  // Clear form fields
+  document.querySelector('form')?.reset();
+  setFormData({});
+
+  // Keep status for a few seconds, then clear it
+  setTimeout(() => {
     setStatus(null);
-    document.querySelector('form')?.reset();
-  };
+  }, 3000); // 3 seconds
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
