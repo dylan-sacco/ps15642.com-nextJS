@@ -2,6 +2,13 @@ import GenericSpan from "@/components/GenericSpan";
 import H1Drop from "@/components/H1Drop";
 import ParallaxCard from "@/components/ParallaxCard";
 
+// ✅ Metadata for SEO (App Router format)
+export const metadata = {
+  title: "Our Services | P&S Contracting and Landscape",
+  description:
+    "Explore expert landscaping services including design, installation, and softscaping. Serving Westmoreland County with personalized and professional care.",
+};
+
 export default function servicePage() {
   const content = [
     {

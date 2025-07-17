@@ -2,6 +2,12 @@ import GenericSpan from "@/components/GenericSpan";
 import H1Drop from "@/components/H1Drop";
 import ParallaxCard from "@/components/ParallaxCard";
 
+export const metadata = {
+  title: "About Us | P&S Contracting and Landscape",
+  description:
+    "Learn about P&S Contracting and Landscape, our mission, values, and commitment to quality landscaping services in Westmoreland County, PA.",
+};
+
 export default function AboutPage() {
   const content =[
     {

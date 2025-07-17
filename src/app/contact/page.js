@@ -1,7 +1,11 @@
-"use client";
-
 import ContactForm from "@/components/ContactForm";
 import { UserRound, Mail, Phone, FileText } from "lucide-react";
+
+export const metadata = {
+  title: "Contact Us - P&S Contracting and Landscape",
+  description:
+    "Reach out to P&S Contracting and Landscape. Call, email, or use the contact form to start planning your next outdoor project.",
+};
 
 export default function ContactPage() {
   return (
