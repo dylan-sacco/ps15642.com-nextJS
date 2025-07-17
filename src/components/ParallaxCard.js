@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export default function ParallaxCard({ imgUrl = '/hs1.jpg', children }) {
+export default function ParallaxCard({ imgUrl = '/hs1.webp', children }) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {

@@ -17,7 +17,7 @@ export const metadata = {
     siteName: "P&S Contracting and Landscape",
     images: [
       {
-        url: "https://ps15642.com/hs1.jpg",
+        url: "https://ps15642.com/hs1.webp",
         width: 1800,
         height: 800,
         alt: "Home page preview - P&S Contracting",
@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <div>
       {/* Paralax effect */}
-      <ParallaxCard imgUrl={"/hs1.jpg"} >
+      <ParallaxCard imgUrl={"/hs1.webp"} >
       <H1Drop color="text-white">
         <h1 className=" text-4xl md:text-6xl font-bold font-serif">P & S</h1>
         <p className=" text-2xl md:text-4xl font-serif">Contracting and Landscape</p>

@@ -24,3 +24,8 @@ Revert to Previous Commit
 git reset --hard <commit-hash>
 git push origin HEAD --force
 
+Open Graph Testing
+https://www.opengraph.xyz/
+
+Google Search Console for Boosting top page search
+https://search.google.com/search-console

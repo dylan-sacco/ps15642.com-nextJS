@@ -15,7 +15,7 @@ export const metadata = {
     siteName: "P&S Contracting and Landscape",
     images: [
       {
-        url: "https://ps15642.com/hs1.jpg",
+        url: "https://ps15642.com/hs1.webp",
         width: 1800,
         height: 800,
         alt: "Our Services - P&S Contracting and Landscape",
@@ -41,7 +41,7 @@ export default function servicePage() {
   ]
   return (
     <div>
-      <ParallaxCard imgUrl="/hs1.jpg">
+      <ParallaxCard imgUrl="/hs1.webp">
         <div className="relative">
           {/* Shadow Text Behind */}
           <H1Drop color="text-white" size="text-4xl md:text-6xl">

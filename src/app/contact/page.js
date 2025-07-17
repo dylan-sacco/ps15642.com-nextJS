@@ -13,7 +13,7 @@ export const metadata = {
     siteName: "P&S Contracting and Landscape",
     images: [
       {
-        url: "https://ps15642.com/hs1.jpg",
+        url: "https://ps15642.com/hs1.webp",
         width: 1800,
         height: 800,
         alt: "Contact P&S Contracting and Landscape",

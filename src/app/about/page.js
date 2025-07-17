@@ -14,7 +14,7 @@ export const metadata = {
     siteName: "P&S Contracting and Landscape",
     images: [
       {
-        url: "https://ps15642.com/hs1.jpg", 
+        url: "https://ps15642.com/hs1.webp", 
         width: 1800,
         height: 800,
         alt: "P&S Contracting and Landscape",
@@ -28,7 +28,7 @@ export const metadata = {
   //   title: "About Us | P&S Contracting and Landscape",
   //   description:
   //     "Discover P&S Contracting and Landscape's mission, values, and expert services.",
-  //   images: ["https://ps15642.com/hs1.jpg"], // same as OG image
+  //   images: ["https://ps15642.com/hs1.webp"], // same as OG image
   //   site: "@yourTwitterHandle", // optional
   // },
 };
@@ -47,7 +47,7 @@ export default function AboutPage() {
   ]
   return (
     <div>
-      <ParallaxCard imgUrl="/hs1.jpg">
+      <ParallaxCard imgUrl="/hs1.webp">
         <div className="relative">
           {/* Shadow Text Behind */}
           <H1Drop color="text-white" size="text-3xl md:text-4xl">
