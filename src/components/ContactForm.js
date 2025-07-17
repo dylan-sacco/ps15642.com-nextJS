@@ -14,6 +14,12 @@ export default function ContactForm() {
     }));
   };
 
+  const clearForm = () => {
+    setFormData({});
+    setStatus(null);
+    document.querySelector('form')?.reset();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('Sending...');
@@ -31,6 +37,7 @@ export default function ContactForm() {
     const result = await res.json();
     if (result.success) {
       setStatus('Message sent successfully!');
+      clearForm();
     } else {
       setStatus('Error sending message.');
     }

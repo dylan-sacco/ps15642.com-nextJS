@@ -76,6 +76,7 @@ export default function RootLayout({ children }) {
             >
               Dylan Sacco <FaGithub />
             </a>
+            v{process.env.NEXT_PUBLIC_APP_VERSION}
           </p>
         </footer>
       </body>
