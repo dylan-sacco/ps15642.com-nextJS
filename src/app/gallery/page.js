@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 export const metadata = {
-  title: "Gallery - P&S Contracting and Landscape",
+  title: "Gallery | P&S Contracting and Landscape",
   description: "Browse our gallery to see real examples of the expert landscaping, hardscaping, and outdoor designs provided by P&S Contracting and Landscape.",
 };
 
