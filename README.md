@@ -18,3 +18,8 @@ NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
 RECAPTCHA_SECRET_KEY=
 EMAIL_USER=
 EMAIL_PASS=
+
+
+Revert to Previous Commit
+git reset --hard <commit-hash>
+git push origin HEAD --force
