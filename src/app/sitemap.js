@@ -21,13 +21,13 @@ export default function sitemap() {
     {
       url: 'https://ps15642.com/gallery',
       lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: 'yearly',
       priority: 0.8,
     },
     {
       url: 'https://ps15642.com/services',
       lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: 'weekly',
       priority: 0.8,
     },
   ]
