@@ -28,45 +28,84 @@ export const metadata = {
   },
 };
 
+const zoomContainerList = [
+  {
+    title: "Contracting",
+    description:
+      "Whether you need a railing built for your deck or shelves for your garage, we can help you.",
+    buttonText: "Learn More",
+    buttonURL: "/",
+    imageURL: "/home-image-1.jpg",
+  },
+  {
+    title: "Tree Service\nand\nStump Grinding",
+    description: "Expert tree care with a focus on safety and precision — even for the toughest jobs.",
+    imageURL: "/dave-in-tree.jpg",
+  },
+
+  {
+    title: "Hardscape",
+    description:
+      "Whether it's durable stone patios and walkways or lush plant beds, we create a perfect balance of structure and nature to transform your outdoor space.",
+    imageURL: "/hardscape.jpg",
+  },
+  {
+    title: "Landscape",
+    description:
+      "Whether it's durable stone patios and walkways or lush plant beds, we create a perfect balance of structure and nature to transform your outdoor space.",
+    imageURL: "/landscape.jpg",
+  },
+];
+
+
 
 export default function Home() {
+  const foundingYear = 2007;
+  const yearsInBusiness = new Date().getFullYear() - foundingYear;
+
   return (
     <div>
       {/* Paralax effect */}
       <ParallaxCard imgUrl={"/hs1.webp"} >
-      <H1Drop color="text-white">
-        <h1 className=" text-4xl md:text-6xl font-bold font-serif">P & S</h1>
-        <p className=" text-2xl md:text-4xl font-serif">Contracting and Landscape</p>
-      </H1Drop>
-        
+        <H1Drop color="text-white">
+          <h1 className=" text-4xl md:text-6xl font-bold font-serif">P & S</h1>
+          <p className=" text-2xl md:text-4xl font-serif">Contracting and Landscape</p>
+        </H1Drop>
+
       </ParallaxCard>
-      
+
       {/* About Section */}
       <TextSpan>
-        For 15 years, P&S Contracting and Landscape has been the premier landscaping company throughout all of Westmoreland County, Pennsylvania. By providing stellar landscaping services in all facets: design, maintenance, soft-scaping and installation for all of our commercial and residential clients, we are now largely regarded as the absolute best landscaping company in the business!
+        For {yearsInBusiness} years, P&S Contracting and Landscape has been the premier landscaping company throughout all of Westmoreland County, Pennsylvania. By providing stellar landscaping services in all facets: design, maintenance, soft/hard-scaping and installation for all of our commercial and residential clients, we are now largely regarded as the absolute best landscaping company in the business!
       </TextSpan>
 
       {/* hoverZoom section */}
-      <div className="max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-4 p-6 mx-auto">
+      <div className="max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-4 p-6 mx-auto">
+        {zoomContainerList.map((item, index) => {
+          const isOnlyThree = zoomContainerList.length === 3;
+          const isLast = index === 2;
 
-        <ZoomContainerBS
-          title={"Contracting"}
-          description={"Whether you need a railing built for your deck or shelves foWhether you need a railing built for your deck or shelves for your garage, we can help you.  "}
-          buttonText={"Learn More"}
-          buttonURL={"/"}
-          imageURL={"/home-image-1.jpg"}
-        />
-        <ZoomContainerBS
-          title="Tree Service"
-          description="Expert tree care with a focus on safety and precision — even for the toughest jobs."
-          imageURL={"/home-image-2.jpg"} />
-        <ZoomContainerBS
-          title="Hard And Soft Scape"
-          description="Whether it's durable stone patios and walkways or lush plant beds, we create a perfect balance of structure and nature to transform your outdoor space."
-          imageURL={"/home-image-3.jpg"} />
+          const colSpanClass =
+            isOnlyThree && isLast
+              ? "lg:col-span-2 mx-auto max-w-xl" // Option A: Centered and narrower
+              // ? "lg:col-span-2"              // Option B: Stretch full width
+              : "";
 
+          return (
+            <div key={index} className={colSpanClass}>
+              <ZoomContainerBS
+                title={item.title}
+                description={item.description}
+                buttonText={item.buttonText}
+                buttonURL={item.buttonURL}
+                imageURL={item.imageURL}
+              />
+            </div>
+          );
+        })}
       </div>
-      
+
+
 
       {/* Contact Section */}
       <GreenCard>
@@ -74,9 +113,9 @@ export default function Home() {
       </GreenCard>
 
       <div className=" max-w-6xl mx-auto p-6 text-center">
-          <H1Drop>
-            proudly serving the following areas
-          </H1Drop>
+        <H1Drop>
+          proudly serving the following areas
+        </H1Drop>
         <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto p-6">
           <div>North Huntingdon, PA</div>
           <div>North Irwin, PA</div>

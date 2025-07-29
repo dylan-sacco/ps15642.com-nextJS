@@ -43,7 +43,7 @@ export default function ZoomContainerBS({
             isActive ? 'translate-y-0 opacity-100' : 'translate-y-[40%] opacity-100'
           } group-hover:translate-y-0`}
         >
-          <p className="text-2xl font-semibold mb-2">{title}</p>
+          <p className="text-2xl font-semibold mb-2 whitespace-pre-line">{title}</p>
 
           {!isActive && (
             <p className="text-sm text-lime-200 italic transition-opacity duration-500 block md:hidden">
