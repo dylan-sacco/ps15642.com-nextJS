@@ -46,13 +46,13 @@ const zoomContainerList = [
   {
     title: "Hardscape",
     description:
-      "Whether it's durable stone patios and walkways or lush plant beds, we create a perfect balance of structure and nature to transform your outdoor space.",
+      "When it comes to durable concrete patios and walkways we create a perfect balance of structure and nature to transform your outdoor space.",
     imageURL: "/hardscape.jpg",
   },
   {
     title: "Landscape",
     description:
-      "Whether it's durable stone patios and walkways or lush plant beds, we create a perfect balance of structure and nature to transform your outdoor space.",
+      "We can design a landscape with lush plant beds that bloom different times of the year to help keep your landscape alive throughout the year.",
     imageURL: "/landscape.jpg",
   },
 ];
