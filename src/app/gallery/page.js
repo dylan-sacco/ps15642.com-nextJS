@@ -30,7 +30,7 @@ export const metadata = {
 // ✅ Centralized gallery path logic
 const GalleryDir =
   process.env.NODE_ENV === 'production'
-    ? '/home/ubuntu/public/ps15642.com-nextJS/photos' // double-check this path is correct
+    ? '/home/ubuntu/public/ps15642.com-nextJS/public/gallery' // double-check this path is correct
     : path.join(process.cwd(), 'public/gallery');
 
 export default async function GalleryPage() {
