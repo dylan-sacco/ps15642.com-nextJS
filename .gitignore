@@ -138,10 +138,12 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-public/gallery/*
 
 # Ignore sitemap files generated at build time
 /public/robots.txt
 /public/sitemap*.xml
 
 .DS_Store
+
+#prevents tracking
+/public/gallery
