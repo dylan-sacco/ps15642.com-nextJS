@@ -27,12 +27,17 @@ export const metadata = {
   },
 };
 
+// ✅ Centralized gallery path logic
+const GalleryDir =
+  process.env.NODE_ENV === 'production'
+    ? '/home/ubuntu/public/ps15642.com-nextJS/photos' // double-check this path is correct
+    : path.join(process.cwd(), 'public/gallery');
 
 export default async function GalleryPage() {
   const images = await getGalleryImages();
 
   return (
-    <div className="">
+    <div>
       <ParallaxCard>
         <H1Drop color="text-white" size="text-4xl md:text-6xl">
           Our Gallery
@@ -44,10 +49,9 @@ export default async function GalleryPage() {
 }
 
 async function getGalleryImages() {
-  const galleryDir = path.join(process.cwd(), 'public/gallery');
-  const files = fs.readdirSync(galleryDir);
+  const files = fs.readdirSync(GalleryDir);
 
   return files
     .filter(name => /\.(jpe?g|png|webp|gif)$/i.test(name))
-    .map(name => `/gallery/${name}`);
+    .map(name => `/gallery/${name}`); // frontend path remains the same
 }
