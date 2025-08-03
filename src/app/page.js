@@ -34,13 +34,12 @@ const zoomContainerList = [
     description:
       "Whether you need a railing built for your deck or shelves for your garage, we can help you.",
     buttonText: "Learn More",
-    buttonURL: "/contracting",
+    buttonURL: "/",
     imageURL: "/home-image-1.jpg",
   },
   {
     title: "Tree Service\nand\nStump Grinding",
     description: "Expert tree care with a focus on safety and precision — even for the toughest jobs.",
-    buttonURL: "/treeandstump",
     imageURL: "/dave-in-tree.jpg",
   },
 
@@ -48,14 +47,12 @@ const zoomContainerList = [
     title: "Hardscape",
     description:
       "When it comes to durable concrete patios and walkways we create a perfect balance of structure and nature to transform your outdoor space.",
-    buttonURL: "/hardscape",
     imageURL: "/hardscape.jpg",
   },
   {
     title: "Landscape",
     description:
       "We can design a landscape with lush plant beds that bloom different times of the year to help keep your landscape alive throughout the year.",
-    buttonURL: "landscape",
     imageURL: "/landscape.jpg",
   },
 ];
