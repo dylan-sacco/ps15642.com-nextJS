@@ -1,6 +1,7 @@
 import GreenCard from "@/components/GreenCard";
 import H1Drop from "@/components/H1Drop";
 import ParallaxCard from "@/components/ParallaxCard";
+import ScrollContext from "@/components/ScrollContext";
 import TextSpan from "@/components/TextSpan";
 import ZoomContainerBS from "@/components/ZoomContainerBS";
 import Image from "next/image";
@@ -74,7 +75,9 @@ export default function Home() {
           <h1 className=" text-4xl md:text-6xl font-bold font-serif">P & S</h1>
           <p className=" text-2xl md:text-4xl font-serif">Contracting and Landscape</p>
         </H1Drop>
+        <ScrollContext className="mt-6 max-w-3xl mx-auto" >
 
+        </ScrollContext>
       </ParallaxCard>
 
       {/* About Section */}
