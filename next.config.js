@@ -19,7 +19,9 @@ const nextConfig = {
 
   webpack: (config, { isServer }) => {
     if (isServer && process.env.NODE_ENV === 'production') {
-      const prodGalleryPath = '/home/ubuntu/public/ps15642.com-nextJS/public/gallery';
+      const prodGalleryPath =
+        process.env.GALLERY_DIR ||
+        '/home/ubuntu/public/ps15642.com-nextJS/public/gallery';
       const staticTarget = path.join(__dirname, 'public/_gallery');
 
       try {
@@ -28,7 +30,10 @@ const nextConfig = {
         }
 
         fs.mkdirSync(staticTarget, { recursive: true });
-        fs.cpSync(prodGalleryPath, staticTarget, { recursive: true });
+        fs.cpSync(prodGalleryPath, staticTarget, {
+          recursive: true,
+          filter: (src) => !src.endsWith('_order.json') && !src.endsWith('_disabled.json'),
+        });
         console.log('✅ Copied production gallery to public/_gallery');
       } catch (err) {
         console.warn('⚠️ Failed to copy production gallery:', err);

@@ -147,3 +147,4 @@ vite.config.ts.timestamp-*
 
 #prevents tracking
 /public/gallery
+/public/_gallery

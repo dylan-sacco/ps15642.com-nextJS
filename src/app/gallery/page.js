@@ -3,6 +3,7 @@ import H1Drop from '@/components/H1Drop';
 import ParallaxCard from '@/components/ParallaxCard';
 import fs from 'fs';
 import path from 'path';
+import { GALLERY_DIR } from '@/lib/paths';
 
 export const metadata = {
   title: "Gallery | P&S Contracting and Landscape",
@@ -27,12 +28,6 @@ export const metadata = {
   },
 };
 
-// ✅ Centralized gallery path logic
-const GalleryDir =
-  process.env.NODE_ENV === 'production'
-    ? '/home/ubuntu/public/ps15642.com-nextJS/public/gallery' // double-check this path is correct
-    : path.join(process.cwd(), 'public/gallery');
-
 export default async function GalleryPage() {
   const images = await getGalleryImages();
 
@@ -49,9 +44,36 @@ export default async function GalleryPage() {
 }
 
 async function getGalleryImages() {
-  const files = fs.readdirSync(GalleryDir);
+  let files;
+  try {
+    files = fs.readdirSync(GALLERY_DIR);
+  } catch {
+    return [];
+  }
 
-  return files
-    .filter(name => /\.(jpe?g|png|webp|gif)$/i.test(name))
-    .map(name => `/gallery/${name}`); // frontend path remains the same
+  const imageFiles = files.filter(name => /\.(jpe?g|png|webp|gif)$/i.test(name));
+
+  // Filter out disabled images
+  let disabled = new Set();
+  try {
+    disabled = new Set(JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, '_disabled.json'), 'utf8')));
+  } catch { /* no disabled file — all visible */ }
+
+  const visible = imageFiles.filter(name => !disabled.has(name));
+
+  // Apply _order.json if it exists
+  const orderPath = path.join(GALLERY_DIR, '_order.json');
+  let order = [];
+  try {
+    order = JSON.parse(fs.readFileSync(orderPath, 'utf8'));
+  } catch { /* no order file — fall back to alphabetical */ }
+
+  if (order.length > 0) {
+    const orderSet = new Set(order);
+    const ordered = order.filter(name => visible.includes(name));
+    const remaining = visible.filter(name => !orderSet.has(name)).sort();
+    return [...ordered, ...remaining].map(name => `/gallery/${name}`);
+  }
+
+  return visible.sort().map(name => `/gallery/${name}`);
 }

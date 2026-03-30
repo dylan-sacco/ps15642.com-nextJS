@@ -38,7 +38,7 @@ const zoomContainerList = [
     imageURL: "/home-image-1.jpg",
   },
   {
-    title: "Tree Service\nand\nStump Grinding",
+    title: "Tree Service &\nStump Grinding",
     description: "Expert tree care with a focus on safety and precision — even for the toughest jobs.",
     buttonURL: "/treeandstump",
     imageURL: "/dave-in-tree.jpg",
@@ -83,29 +83,17 @@ export default function Home() {
       </TextSpan>
 
       {/* hoverZoom section */}
-      <div className="max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-4 p-6 mx-auto">
-        {zoomContainerList.map((item, index) => {
-          const isOnlyThree = zoomContainerList.length === 3;
-          const isLast = index === 2;
-
-          const colSpanClass =
-            isOnlyThree && isLast
-              ? "lg:col-span-2 mx-auto max-w-xl" // Option A: Centered and narrower
-              // ? "lg:col-span-2"              // Option B: Stretch full width
-              : "";
-
-          return (
-            <div key={index} className={colSpanClass}>
-              <ZoomContainerBS
-                title={item.title}
-                description={item.description}
-                buttonText={item.buttonText}
-                buttonURL={item.buttonURL}
-                imageURL={item.imageURL}
-              />
-            </div>
-          );
-        })}
+      <div className="max-w-6xl grid grid-cols-2 gap-2 sm:gap-4 p-4 sm:p-6 mx-auto">
+        {zoomContainerList.map((item, index) => (
+          <ZoomContainerBS
+            key={index}
+            title={item.title}
+            description={item.description}
+            buttonText={item.buttonText}
+            buttonURL={item.buttonURL}
+            imageURL={item.imageURL}
+          />
+        ))}
       </div>
 
 
