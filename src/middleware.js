@@ -46,12 +46,12 @@ export function middleware(request) {
     request.ip ||
     '';
 
-  if (!isLocalIP(ip)) {
-    return new NextResponse(
-      '403 Forbidden — Admin access is restricted to local network only.',
-      { status: 403, headers: { 'Content-Type': 'text/plain' } }
-    );
-  }
+  // if (!isLocalIP(ip)) {
+  //   return new NextResponse(
+  //     '403 Forbidden — Admin access is restricted to local network only.',
+  //     { status: 403, headers: { 'Content-Type': 'text/plain' } }
+  //   );
+  // }
 
   return NextResponse.next();
 }

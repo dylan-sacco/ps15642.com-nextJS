@@ -28,5 +28,5 @@ I had many ideas for this website
 
 ## The Solution
 
-![Image](/gallery/RPS.png)
+![Image](/gallery/home-image-1.jpg)
 
