@@ -7,6 +7,8 @@ import { getSessionUser } from '@/lib/adminAuth';
 import { hasPermission } from '@/lib/permissions';
 import PermissionDenied from '@/components/admin/PermissionDenied';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = { title: 'Articles | Admin' };
 
 function getArticles() {

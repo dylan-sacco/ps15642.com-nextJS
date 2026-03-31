@@ -184,29 +184,49 @@ export default function GalleryManager({ initialImages }) {
   async function uploadFiles(files) {
     if (!files.length) return;
     setUploading(true);
-    const formData = new FormData();
-    for (const file of files) formData.append('files', file);
+    let successCount = 0;
+    let failCount = 0;
+    const uploadedImages = [];
 
-    try {
-      const res = await fetch('/api/admin/gallery/upload', {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Upload failed');
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      showStatus(`Uploading ${i + 1} of ${files.length}...`);
+      
+      const formData = new FormData();
+      formData.append('files', file);
 
-      const newImages = data.uploaded.map(name => ({
-        filename: name,
-        url: `/api/images/${name}`,
-        disabled: false,
-      }));
-      setImages(prev => [...prev, ...newImages]);
-      showStatus(`Uploaded ${data.uploaded.length} image(s)`);
-    } catch (err) {
-      showStatus(err.message, true);
-    } finally {
-      setUploading(false);
+      try {
+        const res = await fetch('/api/admin/gallery/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Upload failed');
+
+        const newImages = data.uploaded.map(name => ({
+          filename: name,
+          url: `/api/images/${name}`,
+          disabled: false,
+        }));
+        uploadedImages.push(...newImages);
+        successCount++;
+      } catch (err) {
+        console.error(`Failed to upload ${file.name}:`, err);
+        failCount++;
+      }
     }
+
+    setImages(prev => [...uploadedImages, ...prev]);
+    
+    if (failCount === 0) {
+      showStatus(`Successfully uploaded ${successCount} image(s)`);
+    } else if (successCount === 0) {
+      showStatus(`Failed to upload ${failCount} image(s)`, true);
+    } else {
+      showStatus(`Uploaded ${successCount}, failed ${failCount}`, true);
+    }
+    
+    setUploading(false);
   }
 
   function handleDrop(e) {

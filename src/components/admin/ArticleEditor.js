@@ -67,7 +67,7 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Save failed');
-      router.push('/admin/articles');
+      window.location.href = '/admin/articles';
     } catch (err) {
       setError(err.message);
     } finally {
@@ -86,7 +86,7 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
         const data = await res.json();
         throw new Error(data.error || 'Delete failed');
       }
-      router.push('/admin/articles');
+      window.location.href = '/admin/articles';
     } catch (err) {
       setError(err.message);
       setDeleting(false);
@@ -138,7 +138,7 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
         </button>
 
         <button
-          onClick={() => router.push('/admin/articles')}
+          onClick={() => window.location.href = '/admin/articles'}
           className="px-3 py-2 rounded text-sm text-gray-500 hover:text-gray-700 transition-colors"
         >
           Cancel

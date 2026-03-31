@@ -6,6 +6,8 @@ import { hasPermission } from '@/lib/permissions';
 import GalleryManager from '@/components/admin/GalleryManager';
 import PermissionDenied from '@/components/admin/PermissionDenied';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = { title: 'Gallery Manager | Admin' };
 
 function getAdminGalleryImages() {

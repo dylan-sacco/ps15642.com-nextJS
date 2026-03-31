@@ -9,29 +9,42 @@ const WHITELIST_FILE = path.join(process.cwd(), 'data', 'ip-whitelist.json');
 
 // Convert a dotted-decimal IPv4 string to an unsigned 32-bit integer.
 function ipv4ToInt(ip) {
-  const parts = ip.split('.').map(Number);
+  // Strip IPv6-mapped prefix if present for CIDR math
+  const addr = ip.startsWith('::ffff:') ? ip.slice(7) : ip;
+  const parts = addr.split('.').map(Number);
   if (parts.length !== 4 || parts.some(n => isNaN(n) || n < 0 || n > 255)) return null;
   return ((parts[0] << 24) | (parts[1] << 16) | (parts[2] << 8) | parts[3]) >>> 0;
 }
 
 // Returns true if requestIp matches the whitelist entry's ip field.
-// Supports plain IPv4, plain IPv6 (exact), and IPv4 CIDR notation (e.g. 203.0.113.0/24).
-// 0.0.0.0/0 matches every IPv4 address.
+// Supports plain IPv4, plain IPv6 (exact), and CIDR notation.
+// 0.0.0.0/0 or ::/0 matches every address of their respective types (or all if bits=0).
 function ipMatchesEntry(requestIp, entryIp) {
+  // Normalize requestIp for exact match comparison
+  const normalizedRequestIp = requestIp.startsWith('::ffff:') ? requestIp.slice(7) : requestIp;
+
   if (!entryIp.includes('/')) {
     // Exact match (IPv4 or IPv6)
-    return requestIp === entryIp;
+    return normalizedRequestIp === entryIp;
   }
 
-  // CIDR match — IPv4 only
+  // CIDR match
   const [network, bitsStr] = entryIp.split('/');
   const bits = parseInt(bitsStr, 10);
-  if (isNaN(bits) || bits < 0 || bits > 32) return false;
-  if (bits === 0) return true; // 0.0.0.0/0 — allow all
+  
+  // Allow up to 128 bits for IPv6 CIDR (though math below is IPv4 only)
+  if (isNaN(bits) || bits < 0 || bits > 128) return false;
+  
+  // A 0-bit mask allows everything (0.0.0.0/0 or ::/0)
+  if (bits === 0) return true;
 
-  const reqInt = ipv4ToInt(requestIp);
+  // IPv4 CIDR math
+  const reqInt = ipv4ToInt(normalizedRequestIp);
   const netInt = ipv4ToInt(network);
   if (reqInt === null || netInt === null) return false;
+
+  // If we have a valid netInt but it's an IPv4 CIDR, bits should be <= 32
+  if (bits > 32) return false;
 
   const mask = (~0 << (32 - bits)) >>> 0;
   return (reqInt & mask) === (netInt & mask);
