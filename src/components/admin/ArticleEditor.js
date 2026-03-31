@@ -60,16 +60,19 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
           body: JSON.stringify({ slug, ...payload }),
         });
       } else {
+        const slugChanged = slug !== initialData.slug;
         res = await fetch(`/api/admin/articles/${initialData.slug}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({ ...payload, ...(slugChanged ? { newSlug: slug } : {}) }),
         });
       }
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Save failed');
-      window.location.href = '/admin/articles';
+      window.location.href = data.newSlug
+        ? `/admin/articles/${data.newSlug}/edit`
+        : '/admin/articles';
     } catch (err) {
       setError(err.message);
     } finally {
@@ -155,20 +158,27 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
 
       {/* Front matter fields */}
       <div className="bg-white border border-gray-200 rounded-lg p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {isNew && (
-          <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">
-              Slug <span className="text-gray-400">(URL-safe, e.g. my-article)</span>
-            </label>
-            <input
-              type="text"
-              value={slug}
-              onChange={e => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))}
-              placeholder="my-article-slug"
-              className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm outline-none focus:border-lime-500"
-            />
-          </div>
-        )}
+        <div>
+          <label className="block text-xs font-medium text-gray-600 mb-1">
+            Slug <span className="text-gray-400">(URL-safe — changing this renames the article)</span>
+          </label>
+          <input
+            type="text"
+            value={slug}
+            onChange={e => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))}
+            placeholder="my-article-slug"
+            className={`w-full border rounded px-3 py-1.5 text-sm outline-none focus:border-lime-500 ${
+              !isNew && slug !== initialData.slug
+                ? 'border-amber-400 bg-amber-50'
+                : 'border-gray-300'
+            }`}
+          />
+          {!isNew && slug !== initialData.slug && (
+            <p className="text-xs text-amber-600 mt-1">
+              Will rename to <strong>{slug}</strong> and redirect to the new URL on save.
+            </p>
+          )}
+        </div>
 
         <div>
           <label className="block text-xs font-medium text-gray-600 mb-1">Title</label>

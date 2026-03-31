@@ -39,7 +39,7 @@ export async function PUT(request, { params }) {
   if (!fs.existsSync(filePath)) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
   try {
-    const { title, date, excerpt, tags, image, body, published: wantsPublished } = await request.json();
+    const { title, date, excerpt, tags, image, body, published: wantsPublished, newSlug } = await request.json();
 
     // Read current state to enforce granular permissions
     const raw = fs.readFileSync(filePath, 'utf8');
@@ -71,6 +71,21 @@ export async function PUT(request, { params }) {
     if (Array.isArray(tags) && tags.length) frontMatter.tags = tags;
     if (image) frontMatter.image = image;
     const fileContent = matter.stringify(body || '', frontMatter);
+
+    // Handle slug rename
+    if (newSlug && newSlug !== slug) {
+      if (!safeSlug(newSlug)) {
+        return NextResponse.json({ error: 'Invalid new slug' }, { status: 400 });
+      }
+      const newFilePath = path.join(ARTICLES_DIR, `${newSlug}.md`);
+      if (fs.existsSync(newFilePath)) {
+        return NextResponse.json({ error: `Slug "${newSlug}" is already taken` }, { status: 409 });
+      }
+      fs.writeFileSync(newFilePath, fileContent, 'utf8');
+      fs.unlinkSync(filePath);
+      return NextResponse.json({ success: true, newSlug });
+    }
+
     fs.writeFileSync(filePath, fileContent, 'utf8');
     return NextResponse.json({ success: true });
   } catch (err) {

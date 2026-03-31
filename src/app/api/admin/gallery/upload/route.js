@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp';
 import { GALLERY_DIR } from '@/lib/paths';
 import { requireApiPermission } from '@/lib/adminAuth';
 
@@ -39,6 +40,7 @@ export async function POST(request) {
 
     const formData = await request.formData();
     const files = formData.getAll('files');
+    const convertToWebp = formData.get('convertToWebp') === '1';
 
     if (!files.length) {
       return NextResponse.json({ error: 'No files provided' }, { status: 400 });
@@ -71,12 +73,23 @@ export async function POST(request) {
         );
       }
 
-      const safeName = sanitizeFilename(file.name);
-      const destPath = path.join(GALLERY_DIR, safeName);
-
       const buffer = Buffer.from(await file.arrayBuffer());
-      fs.writeFileSync(destPath, buffer);
-      uploaded.push(safeName);
+
+      let finalName;
+      let finalBuffer;
+
+      if (convertToWebp && ext !== 'webp') {
+        const baseName = file.name.replace(/\.[^.]+$/, '');
+        finalName = sanitizeFilename(baseName + '.webp');
+        finalBuffer = await sharp(buffer).webp({ quality: 85 }).toBuffer();
+      } else {
+        finalName = sanitizeFilename(file.name);
+        finalBuffer = buffer;
+      }
+
+      const destPath = path.join(GALLERY_DIR, finalName);
+      fs.writeFileSync(destPath, finalBuffer);
+      uploaded.push(finalName);
     }
 
     // Prepend to order so new photos appear at the top

@@ -16,8 +16,10 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-function SortableImage({ image, onRename, onDelete, onToggleDisabled }) {
+function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert }) {
   const { filename, url, disabled } = image;
+  const isWebP = filename.toLowerCase().endsWith('.webp');
+  const [converting, setConverting] = useState(false);
   const {
     attributes,
     listeners,
@@ -135,6 +137,30 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled }) {
           )}
         </div>
 
+        {/* Convert to WebP */}
+        {!isWebP && (
+          <button
+            onClick={async () => {
+              setConverting(true);
+              await onConvert(filename);
+              setConverting(false);
+            }}
+            disabled={converting}
+            title="Convert to WebP"
+            className="shrink-0 p-1 rounded text-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-colors disabled:opacity-40"
+          >
+            {converting ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            )}
+          </button>
+        )}
+
         {/* Visibility toggle */}
         <button
           onClick={() => onToggleDisabled(filename, !disabled)}
@@ -169,6 +195,8 @@ export default function GalleryManager({ initialImages }) {
   const [images, setImages] = useState(initialImages);
   const [isDragOver, setIsDragOver] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [importAsWebp, setImportAsWebp] = useState(true);
+  const [convertingAll, setConvertingAll] = useState(false);
   const [status, setStatus] = useState('');
   const fileInputRef = useRef(null);
 
@@ -194,6 +222,7 @@ export default function GalleryManager({ initialImages }) {
       
       const formData = new FormData();
       formData.append('files', file);
+      if (importAsWebp) formData.append('convertToWebp', '1');
 
       try {
         const res = await fetch('/api/admin/gallery/upload', {
@@ -306,6 +335,42 @@ export default function GalleryManager({ initialImages }) {
     }
   }
 
+  async function handleConvert(filename) {
+    try {
+      const res = await fetch('/api/admin/gallery/convert', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Conversion failed');
+
+      setImages(prev =>
+        prev.map(img =>
+          img.filename === filename
+            ? { ...img, filename: data.newFilename, url: `/api/images/${data.newFilename}` }
+            : img
+        )
+      );
+      showStatus(`Converted to ${data.newFilename}`);
+    } catch (err) {
+      showStatus(err.message, true);
+    }
+  }
+
+  async function handleConvertAll() {
+    const nonWebp = images.filter(img => !img.filename.toLowerCase().endsWith('.webp'));
+    if (!nonWebp.length) return;
+    setConvertingAll(true);
+    let done = 0;
+    for (const img of nonWebp) {
+      showStatus(`Converting ${++done} of ${nonWebp.length}…`);
+      await handleConvert(img.filename);
+    }
+    setConvertingAll(false);
+    showStatus(`Converted ${nonWebp.length} image(s) to WebP`);
+  }
+
   async function handleToggleDisabled(filename, disabled) {
     try {
       const res = await fetch('/api/admin/gallery/disable', {
@@ -361,6 +426,15 @@ export default function GalleryManager({ initialImages }) {
           Browse Files
         </button>
         <p className="text-xs text-gray-400 mt-2">JPG, PNG, WebP, GIF — max 20 MB each</p>
+        <label className="inline-flex items-center gap-1.5 mt-3 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={importAsWebp}
+            onChange={e => setImportAsWebp(e.target.checked)}
+            className="w-4 h-4 accent-lime-600"
+          />
+          <span className="text-xs text-gray-500">Convert to WebP on import</span>
+        </label>
         <input
           ref={fileInputRef}
           type="file"
@@ -376,9 +450,20 @@ export default function GalleryManager({ initialImages }) {
         <p className="text-gray-500 text-center py-12">No images yet. Upload some above.</p>
       ) : (
         <>
-          <p className="text-sm text-gray-500">
-            {visibleCount} visible, {hiddenCount} hidden — drag to reorder, click filename to rename, eye icon to toggle visibility
-          </p>
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <p className="text-sm text-gray-500">
+              {visibleCount} visible, {hiddenCount} hidden — drag to reorder, click filename to rename, eye icon to toggle visibility
+            </p>
+            {images.some(img => !img.filename.toLowerCase().endsWith('.webp')) && (
+              <button
+                onClick={handleConvertAll}
+                disabled={convertingAll}
+                className="text-sm bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 px-3 py-1.5 rounded font-medium disabled:opacity-50 transition-colors"
+              >
+                {convertingAll ? 'Converting…' : 'Convert All to WebP'}
+              </button>
+            )}
+          </div>
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
             <SortableContext items={images.map(img => img.filename)} strategy={rectSortingStrategy}>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -389,6 +474,7 @@ export default function GalleryManager({ initialImages }) {
                     onRename={handleRename}
                     onDelete={handleDelete}
                     onToggleDisabled={handleToggleDisabled}
+                    onConvert={handleConvert}
                   />
                 ))}
               </div>

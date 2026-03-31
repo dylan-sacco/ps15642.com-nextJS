@@ -14,12 +14,19 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import { getSessionUser } from "@/lib/adminAuth";
+import { getPermissions } from "@/lib/permissions";
+import AdminNav from "@/components/admin/AdminNav";
+
 export const metadata = {
   title: "P&S Contracting And Landscape",
   description: "For 15 years, P&S Contracting and Landscape has been the premier landscaping company throughout all of Westmoreland County, Pennsylvania.",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const user = await getSessionUser();
+  const permissions = user ? getPermissions(user.role) : [];
+
   return (
     <html lang="en">
       <head>
@@ -45,7 +52,7 @@ export default function RootLayout({ children }) {
               rel="noopener noreferrer"
               className="hover:text-lime-900 transition font-serif text-3xl flex items-center"
               style={{ lineHeight: '24px', height: '24px' }}
-            >
+              >
               <b>B</b>
             </a>
             <a href="https://goo.gl/maps/SYQwxzQwuiNtmQCDA" target="_blank" rel="noopener noreferrer" className="hover:text-lime-900 transition">
@@ -65,6 +72,7 @@ export default function RootLayout({ children }) {
           </a>
         </div>
         <NavBar />
+        {user && <AdminNav username={user.username} permissions={permissions} />}
         {children}
         <footer className="bg-green-600 text-white text-center p-4 py-12">
           <p>&copy; {new Date().getFullYear()} P & S Contracting and Landscape. All rights reserved.</p>
