@@ -389,7 +389,7 @@ export default function GalleryManager({ initialImages }) {
 
         const newImages = data.uploaded.map(name => ({
           filename: name,
-          url: `/api/images/${name}`,
+          url: `/api/images/${name.replace(/\.[^.]+$/, '')}`,
           disabled: false,
         }));
         uploadedImages.push(...newImages);
@@ -452,7 +452,7 @@ export default function GalleryManager({ initialImages }) {
       setImages(prev =>
         prev.map(img =>
           img.filename === oldName
-            ? { ...img, filename: data.newName, url: `/api/images/${data.newName}` }
+            ? { ...img, filename: data.newName, url: `/api/images/${data.newName.replace(/\.[^.]+$/, '')}` }
             : img
         )
       );
@@ -503,7 +503,7 @@ export default function GalleryManager({ initialImages }) {
       setImages(prev =>
         prev.map(img =>
           img.filename === filename
-            ? { ...img, filename: data.newFilename, url: `/api/images/${data.newFilename}` }
+            ? { ...img, filename: data.newFilename, url: `/api/images/${data.newFilename.replace(/\.[^.]+$/, '')}` }
             : img
         )
       );
@@ -535,7 +535,7 @@ export default function GalleryManager({ initialImages }) {
       setImages(prev =>
         prev.map(img =>
           img.filename === filename
-            ? { ...img, url: `/api/images/${filename}?v=${Date.now()}` }
+            ? { ...img, url: `/api/images/${filename.replace(/\.[^.]+$/, '')}?v=${Date.now()}` }
             : img
         )
       );

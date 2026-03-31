@@ -41,7 +41,7 @@ function getAdminGalleryImages() {
 
     return sorted.map(name => ({
       filename: name,
-      url: `/api/images/${name}`,
+      url: `/api/images/${name.replace(/\.[^.]+$/, '')}`,
       disabled: disabled.has(name),
     }));
   } catch {

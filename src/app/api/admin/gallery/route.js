@@ -35,7 +35,7 @@ export async function GET() {
 
     const images = sorted
       .filter(name => !disabled.has(name))
-      .map(name => ({ filename: name, url: `/api/images/${name}` }));
+      .map(name => ({ filename: name, url: `/api/images/${name.replace(/\.[^.]+$/, '')}` }));
 
     return NextResponse.json({ images });
   } catch (err) {

@@ -37,7 +37,7 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
 
     const start = ta.selectionStart ?? ta.value.length;
     const end = ta.selectionEnd ?? ta.value.length;
-    const insertion = `![AltText](/api/images/${filename})`;
+    const insertion = `![AltText](/api/images/${filename.replace(/\.[^.]+$/, '')})`;
     const newValue = ta.value.slice(0, start) + insertion + ta.value.slice(end);
 
     onInsert(newValue);
