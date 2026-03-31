@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import { GALLERY_DIR } from '@/lib/paths';
+import { getSessionUser } from '@/lib/adminAuth';
+import { hasPermission } from '@/lib/permissions';
 import GalleryManager from '@/components/admin/GalleryManager';
+import PermissionDenied from '@/components/admin/PermissionDenied';
 
 export const metadata = { title: 'Gallery Manager | Admin' };
 
@@ -44,7 +47,12 @@ function getAdminGalleryImages() {
   }
 }
 
-export default function AdminGalleryPage() {
+export default async function AdminGalleryPage() {
+  const user = await getSessionUser();
+  if (!user || !hasPermission(user.role, 'gallery.view')) {
+    return <PermissionDenied permission="gallery.view" />;
+  }
+
   const images = getAdminGalleryImages();
 
   return (

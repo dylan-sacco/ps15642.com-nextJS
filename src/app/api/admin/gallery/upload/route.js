@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { GALLERY_DIR } from '@/lib/paths';
+import { requireApiPermission } from '@/lib/adminAuth';
 
 const ALLOWED_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'webp', 'gif']);
 const ALLOWED_MIME = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
@@ -30,6 +31,9 @@ function writeOrder(order) {
 }
 
 export async function POST(request) {
+  const { error } = await requireApiPermission('gallery.upload');
+  if (error) return error;
+
   try {
     fs.mkdirSync(GALLERY_DIR, { recursive: true });
 

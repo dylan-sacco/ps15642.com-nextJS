@@ -2,8 +2,12 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { GALLERY_DIR } from '@/lib/paths';
+import { requireApiPermission } from '@/lib/adminAuth';
 
 export async function POST(request) {
+  const { error } = await requireApiPermission('gallery.edit');
+  if (error) return error;
+
   try {
     const { order } = await request.json();
 

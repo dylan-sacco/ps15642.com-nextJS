@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { ARTICLES_DIR } from '@/lib/paths';
+import { requireApiPermission } from '@/lib/adminAuth';
+import { hasPermission } from '@/lib/permissions';
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -12,6 +14,9 @@ function ensureDir() {
 
 // GET /api/admin/articles — list all articles (front matter only)
 export async function GET() {
+  const { error } = await requireApiPermission('articles.view');
+  if (error) return error;
+
   try {
     ensureDir();
     const files = fs.readdirSync(ARTICLES_DIR).filter(f => f.endsWith('.md'));
@@ -38,9 +43,14 @@ export async function GET() {
 
 // POST /api/admin/articles — create article
 export async function POST(request) {
+  const { user, error } = await requireApiPermission('articles.create');
+  if (error) return error;
+
   try {
     ensureDir();
-    const { slug, title, date, excerpt, tags, image, published, body } = await request.json();
+    const { slug, title, date, excerpt, tags, image, body, published: wantsPublished } = await request.json();
+    // Strip publish flag if caller lacks permission
+    const published = wantsPublished && hasPermission(user.role, 'articles.publish');
 
     if (!slug || !SLUG_RE.test(slug)) {
       return NextResponse.json(

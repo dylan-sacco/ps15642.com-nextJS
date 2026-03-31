@@ -8,15 +8,20 @@ const SECRET = process.env.WEBHOOK_SECRET;
 // branch will run the deploy command — all others are acknowledged and ignored.
 const DEPLOY_BRANCH = process.env.DEPLOY_BRANCH || 'main';
 
-// Absolute path to the repo on the server. Set DEPLOY_DIR in .env if the repo
-// lives somewhere other than the default path below.
-const DEPLOY_DIR = process.env.DEPLOY_DIR || '/home/ubuntu/ps15642.com-nextJS';
+// Absolute path to the repo on the server. Defaults to a "ps15642.com-nextJS"
+// folder in the current user's home directory.
+const HOME = process.env.HOME || '/root';
+const DEPLOY_DIR = process.env.DEPLOY_DIR || `${HOME}/ps15642.com-nextJS`;
 
 // exec() spawns a non-interactive, non-login shell, so nvm is not initialized
 // by default. Sourcing nvm.sh manually makes `node` and `npm` available without
 // hardcoding a version-specific path — nvm's default alias is used automatically,
 // so upgrading Node on the server requires no changes here.
-const NVM_DIR = process.env.NVM_DIR || '/home/ubuntu/.nvm';
+const NVM_DIR = process.env.NVM_DIR || `${HOME}/.nvm`;
+
+// Gallery backup settings
+const BACKUP_DIR = process.env.BACKUP_DIR || `${HOME}/gallery-backups`;
+const BACKUP_KEEP_WEEKS = parseInt(process.env.BACKUP_KEEP_WEEKS || '12', 10);
 
 export async function POST(req) {
   if (!SECRET) {
@@ -60,6 +65,10 @@ export async function POST(req) {
     echo "Node: $(which node) $(node -v)" &&
     echo "NPM: $(which npm) $(npm -v)" &&
     echo "USER: $(whoami)" &&
+    BACKUP_DATE=$(date +%Y-%m-%d_%H-%M-%S) &&
+    mkdir -p ${BACKUP_DIR} &&
+    zip -r ${BACKUP_DIR}/$BACKUP_DATE.zip public/gallery/ &&
+    find ${BACKUP_DIR} -name "*.zip" -mtime +$((${BACKUP_KEEP_WEEKS} * 7)) -delete &&
     git fetch origin && git reset --hard origin/${DEPLOY_BRANCH} &&
     npm install --include=dev &&
     NODE_ENV=production npm run build &&

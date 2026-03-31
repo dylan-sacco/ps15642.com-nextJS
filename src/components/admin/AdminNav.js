@@ -1,20 +1,32 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
-const navItems = [
-  { href: '/admin/gallery', label: 'Gallery' },
-  { href: '/admin/articles', label: 'Articles' },
+const NAV_ITEMS = [
+  { href: '/admin/gallery',   label: 'Gallery',   permission: 'gallery.view'   },
+  { href: '/admin/articles',  label: 'Articles',  permission: 'articles.view'  },
+  { href: '/admin/whitelist', label: 'Whitelist', permission: 'whitelist.view' },
+  { href: '/admin/users',     label: 'Users',     permission: 'users.view'     },
+  { href: '/admin/backup',    label: 'Backup',    permission: 'backup.view'    },
 ];
 
-export default function AdminNav() {
+export default function AdminNav({ username, permissions = [] }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const visible = NAV_ITEMS.filter(item => permissions.includes(item.permission));
+
+  async function handleLogout() {
+    await fetch('/api/admin/auth/logout', { method: 'POST' });
+    router.push('/admin/login');
+    router.refresh();
+  }
 
   return (
-    <nav className="bg-gray-900 text-white flex items-center gap-1 px-4 py-2 text-sm font-medium border-b border-gray-700">
+    <nav className="bg-gray-900 text-white flex items-center gap-1 px-4 py-2 text-sm font-medium border-b border-gray-700 flex-wrap">
       <span className="text-lime-400 font-bold mr-4">Admin Panel</span>
-      {navItems.map(({ href, label }) => {
+      {visible.map(({ href, label }) => {
         const active = pathname.startsWith(href);
         return (
           <Link
@@ -30,13 +42,19 @@ export default function AdminNav() {
           </Link>
         );
       })}
-      <div className="ml-auto">
-        <Link
-          href="/"
-          className="text-gray-400 hover:text-white text-xs transition-colors"
-        >
+      <div className="ml-auto flex items-center gap-3">
+        {username && (
+          <span className="text-gray-400 text-xs hidden sm:inline">{username}</span>
+        )}
+        <Link href="/" className="text-gray-400 hover:text-white text-xs transition-colors">
           View Site
         </Link>
+        <button
+          onClick={handleLogout}
+          className="text-gray-400 hover:text-red-400 text-xs transition-colors"
+        >
+          Sign Out
+        </button>
       </div>
     </nav>
   );

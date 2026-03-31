@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { GALLERY_DIR } from '@/lib/paths';
+import { requireApiPermission } from '@/lib/adminAuth';
 
 function readDisabled() {
   try {
@@ -16,6 +17,9 @@ function writeDisabled(list) {
 }
 
 export async function PATCH(request) {
+  const { error } = await requireApiPermission('gallery.edit');
+  if (error) return error;
+
   try {
     const { filename, disabled } = await request.json();
 

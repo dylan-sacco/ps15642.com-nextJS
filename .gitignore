@@ -148,3 +148,6 @@ vite.config.ts.timestamp-*
 #prevents tracking
 /public/gallery
 /public/_gallery
+
+# Runtime data (users, whitelist) — never commit
+/data/

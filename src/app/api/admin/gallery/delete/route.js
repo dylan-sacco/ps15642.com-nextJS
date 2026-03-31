@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { GALLERY_DIR } from '@/lib/paths';
+import { requireApiPermission } from '@/lib/adminAuth';
 
 function readOrder() {
   const orderPath = path.join(GALLERY_DIR, '_order.json');
@@ -18,6 +19,9 @@ function writeOrder(order) {
 }
 
 export async function DELETE(request) {
+  const { error } = await requireApiPermission('gallery.delete');
+  if (error) return error;
+
   try {
     const { filename } = await request.json();
 

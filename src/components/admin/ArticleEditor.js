@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import MarkdownPreview from './MarkdownPreview';
 import MarkdownCheatSheet from './MarkdownCheatSheet';
 
-export default function ArticleEditor({ initialData = {}, isNew = false }) {
+export default function ArticleEditor({ initialData = {}, isNew = false, canPublish = false }) {
   const router = useRouter();
 
   const [slug, setSlug] = useState(initialData.slug || '');
@@ -48,7 +48,7 @@ export default function ArticleEditor({ initialData = {}, isNew = false }) {
     setSaving(true);
     try {
       const parsedTags = tags.split(',').map(t => t.trim()).filter(Boolean);
-      const payload = { title, date, excerpt, tags: parsedTags, image, published, body };
+      const payload = { title, date, excerpt, tags: parsedTags, image, published: canPublish ? published : false, body };
       let res;
 
       if (isNew) {
@@ -231,18 +231,20 @@ export default function ArticleEditor({ initialData = {}, isNew = false }) {
           />
         </div>
 
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="published"
-            checked={published}
-            onChange={e => setPublished(e.target.checked)}
-            className="w-4 h-4 accent-lime-600"
-          />
-          <label htmlFor="published" className="text-sm text-gray-700">
-            Published <span className="text-gray-400 text-xs">(visible on public site)</span>
-          </label>
-        </div>
+        {canPublish && (
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="published"
+              checked={published}
+              onChange={e => setPublished(e.target.checked)}
+              className="w-4 h-4 accent-lime-600"
+            />
+            <label htmlFor="published" className="text-sm text-gray-700">
+              Published <span className="text-gray-400 text-xs">(visible on public site)</span>
+            </label>
+          </div>
+        )}
       </div>
 
       {/* Cheat sheet */}

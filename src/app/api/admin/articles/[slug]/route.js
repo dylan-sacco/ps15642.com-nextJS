@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { ARTICLES_DIR } from '@/lib/paths';
+import { requireApiPermission } from '@/lib/adminAuth';
+import { hasPermission } from '@/lib/permissions';
 
 function safeSlug(slug) {
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
@@ -10,6 +12,9 @@ function safeSlug(slug) {
 
 // GET /api/admin/articles/[slug]
 export async function GET(request, { params }) {
+  const { error } = await requireApiPermission('articles.view');
+  if (error) return error;
+
   const { slug } = await params;
   if (!safeSlug(slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
 
@@ -23,6 +28,10 @@ export async function GET(request, { params }) {
 
 // PUT /api/admin/articles/[slug]
 export async function PUT(request, { params }) {
+  // Minimum required to edit anything
+  const { user, error } = await requireApiPermission('articles.edit.draft');
+  if (error) return error;
+
   const { slug } = await params;
   if (!safeSlug(slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
 
@@ -30,7 +39,29 @@ export async function PUT(request, { params }) {
   if (!fs.existsSync(filePath)) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
   try {
-    const { title, date, excerpt, tags, image, published, body } = await request.json();
+    const { title, date, excerpt, tags, image, body, published: wantsPublished } = await request.json();
+
+    // Read current state to enforce granular permissions
+    const raw = fs.readFileSync(filePath, 'utf8');
+    const { data: current } = matter(raw);
+    const currentlyPublished = !!current.published;
+
+    if (currentlyPublished && !hasPermission(user.role, 'articles.edit.published')) {
+      return NextResponse.json({ error: 'Your role cannot edit published articles' }, { status: 403 });
+    }
+
+    // Determine final published state
+    let published;
+    if (wantsPublished !== currentlyPublished) {
+      // Changing publish state requires articles.publish
+      if (!hasPermission(user.role, 'articles.publish')) {
+        published = currentlyPublished; // silently preserve current state
+      } else {
+        published = !!wantsPublished;
+      }
+    } else {
+      published = currentlyPublished;
+    }
     const frontMatter = {
       title: title || '',
       date: date || '',
@@ -50,6 +81,9 @@ export async function PUT(request, { params }) {
 
 // DELETE /api/admin/articles/[slug]
 export async function DELETE(request, { params }) {
+  const { error } = await requireApiPermission('articles.delete');
+  if (error) return error;
+
   const { slug } = await params;
   if (!safeSlug(slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
 

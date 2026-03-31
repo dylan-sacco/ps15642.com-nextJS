@@ -3,6 +3,9 @@ import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
 import { ARTICLES_DIR } from '@/lib/paths';
+import { getSessionUser } from '@/lib/adminAuth';
+import { hasPermission } from '@/lib/permissions';
+import PermissionDenied from '@/components/admin/PermissionDenied';
 
 export const metadata = { title: 'Articles | Admin' };
 
@@ -28,28 +31,38 @@ function getArticles() {
   }
 }
 
-export default function AdminArticlesPage() {
+export default async function AdminArticlesPage() {
+  const user = await getSessionUser();
+  if (!user || !hasPermission(user.role, 'articles.view')) {
+    return <PermissionDenied permission="articles.view" />;
+  }
+
+  const canCreate = hasPermission(user.role, 'articles.create');
   const articles = getArticles();
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Articles</h1>
-        <Link
-          href="/admin/articles/new"
-          className="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded font-medium text-sm transition-colors"
-        >
-          + New Article
-        </Link>
+        {canCreate && (
+          <Link
+            href="/admin/articles/new"
+            className="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded font-medium text-sm transition-colors"
+          >
+            + New Article
+          </Link>
+        )}
       </div>
 
       {articles.length === 0 ? (
         <div className="text-center py-16 text-gray-500">
           <p className="text-4xl mb-4">📝</p>
           <p>No articles yet.</p>
-          <Link href="/admin/articles/new" className="text-lime-600 hover:underline mt-2 inline-block">
-            Create your first article
-          </Link>
+          {canCreate && (
+            <Link href="/admin/articles/new" className="text-lime-600 hover:underline mt-2 inline-block">
+              Create your first article
+            </Link>
+          )}
         </div>
       ) : (
         <div className="space-y-3">
