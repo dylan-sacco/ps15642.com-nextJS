@@ -34,6 +34,9 @@ export async function POST(request) {
     // into memory at once (prevents OOM crashes on large iPhone photos)
     tmpPath = filePath + '.tmp';
 
+    sharp.cache(false);
+    sharp.concurrency(1);
+
     await sharp(filePath)
       .rotate(90)
       .toFormat(format)
