@@ -1,6 +1,5 @@
 'use client';
 import { X } from 'lucide-react';
-import Image from 'next/image';
 import { useState } from 'react';
 
 export default function Gallery({ images }) {
@@ -16,13 +15,12 @@ export default function Gallery({ images }) {
             onClick={() => setSelectedImage(src)}
           >
             <div className="aspect-square relative">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={src}
                 alt={`Gallery image ${i + 1}`}
-                fill
-                className="rounded-lg object-cover hover:scale-105 transition-transform duration-300"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                priority={i < 3} // preload top 3 images for LCP
+                className="absolute inset-0 w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-300"
+                loading={i < 3 ? 'eager' : 'lazy'}
               />
             </div>
           </div>
@@ -35,14 +33,12 @@ export default function Gallery({ images }) {
           className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center"
           onClick={() => setSelectedImage(null)}
         >
-          <div className="relative w-full h-full max-w-screen-lg max-h-screen">
-            <Image
+          <div className="relative w-full h-full max-w-screen-lg max-h-screen flex items-center justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={selectedImage}
               alt="Fullscreen view"
-              fill
-              className="object-contain"
-              sizes="100vw"
-              priority
+              className="w-full h-full object-contain"
             />
             <button
               onClick={() => setSelectedImage(null)}

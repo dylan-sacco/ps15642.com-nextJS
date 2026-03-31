@@ -35,8 +35,11 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
   } = useSortable({ id: filename });
 
   const [editing, setEditing] = useState(false);
-  const [editValue, setEditValue] = useState(filename);
+  const [editValue, setEditValue] = useState('');
   const inputRef = useRef(null);
+  const dotIdx = filename.lastIndexOf('.');
+  const baseName = dotIdx > 0 ? filename.slice(0, dotIdx) : filename;
+  const ext = dotIdx > 0 ? filename.slice(dotIdx) : '';
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -54,15 +57,17 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
   }, [menuOpen]);
 
   function startEdit() {
-    setEditValue(filename);
+    setEditValue(baseName);
     setEditing(true);
     setTimeout(() => inputRef.current?.focus(), 0);
   }
 
   async function commitRename() {
     setEditing(false);
-    const newName = editValue.trim();
-    if (!newName || newName === filename) return;
+    const newBase = editValue.trim();
+    if (!newBase) return;
+    const newName = newBase + ext;
+    if (newName === filename) return;
     await onRename(filename, newName);
   }
 
@@ -217,15 +222,21 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
       <div className="p-2 bg-white flex items-center gap-1">
         <div className="flex-1 min-w-0">
           {editing ? (
-            <input
-              ref={inputRef}
-              value={editValue}
-              onChange={e => setEditValue(e.target.value)}
-              onBlur={commitRename}
-              onKeyDown={handleKeyDown}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full text-xs border border-lime-500 rounded px-1 py-0.5 outline-none"
-            />
+            <div className="flex items-center border border-lime-500 rounded overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              <input
+                ref={inputRef}
+                value={editValue}
+                onChange={e => setEditValue(e.target.value)}
+                onBlur={commitRename}
+                onKeyDown={handleKeyDown}
+                className="min-w-0 flex-1 text-xs px-1 py-0.5 outline-none"
+              />
+              {ext && (
+                <span className="text-xs text-gray-400 bg-gray-100 px-1 py-0.5 border-l border-lime-500 shrink-0 select-none">
+                  {ext}
+                </span>
+              )}
+            </div>
           ) : (
             <button
               onClick={selecting ? undefined : startEdit}
@@ -520,6 +531,7 @@ export default function GalleryManager({ initialImages }) {
         const data = await res.json();
         throw new Error(data.error || 'Rotation failed');
       }
+      // Force React to re-request the image (ETag headers will serve fresh bytes)
       setImages(prev =>
         prev.map(img =>
           img.filename === filename
