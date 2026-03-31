@@ -73,8 +73,15 @@ export async function GET(request) {
     'SameSite=Strict',
   ].join('; ');
 
+  // Reconstruct the public-facing URL from headers set by Nginx.
+  // request.url contains the internal localhost URL when behind a reverse proxy,
+  // so we use the Host and x-forwarded-proto headers instead.
+  const host  = request.headers.get('host') ?? 'localhost:3000';
+  const proto = request.headers.get('x-forwarded-proto') ?? 'http';
+  const loginUrl = `${proto}://${host}/admin/login`;
+
   // Redirect to login so the user can authenticate normally
-  return NextResponse.redirect(new URL('/admin/login', request.url), {
+  return NextResponse.redirect(loginUrl, {
     status: 302,
     headers: { 'Set-Cookie': cookieHeader },
   });

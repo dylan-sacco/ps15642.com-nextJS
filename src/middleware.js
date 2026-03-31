@@ -177,7 +177,7 @@ export async function middleware(request) {
   const authenticated = await verifyAuthToken(token);
 
   if (!authenticated) {
-    const loginUrl = new URL('/admin/login', request.url);
+    const loginUrl = new URL('/admin/login', request.nextUrl.origin);
     return NextResponse.redirect(loginUrl);
   }
 
