@@ -197,7 +197,7 @@ export default function GalleryManager({ initialImages }) {
 
       const newImages = data.uploaded.map(name => ({
         filename: name,
-        url: `/gallery/${name}`,
+        url: `/api/images/${name}`,
         disabled: false,
       }));
       setImages(prev => [...prev, ...newImages]);
@@ -256,7 +256,7 @@ export default function GalleryManager({ initialImages }) {
       setImages(prev =>
         prev.map(img =>
           img.filename === oldName
-            ? { ...img, filename: data.newName, url: `/gallery/${data.newName}` }
+            ? { ...img, filename: data.newName, url: `/api/images/${data.newName}` }
             : img
         )
       );

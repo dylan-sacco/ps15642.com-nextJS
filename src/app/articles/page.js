@@ -3,6 +3,8 @@ import { getPublishedArticles, tagToSlug } from '@/lib/articles';
 import H1Drop from '@/components/H1Drop';
 import ParallaxCard from '@/components/ParallaxCard';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Articles | P&S Contracting and Landscape',
   description: 'Tips, guides, and insights on landscaping and property care from P&S Contracting and Landscape.',

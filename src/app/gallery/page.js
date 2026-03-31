@@ -5,6 +5,8 @@ import fs from 'fs';
 import path from 'path';
 import { GALLERY_DIR } from '@/lib/paths';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "Gallery | P&S Contracting and Landscape",
   description:
@@ -72,8 +74,8 @@ async function getGalleryImages() {
     const orderSet = new Set(order);
     const ordered = order.filter(name => visible.includes(name));
     const remaining = visible.filter(name => !orderSet.has(name)).sort();
-    return [...ordered, ...remaining].map(name => `/gallery/${name}`);
+    return [...ordered, ...remaining].map(name => `/api/images/${name}`);
   }
 
-  return visible.sort().map(name => `/gallery/${name}`);
+  return visible.sort().map(name => `/api/images/${name}`);
 }

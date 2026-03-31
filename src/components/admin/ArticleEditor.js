@@ -226,7 +226,7 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
             type="text"
             value={image}
             onChange={e => setImage(e.target.value)}
-            placeholder="https://ps15642.com/gallery/my-project.jpg"
+            placeholder="/api/images/my-project.jpg"
             className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm outline-none focus:border-lime-500"
           />
         </div>

@@ -39,7 +39,7 @@ function getAdminGalleryImages() {
 
     return sorted.map(name => ({
       filename: name,
-      url: `/gallery/${name}`,
+      url: `/api/images/${name}`,
       disabled: disabled.has(name),
     }));
   } catch {

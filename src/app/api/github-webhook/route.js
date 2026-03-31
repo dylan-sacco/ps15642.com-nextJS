@@ -67,7 +67,7 @@ export async function POST(req) {
     echo "USER: $(whoami)" &&
     BACKUP_DATE=$(date +%Y-%m-%d_%H-%M-%S) &&
     mkdir -p ${BACKUP_DIR} &&
-    zip -r ${BACKUP_DIR}/$BACKUP_DATE.zip public/gallery/ &&
+    zip -r ${BACKUP_DIR}/$BACKUP_DATE.zip content/photos/ &&
     find ${BACKUP_DIR} -name "*.zip" -mtime +$((${BACKUP_KEEP_WEEKS} * 7)) -delete &&
     git fetch origin && git reset --hard origin/${DEPLOY_BRANCH} &&
     npm install --include=dev &&
