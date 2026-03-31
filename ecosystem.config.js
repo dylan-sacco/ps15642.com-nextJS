@@ -4,7 +4,9 @@ module.exports = {
       name: 'ps15642',
       script: 'npm',
       args: 'start',
-      watch: true, // or true if you want automatic reloads on file changes
+      // watch: false, // auto-deploy via GitHub webhook handles restarts
+      watch: true,
+      ignore_watch: ['content', 'node_modules', '.next'],
       env: {
         PORT: 8080
       }

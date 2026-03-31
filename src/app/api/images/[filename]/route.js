@@ -38,20 +38,6 @@ export async function GET(request, { params }) {
   }
 
   try {
-    const stats = fs.statSync(filePath);
-    const etag = `"${stats.mtime.getTime()}-${stats.size}"`;
-    const lastModified = stats.mtime.toUTCString();
-
-    // Respond 304 if client already has the current version
-    const ifNoneMatch = request.headers.get('if-none-match');
-    if (ifNoneMatch === etag) {
-      return new Response(null, { status: 304 });
-    }
-    const ifModifiedSince = request.headers.get('if-modified-since');
-    if (ifModifiedSince && new Date(ifModifiedSince) >= stats.mtime) {
-      return new Response(null, { status: 304 });
-    }
-
     const buffer = fs.readFileSync(filePath);
     const ext = path.extname(resolvedFilename).toLowerCase();
 
@@ -65,9 +51,7 @@ export async function GET(request, { params }) {
     return new Response(buffer, {
       headers: {
         'Content-Type': contentType,
-        'Cache-Control': 'no-cache',
-        'ETag': etag,
-        'Last-Modified': lastModified,
+        'Cache-Control': 'no-store',
       },
     });
   } catch (error) {
