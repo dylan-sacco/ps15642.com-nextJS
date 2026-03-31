@@ -9,6 +9,8 @@ export async function POST(request) {
   const { error } = await requireApiPermission('gallery.edit');
   if (error) return error;
 
+  let tmpPath = null;
+
   try {
     const { filename } = await request.json();
 
@@ -25,20 +27,27 @@ export async function POST(request) {
       return NextResponse.json({ error: 'File not found' }, { status: 404 });
     }
 
-    const ext = path.extname(filename).toLowerCase().slice(1); // 'jpg', 'png', 'webp', 'gif'
+    const ext = path.extname(filename).toLowerCase().slice(1);
     const format = ext === 'jpg' ? 'jpeg' : ext;
 
-    // Read into buffer first to avoid Windows file-lock issues
-    const inputBuffer = fs.readFileSync(filePath);
-    const rotated = await sharp(inputBuffer)
+    // Write to a temp file first, then rename — avoids loading the whole image
+    // into memory at once (prevents OOM crashes on large iPhone photos)
+    tmpPath = filePath + '.tmp';
+
+    await sharp(filePath)
       .rotate(90)
       .toFormat(format)
-      .toBuffer();
+      .toFile(tmpPath);
 
-    fs.writeFileSync(filePath, rotated);
+    fs.renameSync(tmpPath, filePath);
+    tmpPath = null;
 
     return NextResponse.json({ success: true });
   } catch (err) {
+    // Clean up temp file if something went wrong
+    if (tmpPath) {
+      try { fs.unlinkSync(tmpPath); } catch { /* ignore */ }
+    }
     console.error('Gallery rotate error:', err);
     return NextResponse.json({ error: err.message || 'Rotation failed' }, { status: 500 });
   }
