@@ -79,12 +79,11 @@ export async function POST(request) {
       uploaded.push(safeName);
     }
 
-    // Append to order
+    // Prepend to order so new photos appear at the top
     const order = readOrder();
-    for (const name of uploaded) {
-      if (!order.includes(name)) order.push(name);
-    }
-    writeOrder(order);
+    const existing = new Set(order);
+    const newEntries = uploaded.filter(name => !existing.has(name));
+    writeOrder([...newEntries, ...order]);
 
     return NextResponse.json({ uploaded }, { status: 201 });
   } catch (err) {
