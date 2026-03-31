@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import MarkdownPreview from './MarkdownPreview';
 import MarkdownCheatSheet from './MarkdownCheatSheet';
+import PhotoPicker from './PhotoPicker';
 
 export default function ArticleEditor({ initialData = {}, isNew = false, canPublish = false }) {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState('');
+  const [markdownFocused, setMarkdownFocused] = useState(false);
 
   const textareaRef = useRef(null);
 
@@ -260,6 +262,8 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
             value={body}
             onChange={e => setBody(e.target.value)}
             onKeyDown={handleTabKey}
+            onFocus={() => setMarkdownFocused(true)}
+            onBlur={() => setMarkdownFocused(false)}
             className="flex-1 min-h-[500px] border border-gray-300 rounded-lg p-4 font-mono text-sm resize-y outline-none focus:border-lime-500 bg-gray-50"
             placeholder="Write your article in Markdown…"
             spellCheck={false}
@@ -276,6 +280,13 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
           </div>
         )}
       </div>
+
+      {markdownFocused && (
+        <PhotoPicker
+          textareaRef={textareaRef}
+          onInsert={newBody => setBody(newBody)}
+        />
+      )}
     </div>
   );
 }
