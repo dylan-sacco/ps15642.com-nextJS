@@ -45,11 +45,12 @@ function getAdminGalleryImages() {
     return sorted.map(name => {
       const isVideo = /\.(mp4|mov|webm)$/i.test(name);
       const base = path.parse(name).name;
+      const mtime = Math.floor(fs.statSync(path.join(GALLERY_DIR, name)).mtimeMs / 1000);
       const thumbFile = `${base}.thumb.webp`;
       const thumbUrl = isVideo && fs.existsSync(path.join(GALLERY_DIR, thumbFile))
-        ? `/api/uploads/${thumbFile}`
+        ? `/api/uploads/${thumbFile}?v=${mtime}`
         : null;
-      return { filename: name, url: `/api/uploads/${base}`, disabled: disabled.has(name), thumbUrl };
+      return { filename: name, url: `/api/uploads/${base}?v=${mtime}`, disabled: disabled.has(name), thumbUrl };
     });
   } catch {
     return [];

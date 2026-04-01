@@ -45,7 +45,8 @@ export async function POST(request) {
     fs.renameSync(tmpPath, filePath);
     tmpPath = null;
 
-    return NextResponse.json({ success: true });
+    const mtime = Math.floor(fs.statSync(filePath).mtimeMs / 1000);
+    return NextResponse.json({ success: true, mtime });
   } catch (err) {
     // Clean up temp file if something went wrong
     if (tmpPath) {

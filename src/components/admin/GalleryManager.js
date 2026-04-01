@@ -614,7 +614,7 @@ export default function GalleryManager({ initialImages }) {
       setImages(prev =>
         prev.map(img =>
           img.filename === filename
-            ? { ...img, url: `/api/uploads/${filename.replace(/\.[^.]+$/, '')}?v=${Date.now()}` }
+            ? { ...img, url: `/api/uploads/${filename.replace(/\.[^.]+$/, '')}?v=${data.mtime}` }
             : img
         )
       );

@@ -39,9 +39,9 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
 
     const start = ta.selectionStart ?? ta.value.length;
     const end = ta.selectionEnd ?? ta.value.length;
-    const src = `/api/uploads/${filename.replace(/\.[^.]+$/, '')}`;
 
     const img = images.find(i => i.filename === filename);
+    const src = img?.url ?? `/api/uploads/${filename.replace(/\.[^.]+$/, '')}`;
     const poster = img?.thumbUrl ? ` poster="${img.thumbUrl}"` : '';
     const insertion = VIDEO_EXT.test(filename)
       ? `<video controls src="${src}"${poster} style="max-width:100%;border-radius:8px"></video>`

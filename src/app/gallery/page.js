@@ -86,12 +86,14 @@ async function getGalleryImages() {
 function toItem(name) {
   const isVideo = /\.(mp4|mov|webm)$/i.test(name);
   const base = path.parse(name).name;
+  const mtime = Math.floor(fs.statSync(path.join(GALLERY_DIR, name)).mtimeMs / 1000);
   let poster;
   if (isVideo) {
     const thumbPath = path.join(GALLERY_DIR, `${base}.thumb.webp`);
     if (fs.existsSync(thumbPath)) {
-      poster = `/api/uploads/${base}.thumb.webp`;
+      const thumbMtime = Math.floor(fs.statSync(thumbPath).mtimeMs / 1000);
+      poster = `/api/uploads/${base}.thumb.webp?v=${thumbMtime}`;
     }
   }
-  return { src: `/api/uploads/${base}`, isVideo, poster };
+  return { src: `/api/uploads/${base}?v=${mtime}`, isVideo, poster };
 }
