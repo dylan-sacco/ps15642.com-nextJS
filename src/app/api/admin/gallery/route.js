@@ -21,10 +21,10 @@ export async function GET() {
       order = JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, '_order.json'), 'utf8'));
     } catch { /* no order file */ }
 
-    let disabled = new Set();
-    try {
-      disabled = new Set(JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, '_disabled.json'), 'utf8')));
-    } catch { /* no disabled file */ }
+    // let disabled = new Set();
+    // try {
+    //   disabled = new Set(JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, '_disabled.json'), 'utf8')));
+    // } catch { /* no disabled file */ }
 
     let sorted;
     if (order.length > 0) {
@@ -37,7 +37,7 @@ export async function GET() {
     }
 
     const images = sorted
-      .filter(name => !disabled.has(name))
+      // .filter(name => !disabled.has(name))
       .map(name => {
         const isVideo = /\.(mp4|mov|webm)$/i.test(name);
         const base = path.parse(name).name;
