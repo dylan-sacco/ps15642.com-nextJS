@@ -142,7 +142,8 @@ export async function middleware(request) {
         }
 
         try {
-          const checkUrl = new URL('/api/internal/whitelist-check', request.url);
+          const port = process.env.PORT || 3000;
+          const checkUrl = new URL(`http://localhost:${port}/api/internal/whitelist-check`);
           checkUrl.searchParams.set('ip', ip);
           const res = await fetch(checkUrl.toString(), {
             headers: { 'x-internal-secret': internalSecret },

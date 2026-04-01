@@ -21,6 +21,7 @@ import { CSS } from '@dnd-kit/utilities';
 function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert, onRotate, selected, onSelect, selecting }) {
   const { filename, url, disabled } = image;
   const isWebP = filename.toLowerCase().endsWith('.webp');
+  const isVideo = /\.(mp4|mov|webm)$/i.test(filename);
   const [menuOpen, setMenuOpen] = useState(false);
   const [busy, setBusy] = useState(null); // 'convert' | 'rotate' | null
   const menuRef = useRef(null);
@@ -163,7 +164,7 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
 
         {menuOpen && (
           <div className="absolute right-0 top-7 bg-white border border-gray-200 rounded-lg shadow-xl py-1 min-w-[160px]">
-            {!isWebP && (
+            {!isVideo && !isWebP && (
               <button
                 onClick={doConvert}
                 className="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2"
@@ -174,15 +175,17 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
                 Convert to WebP
               </button>
             )}
-            <button
-              onClick={doRotate}
-              className="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              Rotate Clockwise
-            </button>
+            {!isVideo && (
+              <button
+                onClick={doRotate}
+                className="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Rotate Clockwise
+              </button>
+            )}
             <div className="border-t border-gray-100 mt-1 pt-1">
               <button
                 onClick={() => { setMenuOpen(false); onDelete(filename); }}
@@ -200,15 +203,36 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
 
       {/* Thumbnail */}
       <div className="relative">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={url}
-          alt={filename}
-          className={`w-full aspect-square object-cover transition-all ${
-            disabled ? 'opacity-40 grayscale' : ''
-          }`}
-          loading="lazy"
-        />
+        {isVideo ? (
+          /* eslint-disable-next-line jsx-a11y/media-has-caption */
+          <video
+            src={url}
+            muted
+            preload="metadata"
+            className={`w-full aspect-square object-cover transition-all ${
+              disabled ? 'opacity-40 grayscale' : ''
+            }`}
+          />
+        ) : (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={url}
+            alt={filename}
+            className={`w-full aspect-square object-cover transition-all ${
+              disabled ? 'opacity-40 grayscale' : ''
+            }`}
+            loading="lazy"
+          />
+        )}
+        {isVideo && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="bg-black/40 rounded-full p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-white fill-white" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+        )}
         {disabled && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <span className="bg-orange-500/90 text-white text-xs font-semibold px-2 py-0.5 rounded">
@@ -389,7 +413,7 @@ export default function GalleryManager({ initialImages }) {
 
         const newImages = data.uploaded.map(name => ({
           filename: name,
-          url: `/api/images/${name.replace(/\.[^.]+$/, '')}`,
+          url: `/api/uploads/${name.replace(/\.[^.]+$/, '')}`,
           disabled: false,
         }));
         uploadedImages.push(...newImages);
@@ -412,7 +436,7 @@ export default function GalleryManager({ initialImages }) {
   function handleDrop(e) {
     e.preventDefault();
     setIsDragOver(false);
-    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/') || f.type.startsWith('video/'));
     uploadFiles(files);
   }
 
@@ -452,7 +476,7 @@ export default function GalleryManager({ initialImages }) {
       setImages(prev =>
         prev.map(img =>
           img.filename === oldName
-            ? { ...img, filename: data.newName, url: `/api/images/${data.newName.replace(/\.[^.]+$/, '')}` }
+            ? { ...img, filename: data.newName, url: `/api/uploads/${data.newName.replace(/\.[^.]+$/, '')}` }
             : img
         )
       );
@@ -503,7 +527,7 @@ export default function GalleryManager({ initialImages }) {
       setImages(prev =>
         prev.map(img =>
           img.filename === filename
-            ? { ...img, filename: data.newFilename, url: `/api/images/${data.newFilename.replace(/\.[^.]+$/, '')}` }
+            ? { ...img, filename: data.newFilename, url: `/api/uploads/${data.newFilename.replace(/\.[^.]+$/, '')}` }
             : img
         )
       );
@@ -535,7 +559,7 @@ export default function GalleryManager({ initialImages }) {
       setImages(prev =>
         prev.map(img =>
           img.filename === filename
-            ? { ...img, url: `/api/images/${filename.replace(/\.[^.]+$/, '')}?v=${Date.now()}` }
+            ? { ...img, url: `/api/uploads/${filename.replace(/\.[^.]+$/, '')}?v=${Date.now()}` }
             : img
         )
       );
@@ -546,7 +570,7 @@ export default function GalleryManager({ initialImages }) {
   }
 
   async function handleConvertAll() {
-    const nonWebp = images.filter(img => !img.filename.toLowerCase().endsWith('.webp'));
+    const nonWebp = images.filter(img => !img.filename.toLowerCase().endsWith('.webp') && !/\.(mp4|mov|webm)$/i.test(img.filename));
     if (!nonWebp.length) return;
     setConvertingAll(true);
     let done = 0;
@@ -605,7 +629,7 @@ export default function GalleryManager({ initialImages }) {
         }`}
       >
         <div className="text-4xl mb-3">📷</div>
-        <p className="text-gray-600 mb-3">{uploading ? 'Uploading…' : 'Drop images here, or'}</p>
+        <p className="text-gray-600 mb-3">{uploading ? 'Uploading…' : 'Drop images or videos here, or'}</p>
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
@@ -613,7 +637,7 @@ export default function GalleryManager({ initialImages }) {
         >
           Browse Files
         </button>
-        <p className="text-xs text-gray-400 mt-2">JPG, PNG, WebP, GIF — max 20 MB each</p>
+        <p className="text-xs text-gray-400 mt-2">JPG, PNG, WebP, GIF — max 20 MB &nbsp;|&nbsp; MP4, MOV, WebM — max 500 MB</p>
         <label className="inline-flex items-center gap-1.5 mt-3 cursor-pointer select-none">
           <input
             type="checkbox"
@@ -621,13 +645,13 @@ export default function GalleryManager({ initialImages }) {
             onChange={e => setImportAsWebp(e.target.checked)}
             className="w-4 h-4 accent-lime-600"
           />
-          <span className="text-xs text-gray-500">Convert to WebP on import</span>
+          <span className="text-xs text-gray-500">Convert to WebP / WebM on import</span>
         </label>
         <input
           ref={fileInputRef}
           type="file"
           multiple
-          accept="image/jpeg,image/png,image/webp,image/gif"
+          accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm"
           className="hidden"
           onChange={handleFileInput}
         />
@@ -651,7 +675,7 @@ export default function GalleryManager({ initialImages }) {
                 {selectedCount === images.length ? 'Deselect all' : 'Select all'}
               </button>
             </div>
-            {images.some(img => !img.filename.toLowerCase().endsWith('.webp')) && (
+            {images.some(img => !img.filename.toLowerCase().endsWith('.webp') && !/\.(mp4|mov|webm)$/i.test(img.filename)) && (
               <button
                 onClick={handleConvertAll}
                 disabled={convertingAll}
@@ -737,8 +761,13 @@ export default function GalleryManager({ initialImages }) {
                 if (!img) return null;
                 return (
                   <div className="rounded-lg shadow-2xl border-2 border-blue-400 overflow-hidden rotate-1 scale-105 cursor-grabbing">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.url} alt={img.filename} className="w-full aspect-square object-cover" />
+                    {/\.(mp4|mov|webm)$/i.test(img.filename) ? (
+                      /* eslint-disable-next-line jsx-a11y/media-has-caption */
+                      <video src={img.url} muted preload="metadata" className="w-full aspect-square object-cover" />
+                    ) : (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img src={img.url} alt={img.filename} className="w-full aspect-square object-cover" />
+                    )}
                     <div className="p-2 bg-white">
                       <span className="text-xs text-gray-600 truncate block">{img.filename}</span>
                     </div>

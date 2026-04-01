@@ -19,7 +19,7 @@ export async function GET(request, { params }) {
   let filePath = path.join(GALLERY_DIR, safeFilename);
 
   if (!fs.existsSync(filePath)) {
-    const exts = ['.webp', '.jpg', '.jpeg', '.png', '.gif', '.svg'];
+    const exts = ['.webp', '.jpg', '.jpeg', '.png', '.gif', '.svg', '.webm', '.mp4', '.mov'];
     const hasExt = path.extname(safeFilename) !== '';
     if (!hasExt) {
       for (const ext of exts) {
@@ -47,6 +47,9 @@ export async function GET(request, { params }) {
     else if (ext === '.webp') contentType = 'image/webp';
     else if (ext === '.gif') contentType = 'image/gif';
     else if (ext === '.svg') contentType = 'image/svg+xml';
+    else if (ext === '.mp4') contentType = 'video/mp4';
+    else if (ext === '.webm') contentType = 'video/webm';
+    else if (ext === '.mov') contentType = 'video/quicktime';
 
     return new Response(buffer, {
       headers: {

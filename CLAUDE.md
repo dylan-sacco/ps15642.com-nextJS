@@ -68,6 +68,15 @@ Key helpers:
 | `EMAIL_USER` / `EMAIL_PASS` | Gmail + app password for contact form |
 | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` / `RECAPTCHA_SECRET_KEY` | reCAPTCHA v3 (contact form) |
 
+## Server Dependencies
+
+- **sharp** — image processing (WebP conversion, rotation). Installed as an npm dependency; native binaries are platform-specific (`npm install` on the server pulls the Linux build).
+- **ffmpeg** — video transcoding (MP4/MOV → WebM on gallery upload). Must be installed on the server separately:
+  ```bash
+  sudo apt install ffmpeg
+  ```
+  If ffmpeg is absent, video uploads still succeed but are saved in their original format without conversion. No crash occurs.
+
 ## Auto-Deploy
 
 GitHub webhook at `/api/github-webhook` — validates HMAC signature, then runs `git reset --hard` → `npm install` → `npm run build` → `pm2 startOrRestart`. Only fires on pushes to `DEPLOY_BRANCH`. Backs up gallery before deploying.

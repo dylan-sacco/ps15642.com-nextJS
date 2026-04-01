@@ -53,7 +53,7 @@ async function getGalleryImages() {
     return [];
   }
 
-  const imageFiles = files.filter(name => /\.(jpe?g|png|webp|gif)$/i.test(name));
+  const imageFiles = files.filter(name => /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(name));
 
   // Filter out disabled images
   let disabled = new Set();
@@ -74,8 +74,13 @@ async function getGalleryImages() {
     const orderSet = new Set(order);
     const ordered = order.filter(name => visible.includes(name));
     const remaining = visible.filter(name => !orderSet.has(name)).sort();
-    return [...ordered, ...remaining].map(name => `/api/images/${path.parse(name).name}`);
+    return [...ordered, ...remaining].map(name => toItem(name));
   }
 
-  return visible.sort().map(name => `/api/images/${path.parse(name).name}`);
+  return visible.sort().map(name => toItem(name));
+}
+
+function toItem(name) {
+  const isVideo = /\.(mp4|mov|webm)$/i.test(name);
+  return { src: `/api/uploads/${path.parse(name).name}`, isVideo };
 }

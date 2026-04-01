@@ -14,7 +14,7 @@ function getAdminGalleryImages() {
   try {
     fs.mkdirSync(GALLERY_DIR, { recursive: true });
     const files = fs.readdirSync(GALLERY_DIR);
-    const imageFiles = files.filter(name => /\.(jpe?g|png|webp|gif)$/i.test(name));
+    const imageFiles = files.filter(name => /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(name));
 
     // Read order
     let order = [];
@@ -41,7 +41,7 @@ function getAdminGalleryImages() {
 
     return sorted.map(name => ({
       filename: name,
-      url: `/api/images/${name.replace(/\.[^.]+$/, '')}`,
+      url: `/api/uploads/${name.replace(/\.[^.]+$/, '')}`,
       disabled: disabled.has(name),
     }));
   } catch {

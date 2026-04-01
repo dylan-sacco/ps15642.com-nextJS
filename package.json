@@ -22,6 +22,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
     "react-scroll-parallax": "^3.4.5",
     "sharp": "*",
     "remark-gfm": "^4.0.1"
