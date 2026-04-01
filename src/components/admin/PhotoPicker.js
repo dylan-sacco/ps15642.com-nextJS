@@ -41,8 +41,10 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
     const end = ta.selectionEnd ?? ta.value.length;
     const src = `/api/uploads/${filename.replace(/\.[^.]+$/, '')}`;
 
+    const img = images.find(i => i.filename === filename);
+    const poster = img?.thumbUrl ? ` poster="${img.thumbUrl}"` : '';
     const insertion = VIDEO_EXT.test(filename)
-      ? `<video controls src="${src}" style="max-width:100%;border-radius:8px"></video>`
+      ? `<video controls src="${src}"${poster} style="max-width:100%;border-radius:8px"></video>`
       : `![AltText](${src})`;
 
     const newValue = ta.value.slice(0, start) + insertion + ta.value.slice(end);
@@ -92,13 +94,22 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
                     >
                       {isVideo ? (
                         <>
-                          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                          <video
-                            src={img.url}
-                            muted
-                            preload="metadata"
-                            className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
-                          />
+                          {img.thumbUrl ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img
+                              src={img.thumbUrl}
+                              alt={img.filename}
+                              className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
+                            />
+                          ) : (
+                            /* eslint-disable-next-line jsx-a11y/media-has-caption */
+                            <video
+                              src={img.url}
+                              muted
+                              preload="metadata"
+                              className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
+                            />
+                          )}
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                             <div className="bg-black/40 rounded-full p-1.5">
                               <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 text-white fill-white" viewBox="0 0 24 24">

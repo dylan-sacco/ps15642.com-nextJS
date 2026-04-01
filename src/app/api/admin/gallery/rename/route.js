@@ -42,8 +42,28 @@ export async function PATCH(request) {
       return NextResponse.json({ error: `File not found: ${oldName}` }, { status: 404 });
     }
 
+    // Reject if exact file exists
     if (fs.existsSync(newPath)) {
-      return NextResponse.json({ error: `File already exists: ${newName}` }, { status: 409 });
+      return NextResponse.json({ error: `A file named "${newName}" already exists.` }, { status: 409 });
+    }
+
+    // Reject if another file shares the same basename (different extension) — basenames
+    // must be unique because /api/uploads/{base} serves by name without extension.
+    const newBase = path.parse(newName).name.toLowerCase();
+    const oldBase = path.parse(oldName).name.toLowerCase();
+    if (newBase !== oldBase) {
+      const conflict = fs.readdirSync(GALLERY_DIR).find(f =>
+        f !== oldName &&
+        !f.endsWith('.thumb.webp') &&
+        /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(f) &&
+        path.parse(f).name.toLowerCase() === newBase
+      );
+      if (conflict) {
+        return NextResponse.json(
+          { error: `"${newBase}" is already used by "${conflict}". Each file must have a unique name.` },
+          { status: 409 }
+        );
+      }
     }
 
     fs.renameSync(oldPath, newPath);

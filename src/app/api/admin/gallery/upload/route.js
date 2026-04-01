@@ -24,6 +24,35 @@ function sanitizeFilename(name) {
     .toLowerCase();
 }
 
+// Returns the set of basenames already in use by gallery files (any extension).
+// Excludes .thumb.webp sidecars and internal _ files.
+function getUsedBasenames() {
+  try {
+    return new Set(
+      fs.readdirSync(GALLERY_DIR)
+        .filter(f => /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(f) && !f.endsWith('.thumb.webp'))
+        .map(f => path.parse(f).name.toLowerCase())
+    );
+  } catch {
+    return new Set();
+  }
+}
+
+// If `desiredFilename`'s basename is already taken (any extension), appends a
+// short random suffix until a free name is found.
+function resolveUniqueName(desiredFilename) {
+  const used = getUsedBasenames();
+  const ext = path.extname(desiredFilename);
+  const base = path.parse(desiredFilename).name;
+  if (!used.has(base.toLowerCase())) return desiredFilename;
+  let candidate;
+  do {
+    const suffix = Math.random().toString(36).slice(2, 7); // 5-char random a-z0-9
+    candidate = `${base}-${suffix}${ext}`;
+  } while (used.has(path.parse(candidate).name.toLowerCase()));
+  return candidate;
+}
+
 function readOrder() {
   const orderPath = path.join(GALLERY_DIR, '_order.json');
   try {
@@ -129,31 +158,31 @@ export async function POST(request) {
       if (isVideo) {
         if (convertToWebp && ext !== 'webm') {
           // Convert video to WebM via ffmpeg
-          const tmpInput = path.join(GALLERY_DIR, `_tmp_${Date.now()}_input.${ext}`);
-          finalName = sanitizeFilename(baseName + '.webm');
+          finalName = resolveUniqueName(sanitizeFilename(baseName + '.webm'));
           const destPath = path.join(GALLERY_DIR, finalName);
+          const tmpInput = path.join(GALLERY_DIR, `_tmp_${Date.now()}_input.${ext}`);
 
           fs.writeFileSync(tmpInput, buffer);
           const ok = convertVideoToWebm(tmpInput, destPath);
           fs.unlinkSync(tmpInput);
 
           if (!ok) {
-            // ffmpeg not available or failed — save original
-            finalName = sanitizeFilename(file.name);
+            // ffmpeg not available or failed — save original format
+            finalName = resolveUniqueName(sanitizeFilename(file.name));
             fs.writeFileSync(path.join(GALLERY_DIR, finalName), buffer);
           }
         } else {
-          finalName = sanitizeFilename(file.name);
+          finalName = resolveUniqueName(sanitizeFilename(file.name));
           fs.writeFileSync(path.join(GALLERY_DIR, finalName), buffer);
         }
       } else {
         // Image
         let finalBuffer;
         if (convertToWebp && ext !== 'webp') {
-          finalName = sanitizeFilename(baseName + '.webp');
+          finalName = resolveUniqueName(sanitizeFilename(baseName + '.webp'));
           finalBuffer = await sharp(buffer).webp({ quality: 85 }).toBuffer();
         } else {
-          finalName = sanitizeFilename(file.name);
+          finalName = resolveUniqueName(sanitizeFilename(file.name));
           finalBuffer = buffer;
         }
         fs.writeFileSync(path.join(GALLERY_DIR, finalName), finalBuffer);
