@@ -15,17 +15,17 @@
     "@dnd-kit/utilities": "^3.2.2",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.525.0",
-    "next": "^15.3.8",
+    "next": "^16.2.2",
     "next-sitemap": "^4.2.3",
     "nodemailer": "^8.0.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
-    "rehype-raw": "^7.0.0",
     "react-scroll-parallax": "^3.4.5",
-    "sharp": "*",
-    "remark-gfm": "^4.0.1"
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.1",
+    "sharp": "*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

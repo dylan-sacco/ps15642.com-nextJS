@@ -304,6 +304,7 @@ export default function GalleryManager({ initialImages }) {
   const [selected, setSelected] = useState(new Set());
   const [isDragOver, setIsDragOver] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState({ current: 0, fileIndex: 0, fileCount: 0, fileName: '' });
   const [importAsWebp, setImportAsWebp] = useState(true);
   const [convertingAll, setConvertingAll] = useState(false);
   const [bulkDeleting, setBulkDeleting] = useState(false);
@@ -388,6 +389,43 @@ export default function GalleryManager({ initialImages }) {
     }
   }
 
+  function uploadFileXhr(file, fileIndex, fileCount) {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      formData.append('files', file);
+      if (importAsWebp) formData.append('convertToWebp', '1');
+
+      setUploadProgress({ current: 0, fileIndex, fileCount, fileName: file.name });
+
+      const xhr = new XMLHttpRequest();
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          setUploadProgress({ current: Math.round((e.loaded / e.total) * 100), fileIndex, fileCount, fileName: file.name });
+        }
+      };
+
+      xhr.onload = () => {
+        try {
+          const data = JSON.parse(xhr.responseText);
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve(data);
+          } else {
+            reject(new Error(data.error || 'Upload failed'));
+          }
+        } catch {
+          reject(new Error('Invalid server response'));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Network error'));
+      xhr.ontimeout = () => reject(new Error('Upload timed out'));
+
+      xhr.open('POST', '/api/admin/gallery/upload');
+      xhr.send(formData);
+    });
+  }
+
   async function uploadFiles(files) {
     if (!files.length) return;
     setUploading(true);
@@ -397,20 +435,8 @@ export default function GalleryManager({ initialImages }) {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      showStatus(`Uploading ${i + 1} of ${files.length}...`);
-
-      const formData = new FormData();
-      formData.append('files', file);
-      if (importAsWebp) formData.append('convertToWebp', '1');
-
       try {
-        const res = await fetch('/api/admin/gallery/upload', {
-          method: 'POST',
-          body: formData,
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Upload failed');
-
+        const data = await uploadFileXhr(file, i + 1, files.length);
         const newImages = data.uploaded.map(name => ({
           filename: name,
           url: `/api/uploads/${name.replace(/\.[^.]+$/, '')}`,
@@ -425,12 +451,12 @@ export default function GalleryManager({ initialImages }) {
     }
 
     setImages(prev => [...uploadedImages, ...prev]);
-
-    if (failCount === 0) showStatus(`Successfully uploaded ${successCount} image(s)`);
-    else if (successCount === 0) showStatus(`Failed to upload ${failCount} image(s)`, true);
-    else showStatus(`Uploaded ${successCount}, failed ${failCount}`, true);
-
     setUploading(false);
+    setUploadProgress({ current: 0, fileIndex: 0, fileCount: 0, fileName: '' });
+
+    if (failCount === 0) showStatus(`Successfully uploaded ${successCount} file(s)`);
+    else if (successCount === 0) showStatus(`Failed to upload ${failCount} file(s)`, true);
+    else showStatus(`Uploaded ${successCount}, failed ${failCount}`, true);
   }
 
   function handleDrop(e) {
@@ -628,25 +654,46 @@ export default function GalleryManager({ initialImages }) {
           isDragOver ? 'border-lime-500 bg-lime-50' : 'border-gray-300 bg-white hover:border-gray-400'
         }`}
       >
-        <div className="text-4xl mb-3">📷</div>
-        <p className="text-gray-600 mb-3">{uploading ? 'Uploading…' : 'Drop images or videos here, or'}</p>
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          disabled={uploading}
-          className="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded font-medium text-sm disabled:opacity-50 transition-colors"
-        >
-          Browse Files
-        </button>
-        <p className="text-xs text-gray-400 mt-2">JPG, PNG, WebP, GIF — max 20 MB &nbsp;|&nbsp; MP4, MOV, WebM — max 500 MB</p>
-        <label className="inline-flex items-center gap-1.5 mt-3 cursor-pointer select-none">
-          <input
-            type="checkbox"
-            checked={importAsWebp}
-            onChange={e => setImportAsWebp(e.target.checked)}
-            className="w-4 h-4 accent-lime-600"
-          />
-          <span className="text-xs text-gray-500">Convert to WebP / WebM on import</span>
-        </label>
+        {uploading ? (
+          <div className="w-full max-w-sm mx-auto space-y-2">
+            <div className="flex items-center justify-between text-sm text-gray-600">
+              <span className="truncate max-w-[200px]" title={uploadProgress.fileName}>
+                {uploadProgress.fileName}
+              </span>
+              <span className="shrink-0 ml-2 text-gray-400 text-xs">
+                {uploadProgress.fileCount > 1 ? `File ${uploadProgress.fileIndex} of ${uploadProgress.fileCount}` : ''}
+              </span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+              <div
+                className="bg-lime-500 h-3 rounded-full transition-all duration-150"
+                style={{ width: `${uploadProgress.current}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-400 text-center">{uploadProgress.current}%</p>
+          </div>
+        ) : (
+          <>
+            <div className="text-4xl mb-3">📷</div>
+            <p className="text-gray-600 mb-3">Drop images or videos here, or</p>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded font-medium text-sm transition-colors"
+            >
+              Browse Files
+            </button>
+            <p className="text-xs text-gray-400 mt-2">JPG, PNG, WebP, GIF — max 20 MB &nbsp;|&nbsp; MP4, MOV, WebM — max 500 MB</p>
+            <label className="inline-flex items-center gap-1.5 mt-3 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={importAsWebp}
+                onChange={e => setImportAsWebp(e.target.checked)}
+                className="w-4 h-4 accent-lime-600"
+              />
+              <span className="text-xs text-gray-500">Convert to WebP / WebM on import</span>
+            </label>
+          </>
+        )}
         <input
           ref={fileInputRef}
           type="file"
