@@ -52,6 +52,30 @@ function convertVideoToWebm(inputPath, outputPath) {
   return result.status === 0;
 }
 
+async function generateVideoThumbnail(videoPath, thumbPath) {
+  const tmpPng = path.join(GALLERY_DIR, `_thumb_tmp_${Date.now()}.png`);
+  try {
+    // Extract first frame as PNG
+    const result = spawnSync('ffmpeg', [
+      '-y', '-i', videoPath,
+      '-vframes', '1',
+      tmpPng,
+    ], { timeout: 30_000 });
+
+    if (result.status !== 0) return;
+
+    // Resize and convert to WebP with sharp
+    await sharp(tmpPng)
+      .resize(800, null, { withoutEnlargement: true })
+      .webp({ quality: 75 })
+      .toFile(thumbPath);
+  } catch {
+    // ffmpeg unavailable or frame extraction failed — skip thumbnail silently
+  } finally {
+    try { fs.unlinkSync(tmpPng); } catch { /* ignore */ }
+  }
+}
+
 export async function POST(request) {
   const { error } = await requireApiPermission('gallery.upload');
   if (error) return error;
@@ -135,6 +159,13 @@ export async function POST(request) {
         fs.writeFileSync(path.join(GALLERY_DIR, finalName), finalBuffer);
       }
 
+      // Generate thumbnail for videos
+      if (isVideo) {
+        const base = path.parse(finalName).name;
+        const thumbPath = path.join(GALLERY_DIR, `${base}.thumb.webp`);
+        await generateVideoThumbnail(path.join(GALLERY_DIR, finalName), thumbPath);
+      }
+
       uploaded.push(finalName);
     }
 
@@ -144,7 +175,18 @@ export async function POST(request) {
     const newEntries = uploaded.filter(name => !existing.has(name));
     writeOrder([...newEntries, ...order]);
 
-    return NextResponse.json({ uploaded }, { status: 201 });
+    const thumbUrls = {};
+    for (const name of uploaded) {
+      if (/\.(mp4|mov|webm)$/i.test(name)) {
+        const base = path.parse(name).name;
+        const thumbFile = `${base}.thumb.webp`;
+        if (fs.existsSync(path.join(GALLERY_DIR, thumbFile))) {
+          thumbUrls[name] = `/api/uploads/${thumbFile}`;
+        }
+      }
+    }
+
+    return NextResponse.json({ uploaded, thumbUrls }, { status: 201 });
   } catch (err) {
     console.error('Gallery upload error:', err);
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 });

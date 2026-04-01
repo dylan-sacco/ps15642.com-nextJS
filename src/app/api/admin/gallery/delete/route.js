@@ -41,6 +41,12 @@ export async function DELETE(request) {
 
     fs.unlinkSync(filePath);
 
+    // Also delete the video thumbnail if it exists
+    if (/\.(mp4|mov|webm)$/i.test(filename)) {
+      const thumbPath = path.join(GALLERY_DIR, `${path.parse(filename).name}.thumb.webp`);
+      try { if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath); } catch { /* best-effort */ }
+    }
+
     // Remove from order
     const order = readOrder().filter(name => name !== filename);
     writeOrder(order);

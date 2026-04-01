@@ -4,6 +4,11 @@ import { useState } from 'react';
 
 export default function Gallery({ images }) {
   const [selected, setSelected] = useState(null);
+  const [loadedVideos, setLoadedVideos] = useState(new Set());
+
+  function markLoaded(src) {
+    setLoadedVideos(prev => new Set([...prev, src]));
+  }
 
   return (
     <>
@@ -17,13 +22,32 @@ export default function Gallery({ images }) {
             <div className="aspect-square relative">
               {item.isVideo ? (
                 <>
-                  {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-                  <video
-                    src={item.src}
-                    muted
-                    preload="metadata"
-                    className="absolute inset-0 w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-300"
-                  />
+                  {item.poster ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={item.poster}
+                      alt={`Video thumbnail ${i + 1}`}
+                      className="absolute inset-0 w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-300"
+                      loading={i < 6 ? 'eager' : 'lazy'}
+                    />
+                  ) : (
+                    /* No thumbnail — load video metadata so browser can show first frame */
+                    <>
+                      {!loadedVideos.has(item.src) && (
+                        <div className="absolute inset-0 bg-gray-800 rounded-lg flex items-center justify-center z-10 pointer-events-none">
+                          <div className="w-8 h-8 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+                        </div>
+                      )}
+                      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                      <video
+                        src={item.src}
+                        muted
+                        preload="metadata"
+                        className="absolute inset-0 w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-300"
+                        onLoadedData={() => markLoaded(item.src)}
+                      />
+                    </>
+                  )}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div className="bg-black/50 rounded-full p-3">
                       <Play className="w-8 h-8 text-white fill-white" />
@@ -55,6 +79,7 @@ export default function Gallery({ images }) {
               /* eslint-disable-next-line jsx-a11y/media-has-caption */
               <video
                 src={selected.src}
+                poster={selected.poster}
                 controls
                 autoPlay
                 className="w-full h-full object-contain"

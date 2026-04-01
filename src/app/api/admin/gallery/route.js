@@ -11,7 +11,10 @@ export async function GET() {
   try {
     fs.mkdirSync(GALLERY_DIR, { recursive: true });
     const files = fs.readdirSync(GALLERY_DIR);
-    const imageFiles = files.filter(name => /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(name));
+    const imageFiles = files.filter(name =>
+      /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(name) &&
+      !name.endsWith('.thumb.webp')
+    );
 
     let order = [];
     try {
@@ -35,7 +38,15 @@ export async function GET() {
 
     const images = sorted
       .filter(name => !disabled.has(name))
-      .map(name => ({ filename: name, url: `/api/uploads/${name.replace(/\.[^.]+$/, '')}` }));
+      .map(name => {
+        const isVideo = /\.(mp4|mov|webm)$/i.test(name);
+        const base = path.parse(name).name;
+        const thumbFile = `${base}.thumb.webp`;
+        const thumbUrl = isVideo && fs.existsSync(path.join(GALLERY_DIR, thumbFile))
+          ? `/api/uploads/${thumbFile}`
+          : null;
+        return { filename: name, url: `/api/uploads/${base}`, thumbUrl };
+      });
 
     return NextResponse.json({ images });
   } catch (err) {

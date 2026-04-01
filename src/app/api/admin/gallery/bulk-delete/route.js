@@ -34,6 +34,11 @@ export async function DELETE(request) {
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
         deleted.push(name);
+        // Also delete video thumbnail if it exists
+        if (/\.(mp4|mov|webm)$/i.test(name)) {
+          const thumbPath = path.join(GALLERY_DIR, `${path.parse(name).name}.thumb.webp`);
+          try { if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath); } catch { /* best-effort */ }
+        }
       }
     }
 

@@ -19,11 +19,12 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 
 function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert, onRotate, selected, onSelect, selecting }) {
-  const { filename, url, disabled } = image;
+  const { filename, url, disabled, thumbUrl } = image;
   const isWebP = filename.toLowerCase().endsWith('.webp');
   const isVideo = /\.(mp4|mov|webm)$/i.test(filename);
   const [menuOpen, setMenuOpen] = useState(false);
   const [busy, setBusy] = useState(null); // 'convert' | 'rotate' | null
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const menuRef = useRef(null);
 
   const {
@@ -204,15 +205,35 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
       {/* Thumbnail */}
       <div className="relative">
         {isVideo ? (
-          /* eslint-disable-next-line jsx-a11y/media-has-caption */
-          <video
-            src={url}
-            muted
-            preload="metadata"
-            className={`w-full aspect-square object-cover transition-all ${
-              disabled ? 'opacity-40 grayscale' : ''
-            }`}
-          />
+          thumbUrl ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={thumbUrl}
+              alt={filename}
+              className={`w-full aspect-square object-cover transition-all ${
+                disabled ? 'opacity-40 grayscale' : ''
+              }`}
+              loading="lazy"
+            />
+          ) : (
+            <>
+              {!videoLoaded && (
+                <div className="absolute inset-0 bg-gray-800 flex items-center justify-center z-10 pointer-events-none">
+                  <div className="w-6 h-6 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+                </div>
+              )}
+              {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+              <video
+                src={url}
+                muted
+                preload="metadata"
+                className={`w-full aspect-square object-cover transition-all ${
+                  disabled ? 'opacity-40 grayscale' : ''
+                }`}
+                onLoadedData={() => setVideoLoaded(true)}
+              />
+            </>
+          )
         ) : (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
@@ -307,6 +328,7 @@ export default function GalleryManager({ initialImages }) {
   const [uploadProgress, setUploadProgress] = useState({ current: 0, fileIndex: 0, fileCount: 0, fileName: '' });
   const [importAsWebp, setImportAsWebp] = useState(true);
   const [convertingAll, setConvertingAll] = useState(false);
+  const [generatingThumbs, setGeneratingThumbs] = useState(false);
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const [activeId, setActiveId] = useState(null);
   const [status, setStatus] = useState('');
@@ -440,6 +462,7 @@ export default function GalleryManager({ initialImages }) {
         const newImages = data.uploaded.map(name => ({
           filename: name,
           url: `/api/uploads/${name.replace(/\.[^.]+$/, '')}`,
+          thumbUrl: data.thumbUrls?.[name] ?? null,
           disabled: false,
         }));
         uploadedImages.push(...newImages);
@@ -500,11 +523,17 @@ export default function GalleryManager({ initialImages }) {
       if (!res.ok) throw new Error(data.error || 'Rename failed');
 
       setImages(prev =>
-        prev.map(img =>
-          img.filename === oldName
-            ? { ...img, filename: data.newName, url: `/api/uploads/${data.newName.replace(/\.[^.]+$/, '')}` }
-            : img
-        )
+        prev.map(img => {
+          if (img.filename !== oldName) return img;
+          const newBase = data.newName.replace(/\.[^.]+$/, '');
+          const newIsVideo = /\.(mp4|mov|webm)$/i.test(data.newName);
+          return {
+            ...img,
+            filename: data.newName,
+            url: `/api/uploads/${newBase}`,
+            thumbUrl: newIsVideo && img.thumbUrl ? `/api/uploads/${newBase}.thumb.webp` : null,
+          };
+        })
       );
       setSelected(prev => {
         if (!prev.has(oldName)) return prev;
@@ -606,6 +635,26 @@ export default function GalleryManager({ initialImages }) {
     }
     setConvertingAll(false);
     showStatus(`Converted ${nonWebp.length} image(s) to WebP`);
+  }
+
+  async function handleGenerateThumbnails() {
+    setGeneratingThumbs(true);
+    try {
+      const res = await fetch('/api/admin/gallery/generate-thumbnails', { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to generate thumbnails');
+
+      // Refresh gallery list to pick up newly generated thumbUrls
+      const listRes = await fetch('/api/admin/gallery');
+      const listData = await listRes.json();
+      if (listRes.ok) setImages(listData.images);
+
+      showStatus(`Generated ${data.generated} thumbnail(s), ${data.skipped} already existed`);
+    } catch (err) {
+      showStatus(err.message, true);
+    } finally {
+      setGeneratingThumbs(false);
+    }
   }
 
   async function handleToggleDisabled(filename, disabled) {
@@ -722,15 +771,26 @@ export default function GalleryManager({ initialImages }) {
                 {selectedCount === images.length ? 'Deselect all' : 'Select all'}
               </button>
             </div>
-            {images.some(img => !img.filename.toLowerCase().endsWith('.webp') && !/\.(mp4|mov|webm)$/i.test(img.filename)) && (
-              <button
-                onClick={handleConvertAll}
-                disabled={convertingAll}
-                className="text-sm bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 px-3 py-1.5 rounded font-medium disabled:opacity-50 transition-colors"
-              >
-                {convertingAll ? 'Converting…' : 'Convert All to WebP'}
-              </button>
-            )}
+            <div className="flex items-center gap-2 flex-wrap">
+              {images.some(img => /\.(mp4|mov|webm)$/i.test(img.filename) && !img.thumbUrl) && (
+                <button
+                  onClick={handleGenerateThumbnails}
+                  disabled={generatingThumbs}
+                  className="text-sm bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 px-3 py-1.5 rounded font-medium disabled:opacity-50 transition-colors"
+                >
+                  {generatingThumbs ? 'Generating…' : 'Generate Missing Thumbnails'}
+                </button>
+              )}
+              {images.some(img => !img.filename.toLowerCase().endsWith('.webp') && !/\.(mp4|mov|webm)$/i.test(img.filename)) && (
+                <button
+                  onClick={handleConvertAll}
+                  disabled={convertingAll}
+                  className="text-sm bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 px-3 py-1.5 rounded font-medium disabled:opacity-50 transition-colors"
+                >
+                  {convertingAll ? 'Converting…' : 'Convert All to WebP'}
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Bulk action bar */}
@@ -809,8 +869,13 @@ export default function GalleryManager({ initialImages }) {
                 return (
                   <div className="rounded-lg shadow-2xl border-2 border-blue-400 overflow-hidden rotate-1 scale-105 cursor-grabbing">
                     {/\.(mp4|mov|webm)$/i.test(img.filename) ? (
-                      /* eslint-disable-next-line jsx-a11y/media-has-caption */
-                      <video src={img.url} muted preload="metadata" className="w-full aspect-square object-cover" />
+                      img.thumbUrl ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img src={img.thumbUrl} alt={img.filename} className="w-full aspect-square object-cover" />
+                      ) : (
+                        /* eslint-disable-next-line jsx-a11y/media-has-caption */
+                        <video src={img.url} muted preload="metadata" className="w-full aspect-square object-cover" />
+                      )
                     ) : (
                       /* eslint-disable-next-line @next/next/no-img-element */
                       <img src={img.url} alt={img.filename} className="w-full aspect-square object-cover" />

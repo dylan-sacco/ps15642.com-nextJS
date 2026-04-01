@@ -53,7 +53,10 @@ async function getGalleryImages() {
     return [];
   }
 
-  const imageFiles = files.filter(name => /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(name));
+  const imageFiles = files.filter(name =>
+    /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(name) &&
+    !name.endsWith('.thumb.webp')
+  );
 
   // Filter out disabled images
   let disabled = new Set();
@@ -82,5 +85,13 @@ async function getGalleryImages() {
 
 function toItem(name) {
   const isVideo = /\.(mp4|mov|webm)$/i.test(name);
-  return { src: `/api/uploads/${path.parse(name).name}`, isVideo };
+  const base = path.parse(name).name;
+  let poster;
+  if (isVideo) {
+    const thumbPath = path.join(GALLERY_DIR, `${base}.thumb.webp`);
+    if (fs.existsSync(thumbPath)) {
+      poster = `/api/uploads/${base}.thumb.webp`;
+    }
+  }
+  return { src: `/api/uploads/${base}`, isVideo, poster };
 }

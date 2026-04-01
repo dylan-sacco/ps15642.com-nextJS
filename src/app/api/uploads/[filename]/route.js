@@ -51,10 +51,15 @@ export async function GET(request, { params }) {
     else if (ext === '.webm') contentType = 'video/webm';
     else if (ext === '.mov') contentType = 'video/quicktime';
 
+    const isVideo = ['.mp4', '.webm', '.mov'].includes(ext);
+    const cacheControl = isVideo
+      ? 'public, max-age=604800'   // 7 days — videos don't change in-place
+      : 'public, max-age=3600';    // 1 hour — images can be rotated/replaced
+
     return new Response(buffer, {
       headers: {
         'Content-Type': contentType,
-        'Cache-Control': 'no-store',
+        'Cache-Control': cacheControl,
       },
     });
   } catch (error) {

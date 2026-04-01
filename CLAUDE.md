@@ -22,7 +22,7 @@ All content is file-based:
 
 - `content/articles/*.md` — blog articles with gray-matter YAML frontmatter (`title`, `date`, `excerpt`, `tags`, `published`, `image`)
 - `content/pages/*.md` — static service pages (contracting, hardscape, landscape, etc.) served by `/(pages)/[slug]`
-- `content/photos/` — gallery images + `_order.json` (display order) + `_disabled.json` (hidden images)
+- `content/uploads/` — gallery images + `_order.json` (display order) + `_disabled.json` (hidden images)
 - `data/users.json` — user accounts with PBKDF2-hashed passwords
 
 `src/lib/paths.js` exports directory constants (`GALLERY_DIR`, `ARTICLES_DIR`, etc.).
@@ -52,7 +52,7 @@ Key helpers:
 - Standard REST: GET list/read, POST create, PUT update, DELETE remove
 - All admin API routes live under `src/app/api/admin/` and call `requireApiPermission()` first
 - Article slugs: `^[a-z0-9]+(?:-[a-z0-9]+)*$` — enforced at creation
-- Gallery images are served via `/api/images/[filename]` (not `/public`) from `content/photos/`
+- Gallery images are served via `/api/uploads/[filename]` (not `/public`) from `content/uploads/`
 
 ## Key Environment Variables
 
@@ -65,6 +65,11 @@ Key helpers:
 | `WEBHOOK_SECRET` | GitHub webhook HMAC secret |
 | `DEPLOY_BRANCH` | Branch that triggers auto-deploy (default: `main`) |
 | `DEPLOY_DIR` | Absolute path to repo on server |
+| `NVM_DIR` | Path to nvm install dir (for deploy shell — nvm not in PATH by default) |
+| `BACKUP_DIR` | Where auto-deploy gallery zips are stored (default: `~/gallery-backups`) |
+| `BACKUP_KEEP_WEEKS` | Weeks of auto-deploy backups to retain (default: 12) |
+| `ADMIN_BACKUP_DIR` | Where admin-panel backups are stored (default: `data/backups`) |
+| `ADMIN_BACKUP_SIZE_LIMIT_MB` | Quota for admin backups in MB (default: 500) |
 | `EMAIL_USER` / `EMAIL_PASS` | Gmail + app password for contact form |
 | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` / `RECAPTCHA_SECRET_KEY` | reCAPTCHA v3 (contact form) |
 
