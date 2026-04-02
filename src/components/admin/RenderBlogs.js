@@ -19,7 +19,7 @@ export default function RenderBlogs({ articles, user }) {
             onClick={() => setSortByDraft(!sortByDraft)}
             className="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded font-medium text-sm transition-colors"
           >
-            {sortByDraft? "View All": "View Drafts"}
+            {sortByDraft ? "View All" : "View Drafts"}
           </button>
 
           {canCreate && (
@@ -30,7 +30,7 @@ export default function RenderBlogs({ articles, user }) {
               + New Post
             </Link>
           )}
-          </div>
+        </div>
       </div>
 
       {articles.length === 0 ? (
