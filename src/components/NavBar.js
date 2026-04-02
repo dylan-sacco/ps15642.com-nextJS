@@ -109,7 +109,7 @@ export default function NavBar({ stickyDisabled = false }) {
         </ul>
 
         {/* Mobile Menu Button */}
-        <button onClick={toggleMenu} className="md:hidden text-black px-4 py-3 outline">
+        <button onClick={toggleMenu} className="md:hidden text-black px-4 py-3">
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
