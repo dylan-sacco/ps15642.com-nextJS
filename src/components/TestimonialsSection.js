@@ -17,7 +17,7 @@ function StarRating({ rating }) {
 
 function TestimonialCard({ testimonial: t, className = '' }) {
   return (
-    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-6 flex flex-col gap-3 ${className}`}>
+    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-6 flex flex-col gap-3 min-w-40  ${className}`}>
       <StarRating rating={t.rating} />
       <p className="text-gray-700 text-sm leading-relaxed flex-1">"{t.text}"</p>
       <div className="flex items-center justify-between mt-2">
