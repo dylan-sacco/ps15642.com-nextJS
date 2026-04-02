@@ -146,7 +146,7 @@ vite.config.ts.timestamp-*
 .DS_Store
 
 # Runtime data (users, whitelist) — never commit
-/data/
+data/
 
 # Not allowed to commit Photos to Github
-/content/
+content/
