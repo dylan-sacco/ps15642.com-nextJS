@@ -826,6 +826,10 @@ export default function GalleryManager({ initialImages }) {
     if (sortBy === 'name-asc') result.sort((a, b) => a.filename.localeCompare(b.filename));
     else if (sortBy === 'name-desc') result.sort((a, b) => b.filename.localeCompare(a.filename));
     else if (sortBy === 'alt') result.sort((a, b) => (a.alt || '').localeCompare(b.alt || ''));
+    else if (sortBy === 'disabled') result.sort((a,b) => {
+      if (a.disabled === b.disabled) return 1;
+        return a.disabled ? -1 : 1;
+    })
     return result;
   })();
   const isFiltered = !!search || sortBy !== 'order';
@@ -928,7 +932,8 @@ export default function GalleryManager({ initialImages }) {
               <option value="name-asc">Name A–Z</option>
               <option value="name-desc">Name Z–A</option>
               <option value="alt">Alt Text A–Z</option>
-            </select>
+              <option value="disabled">Hidden</option>
+              </select>
             {isFiltered && (
               <button onClick={() => { setSearch(''); setSortBy('order'); }} className="text-xs text-gray-400 hover:text-gray-600">
                 ✕ Reset

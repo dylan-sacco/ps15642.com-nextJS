@@ -50,7 +50,7 @@ function getAdminGalleryImages() {
       const thumbUrl = isVideo && fs.existsSync(path.join(GALLERY_DIR, thumbFile))
         ? `/api/uploads/${thumbFile}?v=${mtime}`
         : null;
-      return { filename: name, url: `/api/uploads/${base}?v=${mtime}`, disabled: disabled.has(name), thumbUrl };
+      return { filename: name, url: `/api/uploads/${base}?v=${mtime}`, disabled: disabled.has(name) || false, thumbUrl };
     });
   } catch {
     return [];
