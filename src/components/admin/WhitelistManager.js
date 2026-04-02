@@ -86,7 +86,7 @@ export default function WhitelistManager({ initialEntries }) {
       )}
 
       {/* Whitelist table */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-lg border border-gray-200 overflow-scroll">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
@@ -133,7 +133,7 @@ export default function WhitelistManager({ initialEntries }) {
       <div className="bg-white rounded-lg border border-gray-200 p-4">
         <h2 className="text-sm font-semibold text-gray-700 mb-3">Add IP or Range to Whitelist</h2>
         <form onSubmit={handleAdd} className="space-y-3">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col-reverse md:grid md:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs text-gray-500 mb-1">
                 IP Address or CIDR Range
