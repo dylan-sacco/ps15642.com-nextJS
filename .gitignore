@@ -149,4 +149,4 @@ vite.config.ts.timestamp-*
 data/
 
 # Not allowed to commit Photos to Github
-content/
+content/uploads

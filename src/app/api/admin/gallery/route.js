@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { GALLERY_DIR } from '@/lib/paths';
+import { GALLERY_DIR, GALLERY_ALT_FILE } from '@/lib/paths';
 import { requireApiPermission } from '@/lib/adminAuth';
 
 export async function GET() {
@@ -10,6 +10,9 @@ export async function GET() {
 
   try {
     fs.mkdirSync(GALLERY_DIR, { recursive: true });
+    let altMap = {};
+    try { altMap = JSON.parse(fs.readFileSync(GALLERY_ALT_FILE, 'utf8')); } catch { /* no alt file */ }
+
     const files = fs.readdirSync(GALLERY_DIR);
     const imageFiles = files.filter(name =>
       /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(name) &&
@@ -46,7 +49,7 @@ export async function GET() {
         const thumbUrl = isVideo && fs.existsSync(path.join(GALLERY_DIR, thumbFile))
           ? `/api/uploads/${thumbFile}?v=${mtime}`
           : null;
-        return { filename: name, url: `/api/uploads/${base}?v=${mtime}`, thumbUrl };
+        return { filename: name, url: `/api/uploads/${base}?v=${mtime}`, thumbUrl, alt: altMap[name] || '' };
       });
 
     return NextResponse.json({ images });

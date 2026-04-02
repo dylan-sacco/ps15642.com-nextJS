@@ -1,9 +1,11 @@
 import Gallery from '@/components/Gallery';
 import H1Drop from '@/components/H1Drop';
 import ParallaxCard from '@/components/ParallaxCard';
+import BeforeAfterSlider from '@/components/BeforeAfterSlider';
+import Link from 'next/link';
 import fs from 'fs';
 import path from 'path';
-import { GALLERY_DIR } from '@/lib/paths';
+import { GALLERY_DIR, BEFORE_AFTER_FILE } from '@/lib/paths';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,8 +32,12 @@ export const metadata = {
   },
 };
 
-export default async function GalleryPage() {
-  const images = await getGalleryImages();
+export default async function GalleryPage({ searchParams }) {
+  const { tab } = await searchParams;
+  const activeTab = tab === 'before-after' ? 'before-after' : 'gallery';
+
+  const images = activeTab === 'gallery' ? await getGalleryImages() : [];
+  const pairs = activeTab === 'before-after' ? getPairs() : [];
 
   return (
     <div>
@@ -40,9 +46,60 @@ export default async function GalleryPage() {
           Our Gallery
         </H1Drop>
       </ParallaxCard>
-      <Gallery images={images} />
+
+      {/* Tab bar */}
+      <div className="border-b border-gray-200 bg-white sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 flex gap-1 pt-3">
+          <Link
+            href="/gallery"
+            className={`px-5 py-2.5 text-sm font-medium rounded-t border-b-2 transition-colors ${
+              activeTab === 'gallery'
+                ? 'border-lime-600 text-lime-700 bg-lime-50'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Gallery
+          </Link>
+          <Link
+            href="/gallery?tab=before-after"
+            className={`px-5 py-2.5 text-sm font-medium rounded-t border-b-2 transition-colors ${
+              activeTab === 'before-after'
+                ? 'border-lime-600 text-lime-700 bg-lime-50'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Before &amp; After
+          </Link>
+        </div>
+      </div>
+
+      {activeTab === 'gallery' && <Gallery images={images} />}
+
+      {activeTab === 'before-after' && (
+        <div className="max-w-7xl mx-auto px-4 py-10">
+          {pairs.length === 0 ? (
+            <p className="text-center text-gray-400 py-20">No before/after pairs yet.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {pairs.map(p => (
+                <BeforeAfterSlider
+                  key={p.id}
+                  beforeSrc={p.beforeImage}
+                  afterSrc={p.afterImage}
+                  title={p.title}
+                  description={p.description}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
+}
+
+function getPairs() {
+  try { return JSON.parse(fs.readFileSync(BEFORE_AFTER_FILE, 'utf8')); } catch { return []; }
 }
 
 async function getGalleryImages() {

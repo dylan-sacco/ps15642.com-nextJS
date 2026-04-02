@@ -9,3 +9,5 @@ export const GALLERY_ALT_FILE = path.join(process.cwd(), 'content/uploads/_alt.j
 export const QUOTE_REQUESTS_FILE = path.join(process.cwd(), 'data/quote-requests.json');
 export const BEFORE_AFTER_FILE = path.join(process.cwd(), 'data/before-after.json');
 export const LOCATIONS_DIR = path.join(process.cwd(), 'content/pages/locations');
+export const BANNERS_FILE = path.join(process.cwd(), 'data/banners.json');
+export const BANNER_SETTINGS_FILE = path.join(process.cwd(), 'data/banner-settings.json');

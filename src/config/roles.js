@@ -53,6 +53,10 @@ export const PERMISSIONS = {
   BEFORE_AFTER_VIEW:   'beforeafter.view',   // See before/after gallery in admin
   BEFORE_AFTER_MANAGE: 'beforeafter.manage', // Add, edit, delete before/after pairs
 
+  // ── Banners ───────────────────────────────────────────────────────────────────
+  BANNERS_VIEW:   'banners.view',   // See the banner manager page
+  BANNERS_MANAGE: 'banners.manage', // Create, edit, delete banners
+
 };
 
 // Role definitions.
@@ -124,6 +128,12 @@ export const ROLES = {
       'contact.delete',
       'testimonials.view',
       'testimonials.manage',
+      'quotes.view',
+      'quotes.delete',
+      'beforeafter.view',
+      'beforeafter.manage',
+      'banners.view',
+      'banners.manage',
     ],
   },
 

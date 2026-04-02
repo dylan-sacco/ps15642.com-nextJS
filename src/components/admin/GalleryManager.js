@@ -18,8 +18,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert, onConvertVideo, onRotate, selected, onSelect, selecting }) {
-  const { filename, url, disabled, thumbUrl } = image;
+function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert, onConvertVideo, onRotate, onAltUpdate, selected, onSelect, selecting }) {
+  const { filename, url, disabled, thumbUrl, alt } = image;
   const isWebP = filename.toLowerCase().endsWith('.webp');
   const isVideo = /\.(mp4|mov|webm)$/i.test(filename);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -27,6 +27,9 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
   const [busy, setBusy] = useState(null); // 'convert' | 'rotate' | null
   const [videoLoaded, setVideoLoaded] = useState(false);
   const menuRef = useRef(null);
+  const [editingAlt, setEditingAlt] = useState(false);
+  const [altValue, setAltValue] = useState(alt || '');
+  const altInputRef = useRef(null);
 
   const {
     attributes,
@@ -319,8 +322,34 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
         )}
       </div>
 
+      {/* Alt text row */}
+      <div className="px-2 pb-1 bg-white" onClick={e => e.stopPropagation()}>
+        {editingAlt ? (
+          <input
+            ref={altInputRef}
+            value={altValue}
+            onChange={e => setAltValue(e.target.value)}
+            onBlur={async () => { setEditingAlt(false); await onAltUpdate(filename, altValue); }}
+            onKeyDown={e => {
+              if (e.key === 'Enter') altInputRef.current?.blur();
+              if (e.key === 'Escape') { setEditingAlt(false); setAltValue(alt || ''); }
+            }}
+            className="w-full text-xs border border-lime-400 rounded px-1 py-0.5 outline-none"
+            placeholder="Alt text…"
+          />
+        ) : (
+          <button
+            onClick={() => { setEditingAlt(true); setTimeout(() => altInputRef.current?.focus(), 0); }}
+            className="w-full text-left text-xs text-gray-400 hover:text-lime-700 truncate italic"
+            title="Click to set alt text"
+          >
+            {altValue || 'Add alt text…'}
+          </button>
+        )}
+      </div>
+
       {/* Footer: filename + visibility toggle */}
-      <div className="p-2 bg-white flex items-center gap-1">
+      <div className="px-2 pb-2 bg-white flex items-center gap-1">
         <div className="flex-1 min-w-0">
           {editing ? (
             <div className="flex items-center border border-lime-500 rounded overflow-hidden" onClick={(e) => e.stopPropagation()}>
@@ -388,6 +417,8 @@ export default function GalleryManager({ initialImages }) {
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const [activeId, setActiveId] = useState(null);
   const [status, setStatus] = useState('');
+  const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState('order');
   const fileInputRef = useRef(null);
 
   const sensors = useSensors(
@@ -558,6 +589,7 @@ export default function GalleryManager({ initialImages }) {
     setActiveId(null);
     const { active, over } = event;
     if (!over || active.id === over.id) return;
+    if (isFiltered) return; // reorder disabled while filtering
 
     const oldIndex = images.findIndex(img => img.filename === active.id);
     const newIndex = images.findIndex(img => img.filename === over.id);
@@ -768,6 +800,36 @@ export default function GalleryManager({ initialImages }) {
     }
   }
 
+  async function handleAltUpdate(filename, altText) {
+    try {
+      await fetch('/api/admin/gallery/alt', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename, alt: altText }),
+      });
+      setImages(prev => prev.map(img => img.filename === filename ? { ...img, alt: altText } : img));
+    } catch (err) {
+      showStatus(err.message, true);
+    }
+  }
+
+  // Compute filtered/sorted display list
+  const displayImages = (() => {
+    let result = [...images];
+    if (search) {
+      const q = search.toLowerCase();
+      result = result.filter(img =>
+        img.filename.toLowerCase().includes(q) ||
+        (img.alt || '').toLowerCase().includes(q)
+      );
+    }
+    if (sortBy === 'name-asc') result.sort((a, b) => a.filename.localeCompare(b.filename));
+    else if (sortBy === 'name-desc') result.sort((a, b) => b.filename.localeCompare(a.filename));
+    else if (sortBy === 'alt') result.sort((a, b) => (a.alt || '').localeCompare(b.alt || ''));
+    return result;
+  })();
+  const isFiltered = !!search || sortBy !== 'order';
+
   const visibleCount = images.filter(img => !img.disabled).length;
   const hiddenCount = images.length - visibleCount;
   const selectedCount = selected.size;
@@ -849,6 +911,36 @@ export default function GalleryManager({ initialImages }) {
         <p className="text-gray-500 text-center py-12">No images yet. Upload some above.</p>
       ) : (
         <>
+          {/* Search + Sort */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <input
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search by name or alt text…"
+              className="border border-gray-300 rounded px-3 py-1.5 text-sm flex-1 min-w-[180px] outline-none focus:border-lime-400"
+            />
+            <select
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value)}
+              className="border border-gray-300 rounded px-2 py-1.5 text-sm outline-none focus:border-lime-400 bg-white"
+            >
+              <option value="order">Gallery Order</option>
+              <option value="name-asc">Name A–Z</option>
+              <option value="name-desc">Name Z–A</option>
+              <option value="alt">Alt Text A–Z</option>
+            </select>
+            {isFiltered && (
+              <button onClick={() => { setSearch(''); setSortBy('order'); }} className="text-xs text-gray-400 hover:text-gray-600">
+                ✕ Reset
+              </button>
+            )}
+          </div>
+          {isFiltered && (
+            <p className="text-xs text-gray-400">
+              Showing {displayImages.length} of {images.length} — drag reorder disabled while filtering
+            </p>
+          )}
+
           {/* Stats + bulk controls row */}
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-3">
@@ -934,9 +1026,9 @@ export default function GalleryManager({ initialImages }) {
             onDragEnd={handleDragEnd}
             onDragCancel={handleDragCancel}
           >
-            <SortableContext items={images.map(img => img.filename)} strategy={rectSortingStrategy}>
+            <SortableContext items={displayImages.map(img => img.filename)} strategy={rectSortingStrategy}>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                {images.map(image => (
+                {displayImages.map(image => (
                   <SortableImage
                     key={image.filename}
                     image={image}
@@ -949,6 +1041,7 @@ export default function GalleryManager({ initialImages }) {
                     onConvert={handleConvert}
                     onConvertVideo={handleConvertVideo}
                     onRotate={handleRotate}
+                    onAltUpdate={handleAltUpdate}
                   />
                 ))}
               </div>

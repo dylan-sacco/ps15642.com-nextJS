@@ -8,6 +8,7 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
   const [open, setOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState('');
 
   // Prevent any interaction with the picker from blurring the textarea
   function preventBlur(e) {
@@ -42,10 +43,11 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
 
     const img = images.find(i => i.filename === filename);
     const src = img?.url ?? `/api/uploads/${filename.replace(/\.[^.]+$/, '')}`;
+    const altText = img?.alt || img?.filename || 'Image';
     const poster = img?.thumbUrl ? ` poster="${img.thumbUrl}"` : '';
     const insertion = VIDEO_EXT.test(filename)
       ? `<video controls src="${src}"${poster} style="max-width:100%;border-radius:8px"></video>`
-      : `![AltText](${src})`;
+      : `![${altText}](${src})`;
 
     const newValue = ta.value.slice(0, start) + insertion + ta.value.slice(end);
 
@@ -60,11 +62,18 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
     setOpen(false);
   }
 
+  const filtered = search
+    ? images.filter(img =>
+        img.filename.toLowerCase().includes(search.toLowerCase()) ||
+        (img.alt || '').toLowerCase().includes(search.toLowerCase())
+      )
+    : images;
+
   return (
     <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start gap-2" onMouseDown={preventBlur}>
       {/* Panel */}
       {open && (
-        <div className="bg-white border border-gray-200 rounded-xl shadow-2xl w-80 max-h-96 flex flex-col overflow-hidden">
+        <div className="bg-white border border-gray-200 rounded-xl shadow-2xl w-80 max-h-[28rem] flex flex-col overflow-hidden">
           <div className="px-3 py-2 border-b border-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wide flex items-center justify-between">
             <span>Select a Photo or Video</span>
             <button
@@ -74,6 +83,18 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
               ✕
             </button>
           </div>
+          {/* Search */}
+          {!loading && images.length > 0 && (
+            <div className="px-2 pt-2 pb-1">
+              <input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                onMouseDown={e => e.stopPropagation()}
+                placeholder="Search by name or alt text…"
+                className="w-full text-xs border border-gray-200 rounded px-2 py-1 outline-none focus:border-lime-400"
+              />
+            </div>
+          )}
           <div className="overflow-y-auto flex-1 p-2">
             {loading && (
               <p className="text-sm text-gray-400 text-center py-6">Loading…</p>
@@ -81,16 +102,19 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
             {!loading && images.length === 0 && (
               <p className="text-sm text-gray-400 text-center py-6">No uploads in gallery.</p>
             )}
-            {!loading && images.length > 0 && (
+            {!loading && images.length > 0 && filtered.length === 0 && (
+              <p className="text-sm text-gray-400 text-center py-6">No results for "{search}".</p>
+            )}
+            {!loading && filtered.length > 0 && (
               <div className="grid grid-cols-3 gap-1.5">
-                {images.map(img => {
+                {filtered.map(img => {
                   const isVideo = VIDEO_EXT.test(img.filename);
                   return (
                     <button
                       key={img.filename}
                       onMouseDown={e => insertFile(e, img.filename)}
                       className="aspect-square rounded overflow-hidden border border-transparent hover:border-lime-500 focus:outline-none focus:border-lime-500 transition-colors group relative"
-                      title={img.filename}
+                      title={img.alt || img.filename}
                     >
                       {isVideo ? (
                         <>
@@ -98,7 +122,7 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
                             /* eslint-disable-next-line @next/next/no-img-element */
                             <img
                               src={img.thumbUrl}
-                              alt={img.filename}
+                              alt={img.alt || img.filename}
                               className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
                             />
                           ) : (
@@ -122,7 +146,7 @@ export default function PhotoPicker({ textareaRef, onInsert }) {
                         /* eslint-disable-next-line @next/next/no-img-element */
                         <img
                           src={img.url}
-                          alt={img.filename}
+                          alt={img.alt || img.filename}
                           className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
                         />
                       )}

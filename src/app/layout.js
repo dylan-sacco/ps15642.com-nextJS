@@ -16,7 +16,8 @@ const geistMono = Geist_Mono({
 import { getSessionUser } from "@/lib/adminAuth";
 import { getPermissions } from "@/lib/permissions";
 import AdminNav from "@/components/admin/AdminNav";
-import ContactBar from "@/components/ContactBar";
+import BannerBar from "@/components/BannerBar";
+import { getActiveBanners, getBannerSettings } from "@/lib/banners";
 
 export const metadata = {
   title: "P&S Contracting And Landscape",
@@ -26,6 +27,10 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const user = await getSessionUser();
   const permissions = user ? getPermissions(user.role) : [];
+  const banners = getActiveBanners();
+  const settings = getBannerSettings();
+  const stickyHeader = banners.some(b => b.sticky === true) ||
+    (settings.scrollBanner && (settings.scrollBannerSticky === true));
 
   return (
     <html lang="en">
@@ -36,8 +41,17 @@ export default async function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ContactBar />
-        <NavBar />
+        {stickyHeader ? (
+          <div className="sticky top-0 z-50">
+            <BannerBar banners={banners} settings={settings} />
+            <NavBar stickyDisabled />
+          </div>
+        ) : (
+          <>
+            <BannerBar banners={banners} settings={settings} />
+            <NavBar />
+          </>
+        )}
         {user && <AdminNav username={user.username} permissions={permissions} />}
         {children}
         <Footer />
