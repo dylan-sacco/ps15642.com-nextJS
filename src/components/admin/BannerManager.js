@@ -264,7 +264,7 @@ export default function BannerManager({ initialBanners, initialSettings, canMana
           <h2 className="font-semibold text-gray-800">{editingId ? 'Edit Banner' : 'New Banner'}</h2>
 
           {/* Type + Priority */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Type</label>
               <select value={form.type} onChange={e => setField('type', e.target.value)}
@@ -295,9 +295,9 @@ export default function BannerManager({ initialBanners, initialSettings, canMana
           )}
 
           {/* Colors */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
             {[['Background Color', 'bgColor'], ['Text Color', 'textColor']].map(([label, key]) => (
-              <div key={key}>
+              <div key={key} className=''>
                 <label className="block text-xs font-medium text-gray-600 mb-1">{label}</label>
                 <div className="flex items-center gap-2">
                   <input type="color" value={form[key]} onChange={e => setField(key, e.target.value)}
@@ -311,7 +311,7 @@ export default function BannerManager({ initialBanners, initialSettings, canMana
 
           {/* Link */}
           {!isContactForm && (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-medium text-gray-600 mb-1">Link URL <span className="font-normal text-gray-400">(optional)</span></label>
                 <input value={form.link} onChange={e => setField('link', e.target.value)}
@@ -344,7 +344,7 @@ export default function BannerManager({ initialBanners, initialSettings, canMana
 
           {/* Dates */}
           {form.recurring ? (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[['Start', 'startMonth', 'startDay'], ['End', 'endMonth', 'endDay']].map(([label, mKey, dKey]) => (
                 <div key={label}>
                   <label className="block text-xs font-medium text-gray-600 mb-1">{label} <span className="font-normal text-gray-400">(month / day)</span></label>
@@ -362,7 +362,7 @@ export default function BannerManager({ initialBanners, initialSettings, canMana
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-medium text-gray-600 mb-1">Start Date <span className="font-normal text-gray-400">(optional)</span></label>
                 <input type="date" value={form.startDate} onChange={e => setField('startDate', e.target.value)}
@@ -377,7 +377,7 @@ export default function BannerManager({ initialBanners, initialSettings, canMana
           )}
 
           {/* Toggles row */}
-          <div className="flex flex-wrap gap-x-6 gap-y-3">
+          <div className="flex flex-col md:flex-wrap gap-x-6 gap-y-3">
             <label className="flex items-center gap-2 text-sm cursor-pointer">
               <input type="checkbox" checked={form.active} onChange={e => setField('active', e.target.checked)}
                 className="rounded border-gray-300 text-lime-600" />
