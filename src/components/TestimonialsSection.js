@@ -15,9 +15,9 @@ function StarRating({ rating }) {
   );
 }
 
-function TestimonialCard({ testimonial: t }) {
+function TestimonialCard({ testimonial: t, className = '' }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 flex flex-col gap-3 w-80 flex-shrink-0">
+    <div className={`bg-white rounded-lg shadow-sm border border-gray-200 p-6 flex flex-col gap-3 ${className}`}>
       <StarRating rating={t.rating} />
       <p className="text-gray-700 text-sm leading-relaxed flex-1">"{t.text}"</p>
       <div className="flex items-center justify-between mt-2">
@@ -69,29 +69,29 @@ export default function TestimonialsSection({ testimonials }) {
       <div className="hidden md:block overflow-hidden">
         <div className="testimonial-track flex gap-6 w-max">
           {looped.map((t, i) => (
-            <TestimonialCard key={`${t.id}-${i}`} testimonial={t} />
+            <TestimonialCard key={`${t.id}-${i}`} testimonial={t} className="w-80 flex-shrink-0" />
           ))}
         </div>
       </div>
 
       {/* Mobile: single card with arrows */}
       <div className="md:hidden">
-        <div className="relative flex items-center justify-center gap-4">
+        <div className="flex items-center gap-2 px-2">
           <button
             onClick={prev}
-            className="flex-shrink-0 p-2 rounded-full bg-white shadow border border-gray-200 text-gray-600 hover:text-green-600 transition-colors"
+            className="flex-shrink-0 p-1.5 rounded-full bg-white shadow border border-gray-200 text-gray-600 hover:text-green-600 transition-colors"
             aria-label="Previous review"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
 
-          <div className="flex-1 max-w-sm">
-            <TestimonialCard testimonial={testimonials[current]} />
+          <div className="flex-1 min-w-0">
+            <TestimonialCard testimonial={testimonials[current]} className="w-full" />
           </div>
 
           <button
             onClick={next}
-            className="flex-shrink-0 p-2 rounded-full bg-white shadow border border-gray-200 text-gray-600 hover:text-green-600 transition-colors"
+            className="flex-shrink-0 p-1.5 rounded-full bg-white shadow border border-gray-200 text-gray-600 hover:text-green-600 transition-colors"
             aria-label="Next review"
           >
             <ChevronRight className="w-5 h-5" />
