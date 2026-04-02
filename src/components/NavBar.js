@@ -37,16 +37,17 @@ export default function NavBar({ stickyDisabled = false }) {
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
-  useEffect(() => {
-    if (!isMobile) return;
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 50) setIsOpen(false);
-      setLastScrollY(currentScrollY);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY, isMobile]);
+  // Removed By Dylan Sacco 04/02/2026, Made hamburger button un-clickable for mobile on certain devices
+  // useEffect(() => {
+  //   if (!isMobile) return;
+  //   const handleScroll = () => {
+  //     const currentScrollY = window.scrollY;
+  //     if (currentScrollY > lastScrollY && currentScrollY > 50) setIsOpen(false);
+  //     setLastScrollY(currentScrollY);
+  //   };
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, [lastScrollY, isMobile]);
 
   return (
     <div className={`bg-white shadow-md z-50${stickyDisabled ? '' : ' sticky top-0'}`}>
@@ -108,7 +109,7 @@ export default function NavBar({ stickyDisabled = false }) {
         </ul>
 
         {/* Mobile Menu Button */}
-        <button onClick={toggleMenu} className="md:hidden text-black px-4 py-3">
+        <button onClick={toggleMenu} className="md:hidden text-black px-4 py-3 outline">
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
