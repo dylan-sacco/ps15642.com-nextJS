@@ -67,14 +67,16 @@ function writeOrder(order) {
   fs.writeFileSync(orderPath, JSON.stringify(order, null, 2), 'utf8');
 }
 
-function convertVideoToWebm(inputPath, outputPath) {
+function convertVideoToMp4(inputPath, outputPath) {
   const result = spawnSync('ffmpeg', [
     '-y',
     '-i', inputPath,
-    '-c:v', 'libvpx-vp9',
-    '-cq', '33',
-    '-b:v', '0',
-    '-c:a', 'libopus',
+    '-c:v', 'libx264',
+    '-crf', '23',
+    '-preset', 'fast',
+    '-c:a', 'aac',
+    '-b:a', '128k',
+    '-movflags', '+faststart', // moov atom at front — required for streaming
     outputPath,
   ], { timeout: 5 * 60 * 1000 }); // 5 min timeout
 
@@ -156,14 +158,14 @@ export async function POST(request) {
       let finalName;
 
       if (isVideo) {
-        if (convertToWebp && ext !== 'webm') {
-          // Convert video to WebM via ffmpeg
-          finalName = resolveUniqueName(sanitizeFilename(baseName + '.webm'));
+        if (convertToWebp && ext !== 'mp4') {
+          // Convert video to MP4 (H.264/AAC) via ffmpeg
+          finalName = resolveUniqueName(sanitizeFilename(baseName + '.mp4'));
           const destPath = path.join(GALLERY_DIR, finalName);
           const tmpInput = path.join(GALLERY_DIR, `_tmp_${Date.now()}_input.${ext}`);
 
           fs.writeFileSync(tmpInput, buffer);
-          const ok = convertVideoToWebm(tmpInput, destPath);
+          const ok = convertVideoToMp4(tmpInput, destPath);
           fs.unlinkSync(tmpInput);
 
           if (!ok) {

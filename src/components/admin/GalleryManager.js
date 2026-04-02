@@ -739,7 +739,7 @@ export default function GalleryManager({ initialImages }) {
                 onChange={e => setImportAsWebp(e.target.checked)}
                 className="w-4 h-4 accent-lime-600"
               />
-              <span className="text-xs text-gray-500">Convert to WebP / WebM on import</span>
+              <span className="text-xs text-gray-500">Convert to WebP / MP4 on import</span>
             </label>
           </>
         )}

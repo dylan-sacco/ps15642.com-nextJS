@@ -37,6 +37,8 @@ All content is file-based:
 
 **IP access control** — middleware restricts `/admin` and `/api/admin` to local IPs (127.x, 10.x, 192.168.x, 172.16-31.x) by default. Set `ADMIN_DISABLE_IP_CHECK=true` to bypass in dev. A 24-hour bypass token is available for remote access via `/api/admin/auth/bypass`.
 
+The Edge middleware lives in **`src/proxy.js`** (not `middleware.js`). It exports a `proxy` function and `config` with matcher — Next.js/Turbopack picks it up as the middleware module. IP check prefers `x-real-ip` (set by Nginx), falls back to `x-forwarded-for`, then `request.ip`.
+
 ## Permissions (RBAC)
 
 Four roles in ascending order: **Editor → Publisher → Owner → Admin**.
@@ -52,7 +54,8 @@ Key helpers:
 - Standard REST: GET list/read, POST create, PUT update, DELETE remove
 - All admin API routes live under `src/app/api/admin/` and call `requireApiPermission()` first
 - Article slugs: `^[a-z0-9]+(?:-[a-z0-9]+)*$` — enforced at creation
-- Gallery images are served via `/api/uploads/[filename]` (not `/public`) from `content/uploads/`
+- Gallery images are served via `/api/uploads/[filename]` (not `/public`) from `content/uploads/`. URLs include `?v=<mtime>` (Unix timestamp) for cache-busting — never strip this when referencing gallery images. Images cache for 1 hour; videos cache for 7 days.
+- Video files get a `<basename>.thumb.webp` sidecar thumbnail generated at upload time (requires ffmpeg). The gallery API filters these out from the image list.
 
 ## Key Environment Variables
 
@@ -72,6 +75,7 @@ Key helpers:
 | `ADMIN_BACKUP_SIZE_LIMIT_MB` | Quota for admin backups in MB (default: 500) |
 | `EMAIL_USER` / `EMAIL_PASS` | Gmail + app password for contact form |
 | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` / `RECAPTCHA_SECRET_KEY` | reCAPTCHA v3 (contact form) |
+| `NEXT_PUBLIC_APP_VERSION` | Auto-injected from `package.json` version by `next.config.js` |
 
 ## Server Dependencies
 
