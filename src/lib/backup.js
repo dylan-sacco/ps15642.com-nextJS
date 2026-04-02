@@ -2,9 +2,9 @@
 
 import fs from 'fs';
 import path from 'path';
-import { GALLERY_DIR, ARTICLES_DIR } from '@/lib/paths';
+import { GALLERY_DIR, BLOGS_DIR } from '@/lib/paths';
 
-export { GALLERY_DIR, ARTICLES_DIR };
+export { GALLERY_DIR, BLOGS_DIR };
 
 export function getBackupBaseDir() {
   return process.env.ADMIN_BACKUP_DIR || path.join(process.cwd(), 'data', 'backups');
@@ -47,15 +47,16 @@ export function listBackups() {
         const backupPath = path.join(base, name);
         let meta = {};
         try { meta = JSON.parse(fs.readFileSync(path.join(backupPath, 'meta.json'), 'utf8')); } catch {}
-        const gallerySize  = getDirSize(path.join(backupPath, 'gallery'));
-        const articlesSize = getDirSize(path.join(backupPath, 'articles'));
+        const gallerySize = getDirSize(path.join(backupPath, 'gallery'));
+        // Support both new ('blog') and old ('articles') backup subfolder names
+        const blogSize = getDirSize(path.join(backupPath, 'blog')) || getDirSize(path.join(backupPath, 'articles'));
         return {
           name,
-          created:      meta.created || name,
-          label:        meta.label   || '',
+          created:  meta.created || name,
+          label:    meta.label   || '',
           gallerySize,
-          articlesSize,
-          totalSize: gallerySize + articlesSize,
+          blogSize,
+          totalSize: gallerySize + blogSize,
         };
       })
       .sort((a, b) => b.name.localeCompare(a.name));

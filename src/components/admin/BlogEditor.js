@@ -6,7 +6,7 @@ import MarkdownPreview from './MarkdownPreview';
 import MarkdownCheatSheet from './MarkdownCheatSheet';
 import PhotoPicker from './PhotoPicker';
 
-export default function ArticleEditor({ initialData = {}, isNew = false, canPublish = false }) {
+export default function BlogEditor({ initialData = {}, isNew = false, canPublish = false }) {
   const router = useRouter();
 
   const [slug, setSlug] = useState(initialData.slug || '');
@@ -54,14 +54,14 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
       let res;
 
       if (isNew) {
-        res = await fetch('/api/admin/articles', {
+        res = await fetch('/api/admin/blog', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug, ...payload }),
         });
       } else {
         const slugChanged = slug !== initialData.slug;
-        res = await fetch(`/api/admin/articles/${initialData.slug}`, {
+        res = await fetch(`/api/admin/blog/${initialData.slug}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ...payload, ...(slugChanged ? { newSlug: slug } : {}) }),
@@ -71,8 +71,8 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Save failed');
       window.location.href = data.newSlug
-        ? `/admin/articles/${data.newSlug}/edit`
-        : '/admin/articles';
+        ? `/admin/blog/${data.newSlug}/edit`
+        : '/admin/blog';
     } catch (err) {
       setError(err.message);
     } finally {
@@ -84,14 +84,14 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
     if (!window.confirm(`Delete "${initialData.slug}"? This cannot be undone.`)) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/admin/articles/${initialData.slug}`, {
+      const res = await fetch(`/api/admin/blog/${initialData.slug}`, {
         method: 'DELETE',
       });
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.error || 'Delete failed');
       }
-      window.location.href = '/admin/articles';
+      window.location.href = '/admin/blog';
     } catch (err) {
       setError(err.message);
       setDeleting(false);
@@ -107,7 +107,7 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
           disabled={saving || deleting}
           className="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded font-medium text-sm disabled:opacity-50 transition-colors"
         >
-          {saving ? 'Saving…' : 'Save Article'}
+          {saving ? 'Saving…' : 'Save Post'}
         </button>
 
         {!isNew && (
@@ -143,7 +143,7 @@ export default function ArticleEditor({ initialData = {}, isNew = false, canPubl
         </button>
 
         <button
-          onClick={() => window.location.href = '/admin/articles'}
+          onClick={() => window.location.href = '/admin/blog'}
           className="px-3 py-2 rounded text-sm text-gray-500 hover:text-gray-700 transition-colors"
         >
           Cancel

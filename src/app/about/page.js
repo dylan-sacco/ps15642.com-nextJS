@@ -60,7 +60,7 @@ export default function AboutPage() {
       </ParallaxCard>
       {content.map((section, index) => {
         return(
-          <GenericSpan title={section.title}>
+          <GenericSpan key={index} title={section.title}>
             {section.content}
           </GenericSpan>
         )

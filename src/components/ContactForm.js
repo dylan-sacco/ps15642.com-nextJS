@@ -30,9 +30,9 @@ export default function ContactForm() {
     e.preventDefault();
     setStatus('Sending...');
 
-    const token = await grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, {
-      action: 'submit',
-    });
+    const token = process.env.NEXT_PUBLIC_SKIP_RECAPTCHA === 'true'
+      ? 'dev-bypass'
+      : await grecaptcha.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY, { action: 'submit' });
 
     const res = await fetch('/api/send-email', {
       method: 'POST',
@@ -52,10 +52,12 @@ export default function ContactForm() {
 
   return (
     <>
-      <Script
-        src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-        strategy="afterInteractive"
-      />
+      {process.env.NEXT_PUBLIC_SKIP_RECAPTCHA !== 'true' && (
+        <Script
+          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+          strategy="afterInteractive"
+        />
+      )}
       <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto border border-gray-300 bg-white p-6 md:p-8 rounded shadow-lg">
         <input type="text" name="_gotcha" className="hidden" />
 

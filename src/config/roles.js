@@ -37,6 +37,10 @@ export const PERMISSIONS = {
   BACKUP_VIEW:   'backup.view',   // See the backup/restore page
   BACKUP_MANAGE: 'backup.manage', // Create, restore, and delete backups
 
+  // ── Contact ──────────────────────────────────────────────────────────────────
+  CONTACT_VIEW:   'contact.view',   // See contact form submissions
+  CONTACT_DELETE: 'contact.delete', // Delete contact submissions
+
 };
 
 // Role definitions.
@@ -100,6 +104,8 @@ export const ROLES = {
       'whitelist.manage',
       'backup.view',
       'backup.manage',
+      'contact.view',
+      'contact.delete',
     ],
   },
 

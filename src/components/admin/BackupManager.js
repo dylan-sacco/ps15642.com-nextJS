@@ -47,7 +47,7 @@ export default function BackupManager({ initialBackups, initialUsedBytes, limitB
   const [label,     setLabel]     = useState('');
   const [status,    setStatus]    = useState(null);
   const [busy,      setBusy]      = useState(false); // creating
-  const [restoring, setRestoring] = useState(null); // `${name}_gallery` | `${name}_articles`
+  const [restoring, setRestoring] = useState(null); // `${name}_gallery` | `${name}_blog`
   const [deleting,  setDeleting]  = useState(null); // name
 
   function showStatus(msg, isError = false) {
@@ -187,7 +187,7 @@ export default function BackupManager({ initialBackups, initialUsedBytes, limitB
             {backups.map(b => {
               const isDeleting  = deleting === b.name;
               const isRestGal   = restoring === `${b.name}_gallery`;
-              const isRestArt   = restoring === `${b.name}_articles`;
+              const isRestArt   = restoring === `${b.name}_blog`;
               const anyBusy     = !!restoring || !!deleting || busy;
 
               return (
@@ -202,7 +202,7 @@ export default function BackupManager({ initialBackups, initialUsedBytes, limitB
                     </div>
                     <div className="flex gap-3 mt-0.5 text-xs text-gray-400">
                       <span>Gallery: {formatBytes(b.gallerySize)}</span>
-                      <span>Articles: {formatBytes(b.articlesSize)}</span>
+                      <span>Blog: {formatBytes(b.blogSize)}</span>
                       <span className="font-medium text-gray-500">Total: {formatBytes(b.totalSize)}</span>
                     </div>
                   </div>
@@ -218,11 +218,11 @@ export default function BackupManager({ initialBackups, initialUsedBytes, limitB
                         {isRestGal ? 'Restoring…' : 'Restore Gallery'}
                       </button>
                       <button
-                        onClick={() => handleRestore(b.name, 'articles')}
+                        onClick={() => handleRestore(b.name, 'blog')}
                         disabled={anyBusy}
                         className="text-xs px-2.5 py-1 rounded border border-blue-300 text-blue-600 hover:bg-blue-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                       >
-                        {isRestArt ? 'Restoring…' : 'Restore Articles'}
+                        {isRestArt ? 'Restoring…' : 'Restore Blog'}
                       </button>
                       <button
                         onClick={() => handleDelete(b.name)}

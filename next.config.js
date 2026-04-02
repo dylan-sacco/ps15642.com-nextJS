@@ -12,6 +12,7 @@ const nextConfig = {
     // Increase body size limit for route handlers (default 10 MB)
     proxyClientMaxBodySize: '500mb',
   },
+  allowedDevOrigins: ['172.22.64.1'],
 };
 
 module.exports = nextConfig;

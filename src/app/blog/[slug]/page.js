@@ -3,8 +3,8 @@ import path from 'path';
 import matter from 'gray-matter';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ARTICLES_DIR } from '@/lib/paths';
-import { getRelatedArticles, tagToSlug } from '@/lib/articles';
+import { BLOGS_DIR } from '@/lib/paths';
+import { getRelatedPosts, tagToSlug } from '@/lib/blog';
 import MarkdownPreview from '@/components/admin/MarkdownPreview';
 
 function parseTags(raw) {
@@ -15,7 +15,7 @@ function parseTags(raw) {
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const filePath = path.join(ARTICLES_DIR, `${slug}.md`);
+  const filePath = path.join(BLOGS_DIR, `${slug}.md`);
   try {
     const raw = fs.readFileSync(filePath, 'utf8');
     const { data } = matter(raw);
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }) {
       openGraph: {
         title: data.title,
         description: data.excerpt || '',
-        url: `https://ps15642.com/articles/${slug}`,
+        url: `https://ps15642.com/blog/${slug}`,
         siteName: 'P&S Contracting and Landscape',
         images: [{ url: ogImage, width: 1200, height: 630 }],
         locale: 'en_US',
@@ -41,12 +41,12 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default async function ArticlePage({ params }) {
+export default async function BlogPostPage({ params }) {
   const { slug } = await params;
 
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) notFound();
 
-  const filePath = path.join(ARTICLES_DIR, `${slug}.md`);
+  const filePath = path.join(BLOGS_DIR, `${slug}.md`);
   if (!fs.existsSync(filePath)) notFound();
 
   const raw = fs.readFileSync(filePath, 'utf8');
@@ -55,7 +55,7 @@ export default async function ArticlePage({ params }) {
   if (!data.published) notFound();
 
   const tags = parseTags(data.tags);
-  const related = getRelatedArticles(slug, tags);
+  const related = getRelatedPosts(slug, tags);
   const ogImage = data.image || 'https://ps15642.com/hs1.webp';
 
   const jsonLd = {
@@ -66,7 +66,7 @@ export default async function ArticlePage({ params }) {
     datePublished: data.date || '',
     dateModified: data.date || '',
     image: ogImage,
-    url: `https://ps15642.com/articles/${slug}`,
+    url: `https://ps15642.com/blog/${slug}`,
     author: {
       '@type': 'Organization',
       name: 'P&S Contracting and Landscape',
@@ -91,8 +91,8 @@ export default async function ArticlePage({ params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <Link href="/articles" className="text-sm text-gray-400 hover:text-lime-700 transition-colors mb-8 inline-block">
-        ← All Articles
+      <Link href="/blog" className="text-sm text-gray-400 hover:text-lime-700 transition-colors mb-8 inline-block">
+        ← All Posts
       </Link>
 
       <header className="mb-8">
@@ -112,7 +112,7 @@ export default async function ArticlePage({ params }) {
             {tags.map(tag => (
               <Link
                 key={tag}
-                href={`/articles/tag/${tagToSlug(tag)}`}
+                href={`/blog/tag/${tagToSlug(tag)}`}
                 className="text-xs font-medium bg-lime-50 text-lime-700 border border-lime-200 rounded-full px-3 py-1 hover:bg-lime-100 transition-colors"
               >
                 {tag}
@@ -129,12 +129,12 @@ export default async function ArticlePage({ params }) {
       {/* Related articles */}
       {related.length > 0 && (
         <aside className="mt-12 pt-8 border-t border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Related Articles</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Related Posts</h2>
           <div className="space-y-4">
             {related.map(article => (
               <div key={article.slug}>
                 <Link
-                  href={`/articles/${article.slug}`}
+                  href={`/blog/${article.slug}`}
                   className="font-medium text-gray-800 hover:text-lime-700 transition-colors"
                 >
                   {article.title}

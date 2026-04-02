@@ -10,7 +10,7 @@ import {
   listBackups,
   copyDir,
   GALLERY_DIR,
-  ARTICLES_DIR,
+  BLOGS_DIR,
 } from '@/lib/backup';
 
 // GET /api/admin/backup — list backups + storage summary
@@ -33,9 +33,9 @@ export async function POST(request) {
   const { label = '' } = await request.json().catch(() => ({}));
 
   // Measure what we're about to copy
-  const gallerySize  = getDirSize(GALLERY_DIR);
-  const articlesSize = getDirSize(ARTICLES_DIR);
-  const newSize      = gallerySize + articlesSize;
+  const gallerySize = getDirSize(GALLERY_DIR);
+  const blogSize    = getDirSize(BLOGS_DIR);
+  const newSize     = gallerySize + blogSize;
 
   const usedBytes  = getTotalBackupsSize();
   const limitBytes = getSizeLimitBytes();
@@ -58,8 +58,8 @@ export async function POST(request) {
 
     // Copy gallery (skip if empty/missing)
     try { copyDir(GALLERY_DIR, path.join(dest, 'gallery')); } catch { fs.mkdirSync(path.join(dest, 'gallery'), { recursive: true }); }
-    // Copy articles
-    try { copyDir(ARTICLES_DIR, path.join(dest, 'articles')); } catch { fs.mkdirSync(path.join(dest, 'articles'), { recursive: true }); }
+    // Copy blog posts
+    try { copyDir(BLOGS_DIR, path.join(dest, 'blog')); } catch { fs.mkdirSync(path.join(dest, 'blog'), { recursive: true }); }
 
     fs.writeFileSync(
       path.join(dest, 'meta.json'),

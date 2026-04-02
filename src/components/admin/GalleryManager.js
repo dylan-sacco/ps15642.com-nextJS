@@ -18,11 +18,12 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert, onRotate, selected, onSelect, selecting }) {
+function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert, onConvertVideo, onRotate, selected, onSelect, selecting }) {
   const { filename, url, disabled, thumbUrl } = image;
   const isWebP = filename.toLowerCase().endsWith('.webp');
   const isVideo = /\.(mp4|mov|webm)$/i.test(filename);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [formatOpen, setFormatOpen] = useState(false);
   const [busy, setBusy] = useState(null); // 'convert' | 'rotate' | null
   const [videoLoaded, setVideoLoaded] = useState(false);
   const menuRef = useRef(null);
@@ -82,6 +83,14 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
     setMenuOpen(false);
     setBusy('convert');
     await onConvert(filename);
+    setBusy(null);
+  }
+
+  async function doConvertVideo(targetFormat) {
+    setMenuOpen(false);
+    setFormatOpen(false);
+    setBusy('convert');
+    await onConvertVideo(filename, targetFormat);
     setBusy(null);
   }
 
@@ -176,6 +185,42 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
                 Convert to WebP
               </button>
             )}
+            {isVideo && (
+              <>
+                <button
+                  onClick={() => setFormatOpen(f => !f)}
+                  className="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                  </svg>
+                  Video Format
+                  <svg xmlns="http://www.w3.org/2000/svg" className={`w-3 h-3 ml-auto transition-transform ${formatOpen ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+                {formatOpen && (
+                  <div className="bg-gray-50 border-t border-b border-gray-100 py-0.5">
+                    {ext.toLowerCase() !== '.mp4' && (
+                      <button
+                        onClick={() => doConvertVideo('mp4')}
+                        className="w-full text-left pl-8 pr-3 py-1.5 text-xs text-gray-600 hover:bg-blue-50 hover:text-blue-700"
+                      >
+                        MP4 (H.264) — universal
+                      </button>
+                    )}
+                    {ext.toLowerCase() !== '.webm' && (
+                      <button
+                        onClick={() => doConvertVideo('webm')}
+                        className="w-full text-left pl-8 pr-3 py-1.5 text-xs text-gray-600 hover:bg-blue-50 hover:text-blue-700"
+                      >
+                        WebM (VP9) — smaller
+                      </button>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
             {!isVideo && (
               <button
                 onClick={doRotate}
@@ -187,6 +232,17 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
                 Rotate Clockwise
               </button>
             )}
+            <a
+              href={`/api/uploads/${filename}?download=1`}
+              download={filename}
+              onClick={(e) => { e.stopPropagation(); setMenuOpen(false); }}
+              className="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download
+            </a>
             <div className="border-t border-gray-100 mt-1 pt-1">
               <button
                 onClick={() => { setMenuOpen(false); onDelete(filename); }}
@@ -599,6 +655,41 @@ export default function GalleryManager({ initialImages }) {
     }
   }
 
+  async function handleConvertVideo(filename, targetFormat) {
+    try {
+      const res = await fetch('/api/admin/gallery/convert-video', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename, targetFormat }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Conversion failed');
+
+      setImages(prev =>
+        prev.map(img =>
+          img.filename === filename
+            ? {
+                ...img,
+                filename: data.newFilename,
+                url: `/api/uploads/${data.newFilename.replace(/\.[^.]+$/, '')}?v=${data.mtime}`,
+                thumbUrl: data.thumbUrl ?? img.thumbUrl,
+              }
+            : img
+        )
+      );
+      setSelected(prev => {
+        if (!prev.has(filename)) return prev;
+        const next = new Set(prev);
+        next.delete(filename);
+        next.add(data.newFilename);
+        return next;
+      });
+      showStatus(`Converted to ${data.newFilename}`);
+    } catch (err) {
+      showStatus(err.message, true);
+    }
+  }
+
   async function handleRotate(filename) {
     try {
       const res = await fetch('/api/admin/gallery/rotate', {
@@ -856,6 +947,7 @@ export default function GalleryManager({ initialImages }) {
                     onDelete={handleDelete}
                     onToggleDisabled={handleToggleDisabled}
                     onConvert={handleConvert}
+                    onConvertVideo={handleConvertVideo}
                     onRotate={handleRotate}
                   />
                 ))}

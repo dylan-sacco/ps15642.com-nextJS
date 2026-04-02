@@ -5,7 +5,8 @@ import { usePathname, useRouter } from 'next/navigation';
 
 const NAV_ITEMS = [
   { href: '/admin/gallery',   label: 'Gallery',   permission: 'gallery.view'   },
-  { href: '/admin/articles',  label: 'Articles',  permission: 'articles.view'  },
+  { href: '/admin/blog',      label: 'Blog',      permission: 'articles.view'  },
+  { href: '/admin/contact',   label: 'Contact',   permission: 'contact.view'   },
   { href: '/admin/whitelist', label: 'Whitelist', permission: 'whitelist.view' },
   { href: '/admin/users',     label: 'Users',     permission: 'users.view'     },
   { href: '/admin/backup',    label: 'Backup',    permission: 'backup.view'    },
@@ -24,7 +25,7 @@ export default function AdminNav({ username, permissions = [] }) {
   }
 
   return (
-    <nav className="bg-gray-900 text-white flex items-center gap-1 px-4 py-2 text-sm font-medium border-b border-gray-700 flex-wrap">
+    <nav className="bg-gray-900 text-white flex items-center gap-1 px-4 py-2 text-sm font-medium border-b border-gray-700 flex-wrap ">
       <span className="text-lime-400 font-bold mr-4">Admin Panel</span>
       {visible.map(({ href, label }) => {
         const active = pathname.startsWith(href);

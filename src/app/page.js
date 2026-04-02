@@ -83,7 +83,7 @@ export default function Home() {
       </TextSpan>
 
       {/* hoverZoom section */}
-      <div className="max-w-6xl grid grid-cols-2 gap-2 sm:gap-4 p-4 sm:p-6 mx-auto">
+      <div className="max-w-6xl grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-4 sm:p-6 mx-auto">
         {zoomContainerList.map((item, index) => (
           <ZoomContainerBS
             key={index}

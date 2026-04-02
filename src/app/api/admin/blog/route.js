@@ -2,29 +2,29 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { ARTICLES_DIR } from '@/lib/paths';
+import { BLOGS_DIR } from '@/lib/paths';
 import { requireApiPermission } from '@/lib/adminAuth';
 import { hasPermission } from '@/lib/permissions';
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function ensureDir() {
-  fs.mkdirSync(ARTICLES_DIR, { recursive: true });
+  fs.mkdirSync(BLOGS_DIR, { recursive: true });
 }
 
-// GET /api/admin/articles — list all articles (front matter only)
+// GET /api/admin/blog — list all articles (front matter only)
 export async function GET() {
   const { error } = await requireApiPermission('articles.view');
   if (error) return error;
 
   try {
     ensureDir();
-    const files = fs.readdirSync(ARTICLES_DIR).filter(f => f.endsWith('.md'));
+    const files = fs.readdirSync(BLOGS_DIR).filter(f => f.endsWith('.md'));
 
     const articles = files.map(file => {
       const slug = file.replace(/\.md$/, '');
       try {
-        const raw = fs.readFileSync(path.join(ARTICLES_DIR, file), 'utf8');
+        const raw = fs.readFileSync(path.join(BLOGS_DIR, file), 'utf8');
         const { data } = matter(raw);
         const tags = Array.isArray(data.tags) ? data.tags : (data.tags ? String(data.tags).split(',').map(t => t.trim()).filter(Boolean) : []);
         return { slug, title: data.title || slug, date: data.date || '', excerpt: data.excerpt || '', published: !!data.published, tags, image: data.image || '' };
@@ -41,7 +41,7 @@ export async function GET() {
   }
 }
 
-// POST /api/admin/articles — create article
+// POST /api/admin/blog — create article
 export async function POST(request) {
   const { user, error } = await requireApiPermission('articles.create');
   if (error) return error;
@@ -59,7 +59,7 @@ export async function POST(request) {
       );
     }
 
-    const filePath = path.join(ARTICLES_DIR, `${slug}.md`);
+    const filePath = path.join(BLOGS_DIR, `${slug}.md`);
     if (fs.existsSync(filePath)) {
       return NextResponse.json({ error: 'Article with this slug already exists' }, { status: 409 });
     }

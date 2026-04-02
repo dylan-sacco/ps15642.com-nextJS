@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { ARTICLES_DIR } from '@/lib/paths';
+import { BLOGS_DIR } from '@/lib/paths';
 import { requireApiPermission } from '@/lib/adminAuth';
 import { hasPermission } from '@/lib/permissions';
 
@@ -10,7 +10,7 @@ function safeSlug(slug) {
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
 }
 
-// GET /api/admin/articles/[slug]
+// GET /api/admin/blog/[slug]
 export async function GET(request, { params }) {
   const { error } = await requireApiPermission('articles.view');
   if (error) return error;
@@ -18,7 +18,7 @@ export async function GET(request, { params }) {
   const { slug } = await params;
   if (!safeSlug(slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
 
-  const filePath = path.join(ARTICLES_DIR, `${slug}.md`);
+  const filePath = path.join(BLOGS_DIR, `${slug}.md`);
   if (!fs.existsSync(filePath)) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
   const raw = fs.readFileSync(filePath, 'utf8');
@@ -26,7 +26,7 @@ export async function GET(request, { params }) {
   return NextResponse.json({ slug, ...data, body: content });
 }
 
-// PUT /api/admin/articles/[slug]
+// PUT /api/admin/blog/[slug]
 export async function PUT(request, { params }) {
   // Minimum required to edit anything
   const { user, error } = await requireApiPermission('articles.edit.draft');
@@ -35,7 +35,7 @@ export async function PUT(request, { params }) {
   const { slug } = await params;
   if (!safeSlug(slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
 
-  const filePath = path.join(ARTICLES_DIR, `${slug}.md`);
+  const filePath = path.join(BLOGS_DIR, `${slug}.md`);
   if (!fs.existsSync(filePath)) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
   try {
@@ -77,7 +77,7 @@ export async function PUT(request, { params }) {
       if (!safeSlug(newSlug)) {
         return NextResponse.json({ error: 'Invalid new slug' }, { status: 400 });
       }
-      const newFilePath = path.join(ARTICLES_DIR, `${newSlug}.md`);
+      const newFilePath = path.join(BLOGS_DIR, `${newSlug}.md`);
       if (fs.existsSync(newFilePath)) {
         return NextResponse.json({ error: `Slug "${newSlug}" is already taken` }, { status: 409 });
       }
@@ -94,7 +94,7 @@ export async function PUT(request, { params }) {
   }
 }
 
-// DELETE /api/admin/articles/[slug]
+// DELETE /api/admin/blog/[slug]
 export async function DELETE(request, { params }) {
   const { error } = await requireApiPermission('articles.delete');
   if (error) return error;
@@ -102,7 +102,7 @@ export async function DELETE(request, { params }) {
   const { slug } = await params;
   if (!safeSlug(slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
 
-  const filePath = path.join(ARTICLES_DIR, `${slug}.md`);
+  const filePath = path.join(BLOGS_DIR, `${slug}.md`);
   if (!fs.existsSync(filePath)) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
   fs.unlinkSync(filePath);

@@ -1,23 +1,23 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getPublishedArticles, tagToSlug } from '@/lib/articles';
+import { getPublishedPosts, tagToSlug } from '@/lib/blog';
 import H1Drop from '@/components/H1Drop';
 import ParallaxCard from '@/components/ParallaxCard';
 
 export async function generateMetadata({ params }) {
   const { tag: tagSlug } = await params;
-  const articles = getPublishedArticles();
+  const blog = getPublishedPosts();
   const displayTag = findDisplayTag(articles, tagSlug);
   if (!displayTag) return {};
 
   return {
-    title: `${displayTag} Articles | P&S Contracting and Landscape`,
-    description: `Landscaping and property care articles about ${displayTag} from P&S Contracting and Landscape.`,
+    title: `${displayTag} Blog | P&S Contracting and Landscape`,
+    description: `Landscaping and property care posts about ${displayTag} from P&S Contracting and Landscape.`,
   };
 }
 
-function findDisplayTag(articles, tagSlug) {
-  for (const article of articles) {
+function findDisplayTag(blog, tagSlug) {
+  for (const article of blog) {
     for (const tag of article.tags) {
       if (tagToSlug(tag) === tagSlug) return tag;
     }
@@ -28,12 +28,12 @@ function findDisplayTag(articles, tagSlug) {
 export default async function TagPage({ params }) {
   const { tag: tagSlug } = await params;
 
-  const allPublished = getPublishedArticles();
+  const allPublished = getPublishedPosts();
   const displayTag = findDisplayTag(allPublished, tagSlug);
 
   if (!displayTag) notFound();
 
-  const articles = allPublished.filter(a =>
+  const blog = allPublished.filter(a =>
     a.tags.some(t => tagToSlug(t) === tagSlug)
   );
 
@@ -47,21 +47,21 @@ export default async function TagPage({ params }) {
 
       <div className="max-w-3xl mx-auto px-4 py-12">
         <div className="flex items-center gap-2 mb-8">
-          <Link href="/articles" className="text-sm text-gray-400 hover:text-lime-700 transition-colors">
-            ← All Articles
+          <Link href="/blog" className="text-sm text-gray-400 hover:text-lime-700 transition-colors">
+            ← All Posts
           </Link>
           <span className="text-gray-300">·</span>
-          <span className="text-sm text-gray-500">{articles.length} article{articles.length !== 1 ? 's' : ''} tagged "{displayTag}"</span>
+          <span className="text-sm text-gray-500">{blog.length} post{blog.length !== 1 ? 's' : ''} tagged "{displayTag}"</span>
         </div>
 
         <div className="space-y-8">
-          {articles.map(article => (
+          {blog.map(article => (
             <article key={article.slug} className="border-b border-gray-200 pb-8 last:border-0">
               {article.date && (
                 <time className="text-sm text-gray-400">{article.date}</time>
               )}
               <h2 className="text-xl font-bold text-gray-800 mt-1 mb-2">
-                <Link href={`/articles/${article.slug}`} className="hover:text-lime-700 transition-colors">
+                <Link href={`/blog/${article.slug}`} className="hover:text-lime-700 transition-colors">
                   {article.title}
                 </Link>
               </h2>
@@ -73,7 +73,7 @@ export default async function TagPage({ params }) {
                   {article.tags.map(tag => (
                     <Link
                       key={tag}
-                      href={`/articles/tag/${tagToSlug(tag)}`}
+                      href={`/blog/tag/${tagToSlug(tag)}`}
                       className={`text-xs rounded-full px-2.5 py-0.5 border transition-colors ${
                         tagToSlug(tag) === tagSlug
                           ? 'bg-lime-600 text-white border-lime-600'
@@ -86,7 +86,7 @@ export default async function TagPage({ params }) {
                 </div>
               )}
               <Link
-                href={`/articles/${article.slug}`}
+                href={`/blog/${article.slug}`}
                 className="inline-block mt-3 text-sm font-medium text-lime-700 hover:text-lime-900 transition-colors"
               >
                 Read more →

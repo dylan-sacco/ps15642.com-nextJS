@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import { ARTICLES_DIR } from './paths';
+import { BLOGS_DIR } from './paths';
 
 /** Convert a display tag to a URL-safe slug: "Lawn Care" → "lawn-care" */
 export function tagToSlug(tag) {
@@ -19,15 +19,15 @@ function parseTags(raw) {
   return String(raw).split(',').map(t => t.trim()).filter(Boolean);
 }
 
-export function getAllArticles() {
+export function getAllPosts() {
   try {
-    fs.mkdirSync(ARTICLES_DIR, { recursive: true });
-    const files = fs.readdirSync(ARTICLES_DIR).filter(f => f.endsWith('.md'));
+    fs.mkdirSync(BLOGS_DIR, { recursive: true });
+    const files = fs.readdirSync(BLOGS_DIR).filter(f => f.endsWith('.md'));
 
     return files.map(file => {
       const slug = file.replace(/\.md$/, '');
       try {
-        const raw = fs.readFileSync(path.join(ARTICLES_DIR, file), 'utf8');
+        const raw = fs.readFileSync(path.join(BLOGS_DIR, file), 'utf8');
         const { data, content } = matter(raw);
         return {
           slug,
@@ -48,18 +48,18 @@ export function getAllArticles() {
   }
 }
 
-export function getPublishedArticles() {
-  return getAllArticles()
+export function getPublishedPosts() {
+  return getAllPosts()
     .filter(a => a.published)
     .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 }
 
 /** Find articles sharing at least one tag with the given slug, sorted by relevance */
-export function getRelatedArticles(slug, tags, limit = 3) {
+export function getRelatedPosts(slug, tags, limit = 3) {
   if (!tags.length) return [];
   const myTagSlugs = new Set(tags.map(tagToSlug));
 
-  return getPublishedArticles()
+  return getPublishedPosts()
     .filter(a => a.slug !== slug)
     .map(a => ({
       ...a,

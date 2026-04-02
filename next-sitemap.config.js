@@ -23,7 +23,7 @@ module.exports = {
       { loc: 'https://ps15642.com/services',  changefreq: 'monthly', priority: 0.8 },
       { loc: 'https://ps15642.com/gallery',   changefreq: 'weekly',  priority: 0.7 },
       { loc: 'https://ps15642.com/contact',   changefreq: 'monthly', priority: 0.8 },
-      { loc: 'https://ps15642.com/articles',  changefreq: 'weekly',  priority: 0.8 },
+      { loc: 'https://ps15642.com/blog',  changefreq: 'weekly',  priority: 0.8 },
     ].map(r => ({ ...r, lastmod: now }));
 
     // --- content/pages/*.md → service pages ---
@@ -41,22 +41,22 @@ module.exports = {
         }));
     } catch { /* no pages yet */ }
 
-    // --- content/articles/*.md → article + tag pages ---
-    const articlesDir = path.join(process.cwd(), 'content/articles');
-    let articleRoutes = [];
+    // --- content/blog/*.md → article + tag pages ---
+    const blogDir = path.join(process.cwd(), 'content/blog');
+    let blogRoutes = [];
     let tagRoutes = [];
     try {
-      const files = fs.readdirSync(articlesDir).filter(f => f.endsWith('.md'));
+      const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md'));
       const tagMap = new Map(); // slug → first seen display name
 
       for (const file of files) {
-        const raw = fs.readFileSync(path.join(articlesDir, file), 'utf8');
+        const raw = fs.readFileSync(path.join(blogDir, file), 'utf8');
         const { data } = matter(raw);
         if (!data.published) continue;
 
         const slug = file.replace(/\.md$/, '');
-        articleRoutes.push({
-          loc: `https://ps15642.com/articles/${slug}`,
+        blogRoutes.push({
+          loc: `https://ps15642.com/blog/${slug}`,
           lastmod: data.date ? new Date(data.date).toISOString() : now,
           changefreq: 'monthly',
           priority: 0.7,
@@ -73,13 +73,13 @@ module.exports = {
       }
 
       tagRoutes = [...tagMap.keys()].map(ts => ({
-        loc: `https://ps15642.com/articles/tag/${ts}`,
+        loc: `https://ps15642.com/blog/tag/${ts}`,
         lastmod: now,
         changefreq: 'weekly',
         priority: 0.5,
       }));
     } catch { /* no articles yet */ }
 
-    return [...staticRoutes, ...serviceRoutes, ...articleRoutes, ...tagRoutes];
+    return [...staticRoutes, ...serviceRoutes, ...blogRoutes, ...tagRoutes];
   },
 };

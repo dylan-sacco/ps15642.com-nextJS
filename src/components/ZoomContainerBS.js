@@ -13,19 +13,19 @@ export default function ZoomContainerBS({
 
   return (
     <div
-      className="relative group overflow-hidden rounded-lg shadow-md h-[160px] sm:h-[220px] lg:h-[300px] w-full"
+      className="relative group overflow-hidden rounded-lg shadow-md h-[160px] sm:h-[220px] lg:h-[300px] w-full "
       tabIndex={0}
       onClick={() => setIsActive(a => !a)}
       onBlur={() => setIsActive(false)}
     >
       {/* Background image zooms on hover */}
       <div className="absolute inset-0 z-0 transition-transform duration-500 ease-in-out scale-100 group-hover:scale-110">
-        <Image src={imageURL} alt={title} fill priority className="object-cover" />
+        <Image src={imageURL} alt={title} fill priority sizes="(max-width: 640px) 100vw, 50vw" className="object-cover" />
       </div>
 
       {/* Overlay — always flex-centered so the block sits in the middle */}
       <div className="relative z-10 h-full bg-black/50 flex items-center justify-center p-3 sm:p-5">
-        <div className="text-white text-center w-full">
+        <div className="text-white text-center  w-80">
 
           {/* Title — always visible */}
           <p className="text-sm sm:text-xl lg:text-2xl font-semibold whitespace-pre-line leading-tight">
@@ -47,15 +47,15 @@ export default function ZoomContainerBS({
           </div>
 
           {/* Desktop hint — hidden on mobile, disappears on hover or active */}
-          <p className={`hidden md:block text-xs text-lime-200 italic mt-1 transition-opacity duration-300 group-hover:opacity-0 ${
-            isActive ? 'opacity-0' : 'opacity-100'
+          <p className={`hidden md:block text-xs text-lime-200 italic transition-all duration-300 overflow-hidden group-hover:opacity-0 group-hover:max-h-0 group-hover:mt-0 ${
+            isActive ? 'opacity-0 max-h-0 mt-0' : 'opacity-100 max-h-8 mt-1'
           }`}>
             Hover to learn more
           </p>
 
           {/* Mobile hint — hidden on desktop, disappears when active */}
-          <p className={`md:hidden text-xs text-lime-200 italic mt-1 transition-opacity duration-300 ${
-            isActive ? 'opacity-0' : 'opacity-100'
+          <p className={`md:hidden text-xs text-lime-200 italic transition-all duration-300 overflow-hidden ${
+            isActive ? 'opacity-0 max-h-0 mt-0' : 'opacity-100 max-h-8 mt-1'
           }`}>
             Tap to learn more
           </p>

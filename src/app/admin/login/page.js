@@ -16,7 +16,7 @@ export default async function AdminLoginPage() {
   const needsSetup = readUsers().length === 0;
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center -m-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <span className="text-lime-400 font-bold text-2xl">Admin Panel</span>

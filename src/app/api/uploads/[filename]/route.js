@@ -52,14 +52,16 @@ export async function GET(request, { params }) {
     else if (ext === '.mov')  contentType = 'video/quicktime';
 
     const isVideo = ['.mp4', '.webm', '.mov'].includes(ext);
+    const isDownload = new URL(request.url).searchParams.get('download') === '1';
     const cacheControl = isVideo ? 'public, max-age=604800' : 'public, max-age=3600';
+    const disposition = isDownload ? `attachment; filename="${resolvedFilename}"` : undefined;
 
     // Images: serve full file (no range needed)
     if (!isVideo) {
       const buffer = fs.readFileSync(filePath);
-      return new Response(buffer, {
-        headers: { 'Content-Type': contentType, 'Cache-Control': cacheControl },
-      });
+      const headers = { 'Content-Type': contentType, 'Cache-Control': cacheControl };
+      if (disposition) headers['Content-Disposition'] = disposition;
+      return new Response(buffer, { headers });
     }
 
     // Videos: support HTTP Range requests (required for iOS Safari)
@@ -68,14 +70,16 @@ export async function GET(request, { params }) {
 
     if (!rangeHeader) {
       // No Range header — stream full file but advertise range support
+      const headers = {
+        'Content-Type': contentType,
+        'Content-Length': String(fileSize),
+        'Accept-Ranges': 'bytes',
+        'Cache-Control': cacheControl,
+      };
+      if (disposition) headers['Content-Disposition'] = disposition;
       return new Response(Readable.toWeb(fs.createReadStream(filePath)), {
         status: 200,
-        headers: {
-          'Content-Type': contentType,
-          'Content-Length': String(fileSize),
-          'Accept-Ranges': 'bytes',
-          'Cache-Control': cacheControl,
-        },
+        headers,
       });
     }
 

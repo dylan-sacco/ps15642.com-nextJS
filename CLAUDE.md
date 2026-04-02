@@ -75,6 +75,10 @@ Key helpers:
 | `ADMIN_BACKUP_SIZE_LIMIT_MB` | Quota for admin backups in MB (default: 500) |
 | `EMAIL_USER` / `EMAIL_PASS` | Gmail + app password for contact form |
 | `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` / `RECAPTCHA_SECRET_KEY` | reCAPTCHA v3 (contact form) |
+| `NEXT_PUBLIC_SKIP_RECAPTCHA` | Set `true` in dev to skip reCAPTCHA script load + client token fetch |
+| `SKIP_RECAPTCHA` | Set `true` in dev to bypass server-side reCAPTCHA verification |
+| `SKIP_EMAIL` | Set `true` in dev to log email payload to console instead of sending |
+| `CONTACT_RETENTION_DAYS` | Days to keep contact submissions before auto-purge (default: 90) |
 | `NEXT_PUBLIC_APP_VERSION` | Auto-injected from `package.json` version by `next.config.js` |
 
 ## Server Dependencies
