@@ -4,9 +4,9 @@ import { hasPermission } from '@/lib/permissions';
 import Link from 'next/link';
 
 
-export default function RenderBlogs({ articles, user}) {
+export default function RenderBlogs({ articles, user }) {
   let [sortByDraft, setSortByDraft] = useState(false)
-    const canCreate = hasPermission(user.role, 'articles.create');
+  const canCreate = hasPermission(user.role, 'articles.create');
 
 
   return (
@@ -14,6 +14,14 @@ export default function RenderBlogs({ articles, user}) {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Blog</h1>
         <div className='flex gap-4'>
+          {/* Toggle state of sort by draft */}
+          <button
+            onClick={() => setSortByDraft(!sortByDraft)}
+            className="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded font-medium text-sm transition-colors"
+          >
+            {sortByDraft? "View All": "View Drafts"}
+          </button>
+
           {canCreate && (
             <Link
               href="/admin/blog/new"
@@ -22,12 +30,7 @@ export default function RenderBlogs({ articles, user}) {
               + New Post
             </Link>
           )}
-
-          {/* Toggle state of sort by draft */}
-          <button
-            onClick={() => setSortByDraft(!sortByDraft)}
-            className="bg-lime-600 hover:bg-lime-700 text-white px-4 py-2 rounded font-medium text-sm transition-colors"
-          >View Drafts</button></div>
+          </div>
       </div>
 
       {articles.length === 0 ? (
