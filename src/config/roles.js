@@ -41,6 +41,18 @@ export const PERMISSIONS = {
   CONTACT_VIEW:   'contact.view',   // See contact form submissions
   CONTACT_DELETE: 'contact.delete', // Delete contact submissions
 
+  // ── Testimonials ─────────────────────────────────────────────────────────────
+  TESTIMONIALS_VIEW:   'testimonials.view',   // See testimonials in admin
+  TESTIMONIALS_MANAGE: 'testimonials.manage', // Add, edit, delete testimonials
+
+  // ── Quotes ───────────────────────────────────────────────────────────────────
+  QUOTES_VIEW:   'quotes.view',   // See quote requests in admin
+  QUOTES_DELETE: 'quotes.delete', // Delete quote requests
+
+  // ── Before/After ─────────────────────────────────────────────────────────────
+  BEFORE_AFTER_VIEW:   'beforeafter.view',   // See before/after gallery in admin
+  BEFORE_AFTER_MANAGE: 'beforeafter.manage', // Add, edit, delete before/after pairs
+
 };
 
 // Role definitions.
@@ -77,6 +89,10 @@ export const ROLES = {
       'gallery.view',
       'gallery.upload',
       'gallery.edit',
+      'testimonials.view',
+      'testimonials.manage',
+      'beforeafter.view',
+      'beforeafter.manage',
     ],
   },
 
@@ -106,6 +122,8 @@ export const ROLES = {
       'backup.manage',
       'contact.view',
       'contact.delete',
+      'testimonials.view',
+      'testimonials.manage',
     ],
   },
 

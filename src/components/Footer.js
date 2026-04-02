@@ -8,6 +8,7 @@ const navLinks = [
   { name: 'About',    href: '/about'    },
   { name: 'Services', href: '/services' },
   { name: 'Gallery',  href: '/gallery'  },
+  { name: 'FAQ',      href: '/faq'      },
   { name: 'Contact',  href: '/contact'  },
 ];
 
@@ -86,6 +87,9 @@ export default function Footer() {
       <div className="border-t border-green-700">
         <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-green-400 text-xs">
           <p>&copy; {new Date().getFullYear()} P&S Contracting and Landscape. All rights reserved.</p>
+          <a href="/feed.xml" className="text-green-500 hover:text-lime-300 transition text-xs flex items-center gap-1" title="RSS Feed">
+            RSS Feed
+          </a>
           <p className="flex items-center gap-1">
             Website by{' '}
             <a

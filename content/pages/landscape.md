@@ -8,6 +8,8 @@ ogUrl: "https://ps15642.com/landscape"
 
 We do landscape design, planting, and cleanup work for homes in North Huntingdon and the surrounding area. A lot of our jobs are either starting fresh on a new yard or clearing out what's there and replacing it with something that actually fits the space.
 
+---
+
 ## Removal and Cleanup
 
 Before anything new goes in, the old stuff has to come out. We handle shrub and small tree removal, old bed cleanup, and whatever else is in the way. We haul it all off and leave the area ready to work with.

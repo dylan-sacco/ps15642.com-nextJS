@@ -8,6 +8,8 @@ ogUrl: "https://ps15642.com/treeandstump"
 
 Tree work is something we've been doing for a while now. We handle removals, trimming, and stump grinding for homeowners all around North Huntingdon and Westmoreland County.
 
+---
+
 ## Tree Removal
 
 If you have a tree that's dead, leaning the wrong way, or just too close to the house, we can take it down safely. We're used to working in tight spots — close to structures, over fences, near power lines. Cleanup is part of the job. We haul everything out and leave the yard clean when we're done.

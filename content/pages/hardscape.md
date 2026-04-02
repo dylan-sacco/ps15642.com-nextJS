@@ -8,6 +8,8 @@ ogUrl: "https://ps15642.com/hardscape"
 
 We do concrete work for patios, sidewalks, and other outdoor projects around the house. Most of our hardscape jobs are in North Huntingdon and the surrounding parts of Westmoreland County.
 
+---
+
 ## Concrete Patios
 
 A poured concrete patio is one of the better investments you can make in a backyard. It's durable, low maintenance, and gives you a solid base for furniture, a grill, whatever you're putting out there. We can do a standard broom finish or stamped patterns if you want something with a bit more character.

@@ -31,6 +31,7 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <head>
         <meta name="apple-mobile-web-app-title" content="P&S" />
+        <link rel="alternate" type="application/rss+xml" title="P&S Contracting and Landscape — Blog" href="/feed.xml" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

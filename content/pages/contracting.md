@@ -8,6 +8,8 @@ ogUrl: "https://ps15642.com/contracting"
 
 We build decks and install aluminum railings throughout North Huntingdon and the surrounding area. Most of our deck jobs are pressure-treated lumber or composite — whatever makes sense for the budget and how much maintenance the homeowner actually wants to deal with down the road.
 
+---
+
 ## Decks
 
 We'll come out, take measurements, and talk through what you're going for. Some people just want a simple platform off the back door. Others want something bigger with stairs down to the yard or built-in benches. Either way, we build it right — proper footings, ledger flashed and bolted, all the things that matter and that you won't see once we're done.

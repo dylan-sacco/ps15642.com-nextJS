@@ -6,7 +6,8 @@ import { usePathname, useRouter } from 'next/navigation';
 const NAV_ITEMS = [
   { href: '/admin/gallery',   label: 'Gallery',   permission: 'gallery.view'   },
   { href: '/admin/blog',      label: 'Blog',      permission: 'articles.view'  },
-  { href: '/admin/contact',   label: 'Contact',   permission: 'contact.view'   },
+  { href: '/admin/contact',      label: 'Contact',      permission: 'contact.view'      },
+  { href: '/admin/testimonials', label: 'Testimonials', permission: 'testimonials.view' },
   { href: '/admin/whitelist', label: 'Whitelist', permission: 'whitelist.view' },
   { href: '/admin/users',     label: 'Users',     permission: 'users.view'     },
   { href: '/admin/backup',    label: 'Backup',    permission: 'backup.view'    },
