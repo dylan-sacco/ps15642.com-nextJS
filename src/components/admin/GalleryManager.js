@@ -141,7 +141,7 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
       {/* Select checkbox — bottom-left of thumbnail */}
       <button
         onClick={(e) => { e.stopPropagation(); onSelect(filename); }}
-        className={`absolute bottom-10 left-2 z-10 w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+        className={`absolute bottom-17 left-2 z-10 w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
           selected
             ? 'bg-blue-500 border-blue-500'
             : 'bg-white/80 border-gray-400 sm:opacity-0 sm:group-hover:opacity-100'
