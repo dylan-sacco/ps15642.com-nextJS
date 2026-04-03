@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { spawnSync } from 'child_process';
 import sharp from 'sharp';
+import { spawnFfmpeg } from '@/lib/ffmpeg';
 import { GALLERY_DIR } from '@/lib/paths';
 import { requireApiPermission } from '@/lib/adminAuth';
 
@@ -67,35 +67,21 @@ function writeOrder(order) {
   fs.writeFileSync(orderPath, JSON.stringify(order, null, 2), 'utf8');
 }
 
-function convertVideoToMp4(inputPath, outputPath) {
-  const result = spawnSync('ffmpeg', [
-    '-y',
-    '-i', inputPath,
-    '-c:v', 'libx264',
-    '-crf', '23',
-    '-preset', 'fast',
-    '-c:a', 'aac',
-    '-b:a', '128k',
-    '-movflags', '+faststart', // moov atom at front — required for streaming
+async function convertVideoToMp4(inputPath, outputPath) {
+  return spawnFfmpeg([
+    '-y', '-i', inputPath,
+    '-c:v', 'libx264', '-crf', '23', '-preset', 'fast',
+    '-c:a', 'aac', '-b:a', '128k',
+    '-movflags', '+faststart',
     outputPath,
-  ], { timeout: 5 * 60 * 1000 }); // 5 min timeout
-
-  return result.status === 0;
+  ]);
 }
 
 async function generateVideoThumbnail(videoPath, thumbPath) {
   const tmpPng = path.join(GALLERY_DIR, `_thumb_tmp_${Date.now()}.png`);
   try {
-    // Extract first frame as PNG
-    const result = spawnSync('ffmpeg', [
-      '-y', '-i', videoPath,
-      '-vframes', '1',
-      tmpPng,
-    ], { timeout: 30_000 });
-
-    if (result.status !== 0) return;
-
-    // Resize and convert to WebP with sharp
+    const ok = await spawnFfmpeg(['-y', '-i', videoPath, '-vframes', '1', tmpPng], 30_000);
+    if (!ok) return;
     await sharp(tmpPng)
       .resize(800, null, { withoutEnlargement: true })
       .webp({ quality: 75 })
@@ -165,7 +151,7 @@ export async function POST(request) {
           const tmpInput = path.join(GALLERY_DIR, `_tmp_${Date.now()}_input.${ext}`);
 
           fs.writeFileSync(tmpInput, buffer);
-          const ok = convertVideoToMp4(tmpInput, destPath);
+          const ok = await convertVideoToMp4(tmpInput, destPath);
           fs.unlinkSync(tmpInput);
 
           if (!ok) {

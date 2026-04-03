@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { spawnSync } from 'child_process';
+import { spawnFfmpeg } from '@/lib/ffmpeg';
 import { GALLERY_DIR } from '@/lib/paths';
 import { requireApiPermission } from '@/lib/adminAuth';
 
@@ -74,12 +74,8 @@ export async function POST(request) {
       return NextResponse.json({ error: `${newFilename} already exists` }, { status: 409 });
     }
 
-    const result = spawnSync('ffmpeg', [
-      '-y', '-i', oldPath,
-      ...format.args(newPath),
-    ], { timeout: 5 * 60 * 1000 });
-
-    if (result.status !== 0) {
+    const ok = await spawnFfmpeg(['-y', '-i', oldPath, ...format.args(newPath)]);
+    if (!ok) {
       return NextResponse.json(
         { error: 'ffmpeg conversion failed. Is ffmpeg installed on the server?' },
         { status: 500 }

@@ -1,21 +1,16 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { spawnSync } from 'child_process';
 import sharp from 'sharp';
+import { spawnFfmpeg } from '@/lib/ffmpeg';
 import { GALLERY_DIR } from '@/lib/paths';
 import { requireApiPermission } from '@/lib/adminAuth';
 
 async function generateVideoThumbnail(videoPath, thumbPath) {
   const tmpPng = path.join(GALLERY_DIR, `_thumb_tmp_${Date.now()}.png`);
   try {
-    const result = spawnSync('ffmpeg', [
-      '-y', '-i', videoPath,
-      '-vframes', '1',
-      tmpPng,
-    ], { timeout: 30_000 });
-
-    if (result.status !== 0) return false;
+    const ok = await spawnFfmpeg(['-y', '-i', videoPath, '-vframes', '1', tmpPng], 30_000);
+    if (!ok) return false;
 
     await sharp(tmpPng)
       .resize(800, null, { withoutEnlargement: true })
