@@ -51,7 +51,7 @@ function getAdminGalleryImages() {
       const base = path.parse(name).name;
       const mtime = Math.floor(fs.statSync(path.join(GALLERY_DIR, name)).mtimeMs / 1000);
       const thumbFile = `${base}.thumb.webp`;
-      const thumbUrl = isVideo && fs.existsSync(path.join(GALLERY_DIR, thumbFile))
+      const thumbUrl = fs.existsSync(path.join(GALLERY_DIR, thumbFile))
         ? `/api/uploads/${thumbFile}?v=${mtime}`
         : null;
       return { filename: name, url: `/api/uploads/${base}?v=${mtime}`, disabled: disabled.has(name) || false, thumbUrl, alt: altMap[name] || '' };

@@ -46,7 +46,21 @@ export async function POST(request) {
     tmpPath = null;
 
     const mtime = Math.floor(fs.statSync(filePath).mtimeMs / 1000);
-    return NextResponse.json({ success: true, mtime });
+
+    // Regenerate thumbnail to match the new rotation
+    const base = path.parse(filename).name;
+    const thumbPath = path.join(GALLERY_DIR, `${base}.thumb.webp`);
+    let thumbUrl = null;
+    try {
+      await sharp(filePath)
+        .resize(600, 600, { fit: 'cover', withoutEnlargement: true })
+        .webp({ quality: 75 })
+        .toFile(thumbPath);
+      const thumbMtime = Math.floor(fs.statSync(thumbPath).mtimeMs / 1000);
+      thumbUrl = `/api/uploads/${base}.thumb.webp?v=${thumbMtime}`;
+    } catch { /* best-effort — rotation still succeeded */ }
+
+    return NextResponse.json({ success: true, mtime, thumbUrl });
   } catch (err) {
     // Clean up temp file if something went wrong
     if (tmpPath) {
