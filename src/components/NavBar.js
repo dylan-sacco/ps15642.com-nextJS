@@ -7,15 +7,16 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 
 const navItems = [
   { name: 'Home', href: '/' },
-  { name: 'Blog', href: '/blog' },
+  { name: 'About', href: '/about'},
+  { name: 'Gallery', href: '/gallery' },
+  { name: 'Contact', href: '/contact' },
   {
-    name: 'About', href: '/about', dropdown: [
+    name: 'More', href: '/blog', dropdown: [
       { name: 'Services', href: '/services' },
-      { name: 'Contact', href: '/contact' },
-      { name: 'Quote', href: '/quote' },
+      { name: 'Blog', href: '/blog' },
+      { name: 'Get A Quote', href: '/quote' },
     ],
   },
-  { name: 'Gallery', href: '/gallery' },
 ];
 
 export default function NavBar({ stickyDisabled = false }) {
