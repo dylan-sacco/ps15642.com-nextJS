@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = { title: 'Blog | Admin' };
 
-function getArticles() {
+function getBlogs() {
 
   try {
     fs.mkdirSync(BLOGS_DIR, { recursive: true });
@@ -42,9 +42,9 @@ export default async function AdminBlogPage() {
     return <PermissionDenied permission="blog.view" />;
   }
 
-  const articles = getArticles();
+  const blogs = getBlogs();
 
   return (
-      <RenderBlogs articles={articles} user={user} />
+      <RenderBlogs blogs={blogs} user={user} />
   );
 }
