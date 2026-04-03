@@ -26,10 +26,8 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, title, descript
         <img src={afterSrc} alt={`After — ${title}`} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
 
         {/* Before (clipped to left of slider) */}
-        <div className="absolute inset-0 overflow-hidden" style={{ width: `${position}%` }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={beforeSrc} alt={`Before — ${title}`} className="absolute inset-0 w-full h-full object-cover" style={{ width: containerRef.current?.clientWidth ?? '100%' }} draggable={false} />
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={beforeSrc} alt={`Before — ${title}`} className="absolute inset-0 w-full h-full object-cover" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }} draggable={false} />
 
         {/* Divider */}
         <div className="absolute inset-y-0 flex items-center pointer-events-none" style={{ left: `${position}%`, transform: 'translateX(-50%)' }}>
