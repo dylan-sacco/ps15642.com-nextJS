@@ -14,7 +14,7 @@ function ensureDir() {
 
 // GET /api/admin/blog — list all articles (front matter only)
 export async function GET() {
-  const { error } = await requireApiPermission('articles.view');
+  const { error } = await requireApiPermission('blog.view');
   if (error) return error;
 
   try {
@@ -33,7 +33,7 @@ export async function GET() {
       }
     });
 
-    articles.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    blog.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
     return NextResponse.json({ articles });
   } catch (err) {
     console.error('Articles list error:', err);
@@ -43,14 +43,14 @@ export async function GET() {
 
 // POST /api/admin/blog — create article
 export async function POST(request) {
-  const { user, error } = await requireApiPermission('articles.create');
+  const { user, error } = await requireApiPermission('blog.create');
   if (error) return error;
 
   try {
     ensureDir();
     const { slug, title, date, excerpt, tags, image, body, published: wantsPublished } = await request.json();
     // Strip publish flag if caller lacks permission
-    const published = wantsPublished && hasPermission(user.role, 'articles.publish');
+    const published = wantsPublished && hasPermission(user.role, 'blog.publish');
 
     if (!slug || !SLUG_RE.test(slug)) {
       return NextResponse.json(

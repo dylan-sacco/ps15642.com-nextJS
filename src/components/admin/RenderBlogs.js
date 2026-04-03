@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function RenderBlogs({ articles, user }) {
   let [sortByDraft, setSortByDraft] = useState(false)
-  const canCreate = hasPermission(user.role, 'articles.create');
+  const canCreate = hasPermission(user.role, 'blog.create');
 
 
   return (
@@ -33,7 +33,7 @@ export default function RenderBlogs({ articles, user }) {
         </div>
       </div>
 
-      {articles.length === 0 ? (
+      {blog.length === 0 ? (
         <div className="text-center py-16 text-gray-500">
           <p className="text-4xl mb-4">📝</p>
           <p>No posts yet.</p>
@@ -45,7 +45,7 @@ export default function RenderBlogs({ articles, user }) {
         </div>
       ) : (
         <div className="space-y-3">
-          {articles.map(article => {
+          {blog.map(article => {
             if (sortByDraft && article.published)
               return
             else

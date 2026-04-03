@@ -12,7 +12,7 @@ function safeSlug(slug) {
 
 // GET /api/admin/blog/[slug]
 export async function GET(request, { params }) {
-  const { error } = await requireApiPermission('articles.view');
+  const { error } = await requireApiPermission('blog.view');
   if (error) return error;
 
   const { slug } = await params;
@@ -29,7 +29,7 @@ export async function GET(request, { params }) {
 // PUT /api/admin/blog/[slug]
 export async function PUT(request, { params }) {
   // Minimum required to edit anything
-  const { user, error } = await requireApiPermission('articles.edit.draft');
+  const { user, error } = await requireApiPermission('blog.edit.draft');
   if (error) return error;
 
   const { slug } = await params;
@@ -46,15 +46,15 @@ export async function PUT(request, { params }) {
     const { data: current } = matter(raw);
     const currentlyPublished = !!current.published;
 
-    if (currentlyPublished && !hasPermission(user.role, 'articles.edit.published')) {
+    if (currentlyPublished && !hasPermission(user.role, 'blog.edit.published')) {
       return NextResponse.json({ error: 'Your role cannot edit published articles' }, { status: 403 });
     }
 
     // Determine final published state
     let published;
     if (wantsPublished !== currentlyPublished) {
-      // Changing publish state requires articles.publish
-      if (!hasPermission(user.role, 'articles.publish')) {
+      // Changing publish state requires blog.publish
+      if (!hasPermission(user.role, 'blog.publish')) {
         published = currentlyPublished; // silently preserve current state
       } else {
         published = !!wantsPublished;
@@ -96,7 +96,7 @@ export async function PUT(request, { params }) {
 
 // DELETE /api/admin/blog/[slug]
 export async function DELETE(request, { params }) {
-  const { error } = await requireApiPermission('articles.delete');
+  const { error } = await requireApiPermission('blog.delete');
   if (error) return error;
 
   const { slug } = await params;

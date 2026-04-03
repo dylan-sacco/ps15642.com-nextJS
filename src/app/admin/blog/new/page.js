@@ -7,11 +7,11 @@ export const metadata = { title: 'New Post | Admin' };
 
 export default async function NewPostPage() {
   const user = await getSessionUser();
-  if (!user || !hasPermission(user.role, 'articles.create')) {
-    return <PermissionDenied permission="articles.create" />;
+  if (!user || !hasPermission(user.role, 'blog.create')) {
+    return <PermissionDenied permission="blog.create" />;
   }
 
-  const canPublish = hasPermission(user.role, 'articles.publish');
+  const canPublish = hasPermission(user.role, 'blog.publish');
 
   return (
     <div>

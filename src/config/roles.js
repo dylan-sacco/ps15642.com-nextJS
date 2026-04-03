@@ -10,13 +10,13 @@
 // Full list of permissions in the system.
 export const PERMISSIONS = {
 
-  // ── Articles ────────────────────────────────────────────────────────────────
-  ARTICLES_VIEW:            'articles.view',            // See the articles list in admin
-  ARTICLES_CREATE:          'articles.create',          // Create new draft articles
-  ARTICLES_EDIT_DRAFT:      'articles.edit.draft',      // Edit unpublished / draft articles
-  ARTICLES_EDIT_PUBLISHED:  'articles.edit.published',  // Edit already-published articles
-  ARTICLES_PUBLISH:         'articles.publish',         // Publish or unpublish articles
-  ARTICLES_DELETE:          'articles.delete',          // Permanently delete articles
+  // ── Blog ────────────────────────────────────────────────────────────────────
+  BLOG_VIEW:            'blog.view',            // See the blog list in admin
+  BLOG_CREATE:          'blog.create',          // Create new draft posts
+  BLOG_EDIT_DRAFT:      'blog.edit.draft',      // Edit unpublished / draft posts
+  BLOG_EDIT_PUBLISHED:  'blog.edit.published',  // Edit already-published posts
+  BLOG_PUBLISH:         'blog.publish',         // Publish or unpublish posts
+  BLOG_DELETE:          'blog.delete',          // Permanently delete posts
 
   // ── Gallery ─────────────────────────────────────────────────────────────────
   GALLERY_VIEW:   'gallery.view',   // See the gallery manager page
@@ -73,14 +73,14 @@ export const PERMISSIONS = {
 export const ROLES = {
 
   // ── Editor ───────────────────────────────────────────────────────────────────
-  // Can draft and edit unpublished articles. No gallery or user management access.
+  // Can draft and edit unpublished blog. No gallery or user management access.
   editor: {
     label: 'Editor',
     level: 1,
     permissions: [
-      'articles.view',
-      'articles.create',
-      'articles.edit.draft',
+      'blog.view',
+      'blog.create',
+      'blog.edit.draft',
     ],
   },
 
@@ -90,12 +90,12 @@ export const ROLES = {
     label: 'Publisher',
     level: 2,
     permissions: [
-      'articles.view',
-      'articles.create',
-      'articles.edit.draft',
-      'articles.edit.published',
-      'articles.publish',
-      'articles.delete',
+      'blog.view',
+      'blog.create',
+      'blog.edit.draft',
+      'blog.edit.published',
+      'blog.publish',
+      'blog.delete',
       'gallery.view',
       'gallery.upload',
       'gallery.edit',
@@ -116,12 +116,12 @@ export const ROLES = {
     label: 'Owner',
     level: 3,
     permissions: [
-      'articles.view',
-      'articles.create',
-      'articles.edit.draft',
-      'articles.edit.published',
-      'articles.publish',
-      'articles.delete',
+      'blog.view',
+      'blog.create',
+      'blog.edit.draft',
+      'blog.edit.published',
+      'blog.publish',
+      'blog.delete',
       'gallery.view',
       'gallery.upload',
       'gallery.edit',

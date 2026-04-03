@@ -38,8 +38,8 @@ function getArticles() {
 
 export default async function AdminBlogPage() {
   const user = await getSessionUser();
-  if (!user || !hasPermission(user.role, 'articles.view')) {
-    return <PermissionDenied permission="articles.view" />;
+  if (!user || !hasPermission(user.role, 'blog.view')) {
+    return <PermissionDenied permission="blog.view" />;
   }
 
   const articles = getArticles();

@@ -43,7 +43,7 @@ export default async function AdminPage() {
 
   const quickLinks = [
     { label: 'Gallery',      href: '/admin/gallery',      permission: 'gallery.view'      },
-    { label: 'Blog',         href: '/admin/blog',         permission: 'articles.view'     },
+    { label: 'Blog',         href: '/admin/blog',         permission: 'blog.view'     },
     { label: 'Contact',      href: '/admin/contact',      permission: 'contact.view'      },
     { label: 'Testimonials', href: '/admin/testimonials', permission: 'testimonials.view' },
     { label: 'Users',        href: '/admin/users',        permission: 'users.view'        },
@@ -61,7 +61,7 @@ export default async function AdminPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
         <StatCard label="Gallery Images" value={galleryCount} href="/admin/gallery" permission="gallery.view" userRole={user.role} />
-        <StatCard label="Published Posts" value={publishedCount} sub={draftCount > 0 ? `${draftCount} draft${draftCount !== 1 ? 's' : ''}` : null} href="/admin/blog" permission="articles.view" userRole={user.role} />
+        <StatCard label="Published Posts" value={publishedCount} sub={draftCount > 0 ? `${draftCount} draft${draftCount !== 1 ? 's' : ''}` : null} href="/admin/blog" permission="blog.view" userRole={user.role} />
         <StatCard label="Unread Contacts" value={unreadContacts} sub={submissions.length > 0 ? `${submissions.length} total` : null} href="/admin/contact" permission="contact.view" userRole={user.role} />
         <StatCard label="Total Contacts" value={submissions.length} href="/admin/contact" permission="contact.view" userRole={user.role} />
       </div>
