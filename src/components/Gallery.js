@@ -86,7 +86,7 @@ export default function Gallery({ images, showAltText = false }) {
               ) : (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
-                  src={item.src}
+                  src={item.thumbUrl || item.src}
                   alt={item.alt || `Gallery image ${i + 1}`}
                   className="absolute inset-0 w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-300"
                   loading={i < 3 ? 'eager' : 'lazy'}

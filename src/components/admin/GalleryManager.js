@@ -18,7 +18,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert, onConvertVideo, onRotate, onAltUpdate, selected, onSelect, selecting }) {
+function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert, onConvertVideo, onRotate, onAltUpdate, onGenerateThumb, selected, onSelect, selecting }) {
   const { filename, url, disabled, thumbUrl, alt } = image;
   const isWebP = filename.toLowerCase().endsWith('.webp');
   const isVideo = /\.(mp4|mov|webm)$/i.test(filename);
@@ -187,6 +187,15 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
               Preview
+            </button>
+            <button
+              onClick={() => { setMenuOpen(false); onGenerateThumb(filename); }}
+              className="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {thumbUrl ? 'Regenerate Thumbnail' : 'Generate Thumbnail'}
             </button>
             <div className="border-t border-gray-100 mb-1" />
             {!isVideo && !isWebP && (
@@ -824,6 +833,24 @@ export default function GalleryManager({ initialImages }) {
     }
   }
 
+  async function handleGenerateSingleThumbnail(filename) {
+    try {
+      const res = await fetch('/api/admin/gallery/generate-thumbnails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to generate thumbnail');
+      setImages(prev => prev.map(img =>
+        img.filename === filename ? { ...img, thumbUrl: data.thumbUrl } : img
+      ));
+      showStatus(`Thumbnail generated for ${filename}`);
+    } catch (err) {
+      showStatus(err.message, true);
+    }
+  }
+
   async function handleToggleDisabled(filename, disabled) {
     try {
       const res = await fetch('/api/admin/gallery/disable', {
@@ -1004,7 +1031,7 @@ export default function GalleryManager({ initialImages }) {
               </button>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
-              {images.some(img => /\.(mp4|mov|webm)$/i.test(img.filename) && !img.thumbUrl) && (
+              {images.some(img => !img.thumbUrl && !img.filename.endsWith('.thumb.webp')) && (
                 <button
                   onClick={handleGenerateThumbnails}
                   disabled={generatingThumbs}
@@ -1069,6 +1096,7 @@ export default function GalleryManager({ initialImages }) {
           )}
 
           <DndContext
+            id="gallery-dnd"
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragStart={handleDragStart}
@@ -1091,6 +1119,7 @@ export default function GalleryManager({ initialImages }) {
                     onConvertVideo={handleConvertVideo}
                     onRotate={handleRotate}
                     onAltUpdate={handleAltUpdate}
+                    onGenerateThumb={handleGenerateSingleThumbnail}
                   />
                 ))}
               </div>

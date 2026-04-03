@@ -151,13 +151,10 @@ function toItem(name, altMap = {}) {
   const isVideo = /\.(mp4|mov|webm)$/i.test(name);
   const base = path.parse(name).name;
   const mtime = Math.floor(fs.statSync(path.join(GALLERY_DIR, name)).mtimeMs / 1000);
-  let poster;
-  if (isVideo) {
-    const thumbPath = path.join(GALLERY_DIR, `${base}.thumb.webp`);
-    if (fs.existsSync(thumbPath)) {
-      const thumbMtime = Math.floor(fs.statSync(thumbPath).mtimeMs / 1000);
-      poster = `/api/uploads/${base}.thumb.webp?v=${thumbMtime}`;
-    }
-  }
-  return { src: `/api/uploads/${base}?v=${mtime}`, isVideo, poster, alt: altMap[name] || '' };
+  const thumbPath = path.join(GALLERY_DIR, `${base}.thumb.webp`);
+  const thumbMtime = fs.existsSync(thumbPath)
+    ? Math.floor(fs.statSync(thumbPath).mtimeMs / 1000)
+    : null;
+  const thumbUrl = thumbMtime ? `/api/uploads/${base}.thumb.webp?v=${thumbMtime}` : null;
+  return { src: `/api/uploads/${base}?v=${mtime}`, isVideo, poster: isVideo ? thumbUrl : null, thumbUrl, alt: altMap[name] || '' };
 }

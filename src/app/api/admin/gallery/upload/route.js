@@ -190,11 +190,18 @@ export async function POST(request) {
         fs.writeFileSync(path.join(GALLERY_DIR, finalName), finalBuffer);
       }
 
-      // Generate thumbnail for videos
+      // Generate thumbnail sidecar
+      const base = path.parse(finalName).name;
+      const thumbPath = path.join(GALLERY_DIR, `${base}.thumb.webp`);
       if (isVideo) {
-        const base = path.parse(finalName).name;
-        const thumbPath = path.join(GALLERY_DIR, `${base}.thumb.webp`);
         await generateVideoThumbnail(path.join(GALLERY_DIR, finalName), thumbPath);
+      } else {
+        try {
+          await sharp(path.join(GALLERY_DIR, finalName))
+            .resize(600, 600, { fit: 'cover', withoutEnlargement: true })
+            .webp({ quality: 75 })
+            .toFile(thumbPath);
+        } catch { /* non-fatal — full image will be used as fallback */ }
       }
 
       uploaded.push(finalName);
@@ -208,12 +215,10 @@ export async function POST(request) {
 
     const thumbUrls = {};
     for (const name of uploaded) {
-      if (/\.(mp4|mov|webm)$/i.test(name)) {
-        const base = path.parse(name).name;
-        const thumbFile = `${base}.thumb.webp`;
-        if (fs.existsSync(path.join(GALLERY_DIR, thumbFile))) {
-          thumbUrls[name] = `/api/uploads/${thumbFile}`;
-        }
+      const base = path.parse(name).name;
+      const thumbFile = `${base}.thumb.webp`;
+      if (fs.existsSync(path.join(GALLERY_DIR, thumbFile))) {
+        thumbUrls[name] = `/api/uploads/${thumbFile}`;
       }
     }
 
