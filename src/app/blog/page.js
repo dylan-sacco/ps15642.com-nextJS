@@ -1,4 +1,4 @@
-import { getPublishedPosts, tagToSlug } from '@/lib/blog';
+import { getPublishedPosts } from '@/lib/blog';
 import H1Drop from '@/components/H1Drop';
 import ParallaxCard from '@/components/ParallaxCard';
 import BlogList from '@/components/BlogList';
@@ -31,7 +31,7 @@ export default function BlogPage() {
       </ParallaxCard>
 
       <div className="max-w-3xl mx-auto px-4 py-12">
-        <BlogList posts={blog} tagToSlug={tagToSlug} />
+        <BlogList posts={blog} />
       </div>
     </div>
   );

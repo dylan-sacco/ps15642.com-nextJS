@@ -1,10 +1,13 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+function tagToSlug(tag) {
+  return tag.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
 
 const PAGE_SIZE = 10;
 
-export default function BlogList({ posts, tagToSlug }) {
+export default function BlogList({ posts }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const visiblePosts = posts.slice(0, visibleCount);
