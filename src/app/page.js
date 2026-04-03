@@ -6,6 +6,7 @@ import ZoomContainerBS from "@/components/ZoomContainerBS";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import { getFeaturedTestimonials } from "@/lib/testimonials";
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata = {
   title: "P&S Contracting and Landscape | Westmoreland County, PA",
@@ -77,7 +78,6 @@ export default async function Home() {
           <h1 className=" text-4xl md:text-6xl font-bold font-serif">P & S</h1>
           <p className=" text-2xl md:text-4xl font-serif">Contracting and Landscape</p>
         </H1Drop>
-
       </ParallaxCard>
 
       {/* About Section */}
@@ -99,8 +99,6 @@ export default async function Home() {
         ))}
       </div>
 
-
-
       <TestimonialsSection testimonials={testimonials} />
 
       {/* Contact Section */}
@@ -108,15 +106,32 @@ export default async function Home() {
         In need of a complete overhaul of your current landscaping layout; or maybe just a few additions for that added elegance, such as a mini grove of trees or a tasteful flower bed? Feel free to give us a call for your cost-free consultation!
       </GreenCard>
 
-      <div className=" max-w-6xl mx-auto p-6 text-center">
+      <div className="max-w-6xl mx-auto p-6 text-center">
         <H1Drop>
           proudly serving the following areas
         </H1Drop>
-        <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto p-6">
-          <div>North Huntingdon, PA</div>
+
+        {/* Featured location pages */}
+        <div className="grid sm:grid-cols-3 gap-4 max-w-4xl mx-auto py-6">
+          {[
+            { name: 'Irwin, PA', href: '/locations/irwin' },
+            { name: 'Greensburg, PA', href: '/locations/greensburg' },
+            { name: 'North Huntingdon, PA', href: '/locations/north-huntingdon' },
+          ].map(loc => (
+            <Link
+              key={loc.href}
+              href={loc.href}
+              className="block rounded-xl border border-lime-200 bg-lime-50 px-4 py-5 font-semibold text-lime-800 hover:bg-lime-600 hover:text-white hover:border-lime-600 transition-colors shadow-sm"
+            >
+              {loc.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Full service area list */}
+        <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto pb-6 text-sm text-gray-600">
           <div>North Irwin, PA</div>
           <div>Larimer, PA</div>
-          <div>Irwin, PA</div>
           <div>Manor, PA</div>
           <div>Wendel, PA</div>
           <div>Yohoghany, PA</div>
