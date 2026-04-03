@@ -68,13 +68,11 @@ export async function PATCH(request) {
 
     fs.renameSync(oldPath, newPath);
 
-    // Also rename the video thumbnail if it exists
-    if (/\.(mp4|mov|webm)$/i.test(oldName)) {
-      const oldThumb = path.join(GALLERY_DIR, `${path.parse(oldName).name}.thumb.webp`);
-      const newThumb = path.join(GALLERY_DIR, `${path.parse(newName).name}.thumb.webp`);
-      if (fs.existsSync(oldThumb)) {
-        try { fs.renameSync(oldThumb, newThumb); } catch { /* best-effort */ }
-      }
+    // Rename the thumbnail sidecar if it exists (applies to both images and videos)
+    const oldThumb = path.join(GALLERY_DIR, `${path.parse(oldName).name}.thumb.webp`);
+    const newThumb = path.join(GALLERY_DIR, `${path.parse(newName).name}.thumb.webp`);
+    if (fs.existsSync(oldThumb)) {
+      try { fs.renameSync(oldThumb, newThumb); } catch { /* best-effort */ }
     }
 
     // Update order
