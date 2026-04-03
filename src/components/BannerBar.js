@@ -103,7 +103,7 @@ function MarqueeTicker({ banners, speed }) {
                 {b.linkText || 'Learn More'}
               </a>
             )}
-            <span className="mx-4 opacity-40 select-none ml-auto mr-5">✦</span>
+            {banners.length > 1 && <span className="mx-4 opacity-40 select-none ml-auto mr-5">✦</span>}
           </span>
         );
       })}
