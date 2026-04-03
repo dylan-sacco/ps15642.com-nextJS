@@ -57,6 +57,12 @@ export const PERMISSIONS = {
   BANNERS_VIEW:   'banners.view',   // See the banner manager page
   BANNERS_MANAGE: 'banners.manage', // Create, edit, delete banners
 
+  // ── Locations ─────────────────────────────────────────────────────────────────
+  LOCATIONS_VIEW:   'locations.view',   // See the locations manager page
+  LOCATIONS_CREATE: 'locations.create', // Create new location pages
+  LOCATIONS_EDIT:   'locations.edit',   // Edit existing location pages
+  LOCATIONS_DELETE: 'locations.delete', // Delete location pages
+
 };
 
 // Role definitions.
@@ -97,6 +103,9 @@ export const ROLES = {
       'testimonials.manage',
       'beforeafter.view',
       'beforeafter.manage',
+      'locations.view',
+      'locations.create',
+      'locations.edit',
     ],
   },
 
@@ -134,6 +143,10 @@ export const ROLES = {
       'beforeafter.manage',
       'banners.view',
       'banners.manage',
+      'locations.view',
+      'locations.create',
+      'locations.edit',
+      'locations.delete',
     ],
   },
 

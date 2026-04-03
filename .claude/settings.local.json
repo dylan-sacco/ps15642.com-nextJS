@@ -6,7 +6,8 @@
       "Bash(sed:*)",
       "Bash(sed -i 's|href=\"/articles\"|href=\"/blog\"|g' src/app/blog/tag/[tag]/page.js src/app/blog/[slug]/page.js src/app/admin/blog/page.js)",
       "Bash(sed -i 's|href={`/articles/${|href={`/blog/${|g' src/app/admin/blog/page.js)",
-      "Bash(sed -i 's|GET /api/admin/articles|GET /api/admin/blog|g; s|POST /api/admin/articles|POST /api/admin/blog|g; s|DELETE /api/admin/articles|DELETE /api/admin/blog|g; s|PUT /api/admin/articles|PUT /api/admin/blog|g' src/app/api/admin/blog/route.js src/app/api/admin/blog/[slug]/route.js)"
+      "Bash(sed -i 's|GET /api/admin/articles|GET /api/admin/blog|g; s|POST /api/admin/articles|POST /api/admin/blog|g; s|DELETE /api/admin/articles|DELETE /api/admin/blog|g; s|PUT /api/admin/articles|PUT /api/admin/blog|g' src/app/api/admin/blog/route.js src/app/api/admin/blog/[slug]/route.js)",
+      "Bash(grep:*)"
     ]
   }
 }

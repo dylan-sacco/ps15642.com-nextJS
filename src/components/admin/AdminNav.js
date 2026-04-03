@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: '/admin/gallery',      label: 'Gallery',      permission: 'gallery.view'      },
   { href: '/admin/before-after', label: 'Before/After', permission: 'beforeafter.view'  },
   { href: '/admin/blog',         label: 'Blog',         permission: 'articles.view'     },
+  { href: '/admin/locations',    label: 'Locations',    permission: 'locations.view'    },
   { href: '/admin/testimonials', label: 'Testimonials', permission: 'testimonials.view' },
   { href: '/admin/banners',      label: 'Banners',      permission: 'banners.view'      },
   { href: '/admin/contact',      label: 'Contact',      permission: 'contact.view'      },

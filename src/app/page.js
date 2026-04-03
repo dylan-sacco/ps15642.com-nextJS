@@ -108,7 +108,9 @@ export default async function Home() {
 
       <div className="max-w-6xl mx-auto p-6 text-center">
         <H1Drop>
-          proudly serving the following areas
+          <Link href="/locations" className="hover:text-lime-700 transition-colors">
+            proudly serving the following areas
+          </Link>
         </H1Drop>
 
         {/* Featured location pages */}

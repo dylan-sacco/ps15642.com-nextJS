@@ -21,6 +21,7 @@ module.exports = {
       { loc: 'https://ps15642.com',          changefreq: 'yearly',  priority: 1.0 },
       { loc: 'https://ps15642.com/about',     changefreq: 'monthly', priority: 0.8 },
       { loc: 'https://ps15642.com/services',  changefreq: 'monthly', priority: 0.8 },
+      { loc: 'https://ps15642.com/locations',  changefreq: 'monthly', priority: 0.8 },
       { loc: 'https://ps15642.com/gallery',   changefreq: 'weekly',  priority: 0.7 },
       { loc: 'https://ps15642.com/contact',   changefreq: 'monthly', priority: 0.8 },
       { loc: 'https://ps15642.com/blog',  changefreq: 'weekly',  priority: 0.8 },
