@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export default function ParallaxCard({ imgUrl = '/hs1.webp', children }) {
+export default function ParallaxCard({ imgUrl = '/hs1.webp', speed: speedProp, children }) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -17,7 +17,6 @@ export default function ParallaxCard({ imgUrl = '/hs1.webp', children }) {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // ✅ Preload image always
   const preloadImage = (
     <Image
       src={imgUrl}
@@ -29,34 +28,17 @@ export default function ParallaxCard({ imgUrl = '/hs1.webp', children }) {
     />
   );
 
-  if (isMobile) {
-    return (
-      <>
-        {preloadImage}
-        <div
-          className="w-full flex items-center justify-center text-white text-center bg-cover bg-center overflow-hidden"
-          style={{
-            backgroundImage: `url(${imgUrl})`,
-            aspectRatio: "1 / 1",
-            maxHeight: 400,
-            backgroundColor: "#000",
-          }}
-        >
-          <div className="bg-black/50 w-full h-full flex flex-col items-center justify-center p-4">
-            {children}
-          </div>
-        </div>
-      </>
-    );
-  }
+  const speed = speedProp ?? (isMobile ? -5 : -8);
+  const aspect = isMobile ? "1 / 1" : "2 / 1";
+  const maxHeight = isMobile ? 320 : 400;
 
   return (
     <>
       {preloadImage}
       <ParallaxProvider>
-        <ParallaxBanner style={{ aspectRatio: "2 / 1", maxHeight: 400 }}>
-          <ParallaxBannerLayer image={imgUrl} speed={-20} />
-          <ParallaxBannerLayer className="h-full w-full bg-opacity-40 flex flex-col items-center justify-center drop-shadow-lg bg-[#0005] text-white text-center font-serif">
+        <ParallaxBanner style={{ aspectRatio: aspect, maxHeight }}>
+          <ParallaxBannerLayer image={imgUrl} speed={speed} />
+          <ParallaxBannerLayer className="h-full w-full flex flex-col items-center justify-center drop-shadow-lg bg-[#0005] text-white text-center font-serif">
             {children}
           </ParallaxBannerLayer>
         </ParallaxBanner>
