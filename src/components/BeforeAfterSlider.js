@@ -30,9 +30,9 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, title, descript
         <img src={beforeSrc} alt={`Before — ${title}`} className="absolute inset-0 w-full h-full object-cover" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }} draggable={false} />
 
         {/* Divider */}
-        <div className="absolute inset-y-0 flex items-center pointer-events-none" style={{ left: `${position}%`, transform: 'translateX(-50%)' }}>
+        <div className="absolute inset-y-0 flex items-center pointer-events-none" style={{ left: `${position}%` }}>
           <div className="w-0.5 h-full bg-white/80" />
-          <div className="absolute w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-600 text-xs font-bold border border-gray-200">
+          <div className="absolute w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center text-gray-600 text-xs font-bold border border-gray-200" style={{transform: 'translateX(-45%)'}}>
             ⇔
           </div>
         </div>
