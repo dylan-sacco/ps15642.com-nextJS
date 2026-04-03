@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { GALLERY_DIR } from '@/lib/paths';
+import { GALLERY_DIR, GALLERY_ALT_FILE } from '@/lib/paths';
 import { getSessionUser } from '@/lib/adminAuth';
 import { hasPermission } from '@/lib/permissions';
 import GalleryManager from '@/components/admin/GalleryManager';
@@ -31,6 +31,10 @@ function getAdminGalleryImages() {
       disabled = new Set(JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, '_disabled.json'), 'utf8')));
     } catch { /* no disabled */ }
 
+    // Read alt text
+    let altMap = {};
+    try { altMap = JSON.parse(fs.readFileSync(GALLERY_ALT_FILE, 'utf8')); } catch { /* no alt file */ }
+
     // Sort by order
     let sorted;
     if (order.length > 0) {
@@ -50,7 +54,7 @@ function getAdminGalleryImages() {
       const thumbUrl = isVideo && fs.existsSync(path.join(GALLERY_DIR, thumbFile))
         ? `/api/uploads/${thumbFile}?v=${mtime}`
         : null;
-      return { filename: name, url: `/api/uploads/${base}?v=${mtime}`, disabled: disabled.has(name) || false, thumbUrl };
+      return { filename: name, url: `/api/uploads/${base}?v=${mtime}`, disabled: disabled.has(name) || false, thumbUrl, alt: altMap[name] || '' };
     });
   } catch {
     return [];
