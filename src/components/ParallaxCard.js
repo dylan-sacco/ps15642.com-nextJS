@@ -23,7 +23,8 @@ export default function ParallaxCard({ imgUrl = '/hs1.webp', speed: speedProp, c
       alt="Preload Background"
       width={1920}
       height={1080}
-      priority
+      priority={true}
+      fetchPriority="high"
       style={{ display: "none" }}
     />
   );

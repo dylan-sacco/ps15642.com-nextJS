@@ -57,7 +57,7 @@ export default function NavBar({ stickyDisabled = false }) {
         {/* Logo */}
         <Link href="/">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="Logo" className="max-h-10 md:max-h-16" />
+          <img src="/logo.png" alt="Logo" className="max-h-10 md:max-h-16 pb-2" />
         </Link>
 
         {/* Desktop Nav */}
@@ -111,7 +111,7 @@ export default function NavBar({ stickyDisabled = false }) {
         </ul>
 
         {/* Mobile Menu Button */}
-        <button onClick={toggleMenu} className="md:hidden text-black px-4 py-3">
+        <button id='navDropdown' title='Hamburger Menu Dropdown' onClick={toggleMenu} className="md:hidden text-black px-4 py-3">
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
