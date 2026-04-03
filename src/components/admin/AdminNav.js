@@ -4,16 +4,16 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 const NAV_ITEMS = [
-  { href: '/admin/gallery',   label: 'Gallery',   permission: 'gallery.view'   },
-  { href: '/admin/blog',      label: 'Blog',      permission: 'articles.view'  },
+  { href: '/admin/gallery',      label: 'Gallery',      permission: 'gallery.view'      },
+  { href: '/admin/before-after', label: 'Before/After', permission: 'beforeafter.view'  },
+  { href: '/admin/blog',         label: 'Blog',         permission: 'articles.view'     },
+  { href: '/admin/testimonials', label: 'Testimonials', permission: 'testimonials.view' },
+  { href: '/admin/banners',      label: 'Banners',      permission: 'banners.view'      },
   { href: '/admin/contact',      label: 'Contact',      permission: 'contact.view'      },
   { href: '/admin/quotes',       label: 'Quotes',       permission: 'quotes.view'       },
-  { href: '/admin/testimonials', label: 'Testimonials', permission: 'testimonials.view' },
-  { href: '/admin/before-after', label: 'Before/After', permission: 'beforeafter.view'  },
-  { href: '/admin/banners',      label: 'Banners',      permission: 'banners.view'      },
-  { href: '/admin/whitelist', label: 'Whitelist', permission: 'whitelist.view' },
-  { href: '/admin/users',     label: 'Users',     permission: 'users.view'     },
-  { href: '/admin/backup',    label: 'Backup',    permission: 'backup.view'    },
+  { href: '/admin/whitelist',    label: 'Whitelist',    permission: 'whitelist.view'    },
+  { href: '/admin/users',        label: 'Users',        permission: 'users.view'        },
+  { href: '/admin/backup',       label: 'Backup',       permission: 'backup.view'       },
 ];
 
 export default function AdminNav({ username, permissions = [] }) {
