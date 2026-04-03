@@ -317,7 +317,7 @@ function SortableImage({ image, onRename, onDelete, onToggleDisabled, onConvert,
         ) : (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
-            src={url}
+            src={thumbUrl || url}
             alt={filename}
             className={`w-full aspect-square object-cover transition-all ${
               disabled ? 'opacity-40 grayscale' : ''
