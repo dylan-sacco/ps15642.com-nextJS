@@ -474,6 +474,8 @@ export default function GalleryManager({ initialImages }) {
   const [status, setStatus] = useState('');
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('order');
+  const [typeFilter, setTypeFilter] = useState('all'); // 'all' | 'images' | 'videos'
+  const [noThumbOnly, setNoThumbOnly] = useState(false);
   const fileInputRef = useRef(null);
 
   const sensors = useSensors(
@@ -894,6 +896,9 @@ export default function GalleryManager({ initialImages }) {
         (img.alt || '').toLowerCase().includes(q)
       );
     }
+    if (typeFilter === 'images') result = result.filter(img => !/\.(mp4|mov|webm)$/i.test(img.filename));
+    else if (typeFilter === 'videos') result = result.filter(img => /\.(mp4|mov|webm)$/i.test(img.filename));
+    if (noThumbOnly) result = result.filter(img => !img.thumbUrl);
     if (sortBy === 'name-asc') result.sort((a, b) => a.filename.localeCompare(b.filename));
     else if (sortBy === 'name-desc') result.sort((a, b) => b.filename.localeCompare(a.filename));
     else if (sortBy === 'alt') result.sort((a, b) => (a.alt || '').localeCompare(b.alt || ''));
@@ -903,7 +908,7 @@ export default function GalleryManager({ initialImages }) {
     })
     return result;
   })();
-  const isFiltered = !!search || sortBy !== 'order';
+  const isFiltered = !!search || sortBy !== 'order' || typeFilter !== 'all' || noThumbOnly;
 
   const visibleCount = images.filter(img => !img.disabled).length;
   const hiddenCount = images.length - visibleCount;
@@ -986,7 +991,7 @@ export default function GalleryManager({ initialImages }) {
         <p className="text-gray-500 text-center py-12">No images yet. Upload some above.</p>
       ) : (
         <>
-          {/* Search + Sort */}
+          {/* Search + Sort + Filter */}
           <div className="flex items-center gap-2 flex-wrap">
             <input
               value={search}
@@ -994,6 +999,15 @@ export default function GalleryManager({ initialImages }) {
               placeholder="Search by name or alt text…"
               className="border border-gray-300 rounded px-3 py-1.5 text-sm flex-1 min-w-[180px] outline-none focus:border-lime-400"
             />
+            <select
+              value={typeFilter}
+              onChange={e => setTypeFilter(e.target.value)}
+              className="border border-gray-300 rounded px-2 py-1.5 text-sm outline-none focus:border-lime-400 bg-white"
+            >
+              <option value="all">All Types</option>
+              <option value="images">Images Only</option>
+              <option value="videos">Videos Only</option>
+            </select>
             <select
               value={sortBy}
               onChange={e => setSortBy(e.target.value)}
@@ -1004,9 +1018,18 @@ export default function GalleryManager({ initialImages }) {
               <option value="name-desc">Name Z–A</option>
               <option value="alt">Alt Text A–Z</option>
               <option value="disabled">Hidden</option>
-              </select>
+            </select>
+            <label className="flex items-center gap-1.5 text-sm text-gray-600 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={noThumbOnly}
+                onChange={e => setNoThumbOnly(e.target.checked)}
+                className="accent-lime-600"
+              />
+              No thumbnail
+            </label>
             {isFiltered && (
-              <button onClick={() => { setSearch(''); setSortBy('order'); }} className="text-xs text-gray-400 hover:text-gray-600">
+              <button onClick={() => { setSearch(''); setSortBy('order'); setTypeFilter('all'); setNoThumbOnly(false); }} className="text-xs text-gray-400 hover:text-gray-600">
                 ✕ Reset
               </button>
             )}

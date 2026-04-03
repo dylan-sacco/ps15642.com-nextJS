@@ -4,8 +4,8 @@ import ParallaxCard from '@/components/ParallaxCard';
 import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import Link from 'next/link';
 import fs from 'fs';
-import path from 'path';
-import { GALLERY_DIR, BEFORE_AFTER_FILE, GALLERY_ALT_FILE } from '@/lib/paths';
+import { BEFORE_AFTER_FILE } from '@/lib/paths';
+import { getCachedGalleryItems } from '@/lib/galleryCache';
 
 export const dynamic = 'force-dynamic';
 
@@ -39,7 +39,7 @@ export default async function GalleryPage({ searchParams }) {
   const { tab } = await searchParams;
   const activeTab = tab === 'before-after' ? 'before-after' : 'gallery';
 
-  const images = activeTab === 'gallery' ? await getGalleryImages() : [];
+  const images = activeTab === 'gallery' ? getCachedGalleryItems() : [];
   const pairs = activeTab === 'before-after' ? getPairs() : [];
 
   return (
@@ -76,7 +76,9 @@ export default async function GalleryPage({ searchParams }) {
         </div>
       </div>
 
-      {activeTab === 'gallery' && <Gallery images={images} showAltText={SHOW_ALT_TEXT} />}
+      {activeTab === 'gallery' && (
+        <Gallery images={images} showAltText={SHOW_ALT_TEXT} pageSize={24} />
+      )}
 
       {activeTab === 'before-after' && (
         <div className="max-w-7xl mx-auto px-4 py-10">
@@ -103,58 +105,4 @@ export default async function GalleryPage({ searchParams }) {
 
 function getPairs() {
   try { return JSON.parse(fs.readFileSync(BEFORE_AFTER_FILE, 'utf8')); } catch { return []; }
-}
-
-async function getGalleryImages() {
-  let files;
-  try {
-    files = fs.readdirSync(GALLERY_DIR);
-  } catch {
-    return [];
-  }
-
-  const imageFiles = files.filter(name =>
-    /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(name) &&
-    !name.endsWith('.thumb.webp')
-  );
-
-  // Filter out disabled images
-  let disabled = new Set();
-  try {
-    disabled = new Set(JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, '_disabled.json'), 'utf8')));
-  } catch { /* no disabled file — all visible */ }
-
-  // Load alt text
-  let altMap = {};
-  try { altMap = JSON.parse(fs.readFileSync(GALLERY_ALT_FILE, 'utf8')); } catch { /* no alt file */ }
-
-  const visible = imageFiles.filter(name => !disabled.has(name));
-
-  // Apply _order.json if it exists
-  const orderPath = path.join(GALLERY_DIR, '_order.json');
-  let order = [];
-  try {
-    order = JSON.parse(fs.readFileSync(orderPath, 'utf8'));
-  } catch { /* no order file — fall back to alphabetical */ }
-
-  if (order.length > 0) {
-    const orderSet = new Set(order);
-    const ordered = order.filter(name => visible.includes(name));
-    const remaining = visible.filter(name => !orderSet.has(name)).sort();
-    return [...ordered, ...remaining].map(name => toItem(name, altMap));
-  }
-
-  return visible.sort().map(name => toItem(name, altMap));
-}
-
-function toItem(name, altMap = {}) {
-  const isVideo = /\.(mp4|mov|webm)$/i.test(name);
-  const base = path.parse(name).name;
-  const mtime = Math.floor(fs.statSync(path.join(GALLERY_DIR, name)).mtimeMs / 1000);
-  const thumbPath = path.join(GALLERY_DIR, `${base}.thumb.webp`);
-  const thumbMtime = fs.existsSync(thumbPath)
-    ? Math.floor(fs.statSync(thumbPath).mtimeMs / 1000)
-    : null;
-  const thumbUrl = thumbMtime ? `/api/uploads/${base}.thumb.webp?v=${thumbMtime}` : null;
-  return { src: `/api/uploads/${base}?v=${mtime}`, isVideo, poster: isVideo ? thumbUrl : null, thumbUrl, alt: altMap[name] || '' };
 }

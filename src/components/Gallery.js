@@ -2,20 +2,26 @@
 import { X, Play, Maximize } from 'lucide-react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 
-export default function Gallery({ images, showAltText = false }) {
+export default function Gallery({ images, showAltText = false, pageSize = 24 }) {
+  const [visibleCount, setVisibleCount] = useState(pageSize);
   const [selected, setSelected] = useState(null);
   const [loadedVideos, setLoadedVideos] = useState(new Set());
   const mediaRef = useRef(null);
 
+  const visibleImages = images.slice(0, visibleCount);
+  const hasMore = visibleCount < images.length;
+
   const navigate = useCallback((dir) => {
-    setSelected(prev => {
-      if (!prev) return null;
-      const idx = images.findIndex(img => img.src === prev.src);
-      const next = idx + dir;
-      if (next < 0 || next >= images.length) return prev;
-      return images[next];
-    });
-  }, [images]);
+    if (!selected) return;
+    const idx = images.findIndex(img => img.src === selected.src);
+    const next = idx + dir;
+    if (next < 0 || next >= images.length) return;
+    // Auto-expand visible set when navigating beyond the current page
+    if (next >= visibleCount) {
+      setVisibleCount(c => Math.min(c + pageSize, images.length));
+    }
+    setSelected(images[next]);
+  }, [selected, images, visibleCount, pageSize]);
 
   useEffect(() => {
     if (!selected) return;
@@ -42,7 +48,7 @@ export default function Gallery({ images, showAltText = false }) {
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-6xl mx-auto p-4">
-        {images.map((item, i) => (
+        {visibleImages.map((item, i) => (
           <div
             key={i}
             className="cursor-pointer overflow-hidden rounded-lg shadow-lg"
@@ -89,13 +95,30 @@ export default function Gallery({ images, showAltText = false }) {
                   src={item.thumbUrl || item.src}
                   alt={item.alt || `Gallery image ${i + 1}`}
                   className="absolute inset-0 w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-300"
-                  loading={i < 3 ? 'eager' : 'lazy'}
+                  loading={i < 6 ? 'eager' : 'lazy'}
                 />
               )}
             </div>
           </div>
         ))}
       </div>
+
+      {/* Pagination footer */}
+      {images.length > 0 && (
+        <div className="flex flex-col items-center gap-3 py-8">
+          <p className="text-sm text-gray-400">
+            Showing {Math.min(visibleCount, images.length)} of {images.length}
+          </p>
+          {hasMore && (
+            <button
+              onClick={() => setVisibleCount(c => Math.min(c + pageSize, images.length))}
+              className="px-6 py-2 bg-lime-600 hover:bg-lime-700 text-white text-sm font-medium rounded-lg transition-colors"
+            >
+              Load More
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Fullscreen Modal */}
       {selected && (

@@ -135,10 +135,7 @@ export async function proxy(request) {
         // Not local, no bypass cookie — check the IP whitelist
         const internalSecret = process.env.INTERNAL_SECRET;
         if (!internalSecret) {
-          return new NextResponse(
-            '403 Forbidden — Admin access is restricted to local network only.',
-            { status: 403, headers: { 'Content-Type': 'text/plain' } }
-          );
+          return NextResponse.rewrite(new URL('/_not-found', request.url));
         }
 
         try {
@@ -150,16 +147,10 @@ export async function proxy(request) {
           });
           const { allowed } = await res.json();
           if (!allowed) {
-            return new NextResponse(
-              '403 Forbidden — Admin access is restricted to local network only.',
-              { status: 403, headers: { 'Content-Type': 'text/plain' } }
-            );
+            return NextResponse.rewrite(new URL('/_not-found', request.url));
           }
         } catch {
-          return new NextResponse(
-            '403 Forbidden — Could not verify access.',
-            { status: 403, headers: { 'Content-Type': 'text/plain' } }
-          );
+          return NextResponse.rewrite(new URL('/_not-found', request.url));
         }
       }
     }
