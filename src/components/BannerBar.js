@@ -93,23 +93,25 @@ function MarqueeTicker({ banners, speed }) {
 
   const items = (
     <span className="inline-flex items-center">
-      {banners.map((b, i) => (
-        <span key={b.id} className="inline-flex items-center gap-2 mx-10" >
-          <span style={{width:"80vw", textAlign: 'center'}} >{b.content}</span>
-          {b.link && (
-            <a href={b.link} className="underline font-semibold hover:opacity-80 transition" style={{ color: fg}}>
-              {b.linkText || 'Learn More'}
-            </a>
-          )}
-          {/* {i < banners.length - 1 && <span className="mx-4 opacity-40 select-none">✦</span>} */}
-          <span className="mx-4 opacity-40 select-none">✦</span>
-        </span>
-      ))}
+      {banners.map((b, i) => {
+        const nextColor = banners[(i + 1) % banners.length]?.bgColor ?? b.bgColor;
+        return (
+          <span key={b.id} className="inline-flex items-center gap-8 py-2 w-[80vw]" style={{ background: `linear-gradient(to right, ${b.bgColor} 0%, ${b.bgColor} 95%, ${nextColor} 100%)` }}>
+            <span className='ml-auto' >{b.content}</span>
+            {b.link && (
+              <a href={b.link} className="underline font-semibold hover:opacity-80 transition mr-auto" >
+                {b.linkText || 'Learn More'}
+              </a>
+            )}
+            <span className="mx-4 opacity-40 select-none ml-auto mr-5">✦</span>
+          </span>
+        );
+      })}
     </span>
   );
 
   return (
-    <div className="overflow-hidden py-2 text-sm" style={{ backgroundColor: 'grey', color: fg }}>
+    <div className="overflow-hidden text-sm" style={{ backgroundColor: bg, color: fg }}>
       <style>{`@keyframes ps-marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`}</style>
       <div
         ref={trackRef}
