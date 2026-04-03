@@ -6,8 +6,8 @@ import ParallaxCard from '@/components/ParallaxCard';
 
 export async function generateMetadata({ params }) {
   const { tag: tagSlug } = await params;
-  const blog = getPublishedPosts();
-  const displayTag = findDisplayTag(articles, tagSlug);
+  const blogs = getPublishedPosts();
+  const displayTag = findDisplayTag(blogs, tagSlug);
   if (!displayTag) return {};
 
   return {
@@ -16,9 +16,9 @@ export async function generateMetadata({ params }) {
   };
 }
 
-function findDisplayTag(blog, tagSlug) {
-  for (const article of blog) {
-    for (const tag of article.tags) {
+function findDisplayTag(blogs, tagSlug) {
+  for (const blog of blogs) {
+    for (const tag of blog.tags) {
       if (tagToSlug(tag) === tagSlug) return tag;
     }
   }
