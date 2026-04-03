@@ -62,15 +62,32 @@ export default function BackupManager({ initialBackups, initialUsedBytes, limitB
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ label }),
+        signal: AbortSignal.timeout(600_000), // 10 min — gallery copies can be large
       });
       const data = await res.json();
       if (!res.ok) { showStatus(data.error, true); return; }
-      showStatus('Backup created successfully.');
+      showStatus(data.warnings?.length
+        ? `Backup created with warnings: ${data.warnings.join(' | ')}`
+        : 'Backup created successfully.', !!data.warnings?.length);
       setLabel('');
-      // Refresh list from server
       await refreshBackups();
     } catch {
-      showStatus('Network error — backup may not have completed.', true);
+      // The gallery copy can take a long time and the connection may drop before
+      // the server responds. Refresh the list — if the backup appears, it worked.
+      const before = backups.map(b => b.name);
+      await refreshBackups();
+      setBackups(prev => {
+        const newBackup = prev.find(b => !before.includes(b.name));
+        if (newBackup) {
+          setStatus({ msg: 'Backup completed (connection timed out but backup succeeded).', isError: false });
+          setTimeout(() => setStatus(null), 6000);
+          setLabel('');
+        } else {
+          setStatus({ msg: 'Network error — backup may not have completed. Check the list below.', isError: true });
+          setTimeout(() => setStatus(null), 6000);
+        }
+        return prev;
+      });
     } finally {
       setBusy(false);
     }

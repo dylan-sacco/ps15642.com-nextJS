@@ -1,13 +1,42 @@
 'use client';
-import { X, Play } from 'lucide-react';
-import { useState } from 'react';
+import { X, Play, Maximize } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
-export default function Gallery({ images }) {
+export default function Gallery({ images, showAltText = false }) {
   const [selected, setSelected] = useState(null);
   const [loadedVideos, setLoadedVideos] = useState(new Set());
+  const mediaRef = useRef(null);
+
+  const navigate = useCallback((dir) => {
+    setSelected(prev => {
+      if (!prev) return null;
+      const idx = images.findIndex(img => img.src === prev.src);
+      const next = idx + dir;
+      if (next < 0 || next >= images.length) return prev;
+      return images[next];
+    });
+  }, [images]);
+
+  useEffect(() => {
+    if (!selected) return;
+    function onKey(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+      if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   navigate(-1);
+      if (e.key === 'Escape') setSelected(null);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selected, navigate]);
 
   function markLoaded(src) {
     setLoadedVideos(prev => new Set([...prev, src]));
+  }
+
+  function openFullscreen() {
+    const el = mediaRef.current;
+    if (!el) return;
+    if (el.requestFullscreen) el.requestFullscreen();
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
   }
 
   return (
@@ -26,7 +55,7 @@ export default function Gallery({ images }) {
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src={item.poster}
-                      alt={`Video thumbnail ${i + 1}`}
+                      alt={item.alt || `Gallery video ${i + 1}`}
                       className="absolute inset-0 w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-300"
                       loading={i < 6 ? 'eager' : 'lazy'}
                     />
@@ -58,7 +87,7 @@ export default function Gallery({ images }) {
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
                   src={item.src}
-                  alt={`Gallery image ${i + 1}`}
+                  alt={item.alt || `Gallery image ${i + 1}`}
                   className="absolute inset-0 w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-300"
                   loading={i < 3 ? 'eager' : 'lazy'}
                 />
@@ -71,35 +100,53 @@ export default function Gallery({ images }) {
       {/* Fullscreen Modal */}
       {selected && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center"
+          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
           onClick={() => setSelected(null)}
         >
-          <div className="relative w-full h-full max-w-screen-lg max-h-screen flex items-center justify-center">
+          <div
+            className="relative max-w-5xl max-h-[90vh] flex flex-col items-center justify-center"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelected(null)}
+              className="absolute -top-3 -right-3 z-10 bg-white rounded-full w-7 h-7 flex items-center justify-center text-gray-600 hover:text-gray-900 shadow-lg text-sm font-bold"
+              aria-label="Close fullscreen"
+            >
+              <X size={14} />
+            </button>
+
             {selected.isVideo ? (
               /* eslint-disable-next-line jsx-a11y/media-has-caption */
               <video
+                ref={mediaRef}
                 src={selected.src}
                 poster={selected.poster}
                 controls
                 autoPlay
-                className="w-full h-full object-contain"
+                className="max-w-full max-h-[85vh] rounded-lg shadow-2xl"
                 onClick={e => e.stopPropagation()}
               />
             ) : (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img
+                ref={mediaRef}
                 src={selected.src}
-                alt="Fullscreen view"
-                className="w-full h-full object-contain"
+                alt={selected.alt || 'Fullscreen view'}
+                className="max-w-full max-h-[85vh] rounded-lg shadow-2xl object-contain"
               />
             )}
+
             <button
-              onClick={() => setSelected(null)}
-              className="absolute top-5 right-5 text-white text-3xl font-bold outline outline-gray-300 rounded bg-[#0005] p-1"
-              aria-label="Close fullscreen"
+              onClick={openFullscreen}
+              className="absolute top-8 -right-3 z-10 bg-white rounded-full w-7 h-7 flex items-center justify-center text-gray-600 hover:text-gray-900 shadow-lg"
+              title="Full screen"
             >
-              <X/>
+              <Maximize size={14} />
             </button>
+
+            {showAltText && selected.alt && (
+              <p className="mt-3 text-white/80 text-sm text-center max-w-lg">{selected.alt}</p>
+            )}
           </div>
         </div>
       )}

@@ -1,6 +1,37 @@
 import Link from 'next/link';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import { FaFacebookSquare, FaInstagram, FaGoogle, FaGithub } from 'react-icons/fa';
+import { headers } from 'next/headers';
+import fs from 'fs';
+import path from 'path';
+
+const WHITELIST_FILE = path.join(process.cwd(), 'data', 'ip-whitelist.json');
+
+function isWhitelisted(ip) {
+  if (!ip) return false;
+  const addr = ip.startsWith('::ffff:') ? ip.slice(7) : ip;
+  try {
+    const list = JSON.parse(fs.readFileSync(WHITELIST_FILE, 'utf8'));
+    const now = Date.now();
+    return list.some(entry => {
+      if (new Date(entry.expiresAt).getTime() <= now) return false;
+      const entryIp = entry.ip;
+      if (!entryIp.includes('/')) {
+        return addr === entryIp;
+      }
+      const [network, bitsStr] = entryIp.split('/');
+      const bits = parseInt(bitsStr, 10);
+      if (bits === 0) return true;
+      const toInt = s => { const p = s.split('.').map(Number); return ((p[0]<<24)|(p[1]<<16)|(p[2]<<8)|p[3])>>>0; };
+      const reqInt = toInt(addr), netInt = toInt(network);
+      if (isNaN(reqInt) || isNaN(netInt) || bits > 32) return false;
+      const mask = (~0 << (32 - bits)) >>> 0;
+      return (reqInt & mask) === (netInt & mask);
+    });
+  } catch {
+    return false;
+  }
+}
 
 const navLinks = [
   { name: 'Home',     href: '/'         },
@@ -12,7 +43,10 @@ const navLinks = [
   { name: 'Contact',  href: '/contact'  },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+  const hdrs = await headers();
+  const ip = hdrs.get('x-real-ip') ?? hdrs.get('x-forwarded-for')?.split(',')[0].trim() ?? '';
+  const showAdmin = isWhitelisted(ip);
   return (
     <footer className="bg-green-900 text-white">
 
@@ -90,6 +124,11 @@ export default function Footer() {
           <a href="/feed.xml" className="text-green-500 hover:text-lime-300 transition text-xs flex items-center gap-1" title="RSS Feed">
             RSS Feed
           </a>
+          {showAdmin && (
+            <Link href="/admin" className="text-green-500 hover:text-lime-300 transition text-xs">
+              Admin
+            </Link>
+          )}
           <p className="flex items-center gap-1">
             Website by{' '}
             <a

@@ -56,21 +56,35 @@ export async function POST(request) {
   try {
     fs.mkdirSync(dest, { recursive: true });
 
-    // Copy gallery (skip if empty/missing)
-    try { copyDir(GALLERY_DIR, path.join(dest, 'gallery')); } catch { fs.mkdirSync(path.join(dest, 'gallery'), { recursive: true }); }
+    const warnings = [];
+
+    // Copy gallery
+    try {
+      copyDir(GALLERY_DIR, path.join(dest, 'gallery'));
+    } catch (err) {
+      fs.mkdirSync(path.join(dest, 'gallery'), { recursive: true });
+      warnings.push(`Gallery copy failed: ${err.message}`);
+      console.error('Backup gallery copy error:', err);
+    }
+
     // Copy blog posts
-    try { copyDir(BLOGS_DIR, path.join(dest, 'blog')); } catch { fs.mkdirSync(path.join(dest, 'blog'), { recursive: true }); }
+    try {
+      copyDir(BLOGS_DIR, path.join(dest, 'blog'));
+    } catch (err) {
+      fs.mkdirSync(path.join(dest, 'blog'), { recursive: true });
+      warnings.push(`Blog copy failed: ${err.message}`);
+      console.error('Backup blog copy error:', err);
+    }
 
     fs.writeFileSync(
       path.join(dest, 'meta.json'),
-      JSON.stringify({ created: now.toISOString(), label: label.trim().slice(0, 80) }),
+      JSON.stringify({ created: now.toISOString(), label: label.trim().slice(0, 80), warnings }),
       'utf8'
     );
 
-    return NextResponse.json({ success: true, name });
+    return NextResponse.json({ success: true, name, warnings: warnings.length ? warnings : undefined });
   } catch (err) {
     console.error('Backup create error:', err);
-    // Clean up partial backup on failure
     try { fs.rmSync(dest, { recursive: true, force: true }); } catch {}
     return NextResponse.json({ error: 'Backup failed' }, { status: 500 });
   }

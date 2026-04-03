@@ -5,9 +5,12 @@ import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import Link from 'next/link';
 import fs from 'fs';
 import path from 'path';
-import { GALLERY_DIR, BEFORE_AFTER_FILE } from '@/lib/paths';
+import { GALLERY_DIR, BEFORE_AFTER_FILE, GALLERY_ALT_FILE } from '@/lib/paths';
 
 export const dynamic = 'force-dynamic';
+
+// Set to true to show alt text as a caption beneath images in the fullscreen preview.
+const SHOW_ALT_TEXT = false;
 
 export const metadata = {
   title: "Gallery | P&S Contracting and Landscape",
@@ -73,7 +76,7 @@ export default async function GalleryPage({ searchParams }) {
         </div>
       </div>
 
-      {activeTab === 'gallery' && <Gallery images={images} />}
+      {activeTab === 'gallery' && <Gallery images={images} showAltText={SHOW_ALT_TEXT} />}
 
       {activeTab === 'before-after' && (
         <div className="max-w-7xl mx-auto px-4 py-10">
@@ -121,6 +124,10 @@ async function getGalleryImages() {
     disabled = new Set(JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, '_disabled.json'), 'utf8')));
   } catch { /* no disabled file — all visible */ }
 
+  // Load alt text
+  let altMap = {};
+  try { altMap = JSON.parse(fs.readFileSync(GALLERY_ALT_FILE, 'utf8')); } catch { /* no alt file */ }
+
   const visible = imageFiles.filter(name => !disabled.has(name));
 
   // Apply _order.json if it exists
@@ -134,13 +141,13 @@ async function getGalleryImages() {
     const orderSet = new Set(order);
     const ordered = order.filter(name => visible.includes(name));
     const remaining = visible.filter(name => !orderSet.has(name)).sort();
-    return [...ordered, ...remaining].map(name => toItem(name));
+    return [...ordered, ...remaining].map(name => toItem(name, altMap));
   }
 
-  return visible.sort().map(name => toItem(name));
+  return visible.sort().map(name => toItem(name, altMap));
 }
 
-function toItem(name) {
+function toItem(name, altMap = {}) {
   const isVideo = /\.(mp4|mov|webm)$/i.test(name);
   const base = path.parse(name).name;
   const mtime = Math.floor(fs.statSync(path.join(GALLERY_DIR, name)).mtimeMs / 1000);
@@ -152,5 +159,5 @@ function toItem(name) {
       poster = `/api/uploads/${base}.thumb.webp?v=${thumbMtime}`;
     }
   }
-  return { src: `/api/uploads/${base}?v=${mtime}`, isVideo, poster };
+  return { src: `/api/uploads/${base}?v=${mtime}`, isVideo, poster, alt: altMap[name] || '' };
 }
