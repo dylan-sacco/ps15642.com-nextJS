@@ -2,7 +2,7 @@
 title: How Updated the PS15642 Site
 date: '2026-03-30'
 excerpt: Using claude I completely revolutionized how this website is run.
-published: true
+published: false
 tags:
   - Development
   - Next JS

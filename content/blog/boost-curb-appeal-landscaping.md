@@ -14,7 +14,8 @@ tags:
   - Westmoreland County
 image: 'https://picsum.photos/id/1/1200/630'
 ---
-<video controls src="/api/uploads/img_1437?v=1775137725" poster="/api/uploads/img_1437.thumb.webp?v=1775137725" style="max-width:100%;border-radius:8px"></video>
+<video controls src="/api/uploads/ziplineTree?v=1775056357" poster="/api/uploads/ziplineTree.thumb.webp?v=1775056357" style="max-width:100%;border-radius:8px"></video>
+
 Real estate professionals consistently say it: curb appeal sells homes. But even if you're not planning to sell, a well-maintained and thoughtfully designed exterior makes your home more enjoyable to live in, reduces maintenance costs over time, and builds equity.
 
 In Westmoreland County, where neighborhoods range from older established communities to newer developments, the properties that stand out are the ones where every outdoor element — lawn, landscape, hardscape, and structure — works together as a cohesive whole.
