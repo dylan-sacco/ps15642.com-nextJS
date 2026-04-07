@@ -101,6 +101,9 @@ export default async function Home() {
 
       <TestimonialsSection testimonials={testimonials} />
 
+      <div id={process.env.FEATURABLE} data-featurable-async ></div>
+      <script src="https://featurable.com/assets/bundle.js" defer></script>
+
       {/* Contact Section */}
       <GreenCard>
         In need of a complete overhaul of your current landscaping layout; or maybe just a few additions for that added elegance, such as a mini grove of trees or a tasteful flower bed? Feel free to give us a call for your cost-free consultation!
