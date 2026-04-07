@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: '/admin/banners',      label: 'Banners',      permission: 'banners.view'      },
   { href: '/admin/contact',      label: 'Contact',      permission: 'contact.view'      },
   { href: '/admin/quotes',       label: 'Quotes',       permission: 'quotes.view'       },
+  { href: '/admin/nav',          label: 'Navigation',   permission: 'nav.manage'        },
   { href: '/admin/whitelist',    label: 'Whitelist',    permission: 'whitelist.view'    },
   { href: '/admin/users',        label: 'Users',        permission: 'users.view'        },
   { href: '/admin/backup',       label: 'Backup',       permission: 'backup.view'       },

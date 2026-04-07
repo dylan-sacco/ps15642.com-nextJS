@@ -61,7 +61,7 @@ export default function ContactPage() {
 
         {/* Contact Form */}
         <section className="w-full max-w-xl mx-auto">
-          <h2 className="text-[3rem] font-bold mb-4 text-center xl:text-left">Contact Us</h2>
+          <h2 id='form' className="text-[3rem] font-bold mb-4 text-center xl:text-left">Contact Us</h2>
           <ContactForm />
         </section>
       </div>

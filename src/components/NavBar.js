@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
-const navItems = [
+const FALLBACK_NAV = [
   { name: 'Home', href: '/' },
-  { name: 'About', href: '/about'},
+  { name: 'About', href: '/about' },
   { name: 'Gallery', href: '/gallery' },
   { name: 'Contact', href: '/contact' },
   {
@@ -15,110 +15,135 @@ const navItems = [
       { name: 'Services', href: '/services' },
       { name: 'Blog', href: '/blog' },
       { name: 'Get A Quote', href: '/quote' },
-      { name: 'Locations', href: '/locations'}
+      { name: 'Locations', href: '/locations' },
     ],
   },
 ];
 
-export default function NavBar({ stickyDisabled = false }) {
+export default function NavBar({ stickyDisabled = false, items }) {
+  const navItems = items || FALLBACK_NAV;
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);   // href of open desktop dropdown
-  const [mobileExpanded, setMobileExpanded] = useState({}); // { [href]: bool }
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [mobileExpanded, setMobileExpanded] = useState({});
+  const [forceCollapse, setForceCollapse] = useState(false);
+
+  const navRef = useRef(null);
+  const ghostRef = useRef(null);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleMobileItem = (href) =>
     setMobileExpanded(prev => ({ ...prev, [href]: !prev[href] }));
 
+  // Detect mobile breakpoint
   useEffect(() => {
-    const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-    return () => window.removeEventListener('resize', checkIsMobile);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
 
-  // Removed By Dylan Sacco 04/02/2026, Made hamburger button un-clickable for mobile on certain devices
-  // useEffect(() => {
-  //   if (!isMobile) return;
-  //   const handleScroll = () => {
-  //     const currentScrollY = window.scrollY;
-  //     if (currentScrollY > lastScrollY && currentScrollY > 50) setIsOpen(false);
-  //     setLastScrollY(currentScrollY);
-  //   };
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => window.removeEventListener('scroll', handleScroll);
-  // }, [lastScrollY, isMobile]);
+  // Detect overflow — collapse to hamburger if desktop items don't fit
+  useEffect(() => {
+    const check = () => {
+      if (!navRef.current || !ghostRef.current) return;
+      const available = navRef.current.offsetWidth;
+      const logoEl = navRef.current.querySelector('[data-logo]');
+      const logoW = logoEl ? logoEl.offsetWidth + 32 : 140;
+      const itemsW = ghostRef.current.offsetWidth;
+      setForceCollapse(itemsW + logoW > available - 8);
+    };
+    const observer = new ResizeObserver(check);
+    if (navRef.current) observer.observe(navRef.current);
+    check();
+    return () => observer.disconnect();
+  }, [navItems]);
+
+  const showHamburger = isMobile || forceCollapse;
 
   return (
     <div className={`bg-white shadow-md z-50${stickyDisabled ? '' : ' sticky top-0'}`}>
-      <nav className="flex justify-between items-center max-w-6xl lg:text-[30px] md:text-[20px] pl-4">
+      <nav ref={navRef} className="flex justify-between items-center max-w-6xl mx-auto lg:text-[30px] md:text-[20px] pl-4">
         {/* Logo */}
-        <Link href="/">
+        <Link href="/" data-logo="">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.png" alt="Logo" className="max-h-10 md:max-h-16 pb-2" />
         </Link>
 
-        {/* Desktop Nav */}
-        <ul className="hidden md:flex self-stretch items-stretch">
-          {navItems.map((item) => {
-            const hasDropdown = item.dropdown?.length > 0;
-            const isActive = pathname === item.href ||
-              (hasDropdown && item.dropdown.some(d => pathname === d.href));
-
-            return (
-              <li
-                key={item.href}
-                className="relative flex items-stretch"
-                onMouseEnter={() => hasDropdown && setOpenDropdown(item.href)}
-                onMouseLeave={() => hasDropdown && setOpenDropdown(null)}
-              >
-                <Link
-                  href={item.href}
-                  className={`transition lg:px-6 px-5 flex items-center gap-1 ${
-                    isActive ? 'bg-lime-600 text-white' : 'hover:bg-green-100'
-                  }`}
-                >
-                  {item.name}
-                  {hasDropdown && (
-                    <ChevronDown
-                      size={14}
-                      className={`transition-transform ${openDropdown === item.href ? 'rotate-180' : ''}`}
-                    />
-                  )}
-                </Link>
-
-                {hasDropdown && openDropdown === item.href && (
-                  <ul className="absolute top-full left-0 bg-white shadow-lg border border-gray-100 rounded-b-md min-w-[140px] z-50">
-                    {item.dropdown.map(d => (
-                      <li key={d.href}>
-                        <Link
-                          href={d.href}
-                          className={`block px-5 py-3 text-sm transition ${
-                            pathname === d.href ? 'bg-lime-600 text-white' : 'hover:bg-green-100'
-                          }`}
-                        >
-                          {d.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            );
-          })}
+        {/* Ghost measurement row — invisible, used to detect overflow */}
+        <ul ref={ghostRef} className="absolute opacity-0 pointer-events-none flex whitespace-nowrap lg:text-[30px] md:text-[20px]" aria-hidden="true">
+          {navItems.map(item => (
+            <li key={item.href} className="lg:px-6 px-5 flex items-center gap-1">
+              {item.name}
+              {item.dropdown?.length > 0 && <ChevronDown size={14} />}
+            </li>
+          ))}
         </ul>
 
-        {/* Mobile Menu Button */}
-        <button id='navDropdown' title='Hamburger Menu Dropdown' onClick={toggleMenu} className="md:hidden text-black px-4 py-3">
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Desktop Nav */}
+        {!showHamburger && (
+          <ul className="flex self-stretch items-stretch">
+            {navItems.map((item) => {
+              const hasDropdown = item.dropdown?.length > 0;
+              const isActive = pathname === item.href ||
+                (hasDropdown && item.dropdown.some(d => pathname === d.href));
+
+              return (
+                <li
+                  key={item.href}
+                  className="relative flex items-stretch"
+                  onMouseEnter={() => hasDropdown && setOpenDropdown(item.href)}
+                  onMouseLeave={() => hasDropdown && setOpenDropdown(null)}
+                >
+                  <Link
+                    href={item.href}
+                    className={`transition lg:px-6 px-5 flex items-center gap-1 ${
+                      isActive ? 'bg-lime-600 text-white' : 'hover:bg-green-100'
+                    }`}
+                  >
+                    {item.name}
+                    {hasDropdown && (
+                      <ChevronDown
+                        size={14}
+                        className={`transition-transform ${openDropdown === item.href ? 'rotate-180' : ''}`}
+                      />
+                    )}
+                  </Link>
+
+                  {hasDropdown && openDropdown === item.href && (
+                    <ul className="absolute top-full left-0 bg-white shadow-lg border border-gray-100 rounded-b-md min-w-[140px] z-50">
+                      {item.dropdown.map(d => (
+                        <li key={d.href}>
+                          <Link
+                            href={d.href}
+                            className={`block px-5 py-3 text-sm transition ${
+                              pathname === d.href ? 'bg-lime-600 text-white' : 'hover:bg-green-100'
+                            }`}
+                          >
+                            {d.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        {/* Hamburger button */}
+        {showHamburger && (
+          <button id="navDropdown" title="Hamburger Menu Dropdown" onClick={toggleMenu} className="text-black px-4 py-3">
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        )}
       </nav>
 
-      {/* Mobile Tray Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-inner shadow-xl">
+      {/* Mobile / collapsed tray */}
+      {showHamburger && isOpen && (
+        <div className="bg-white border-t border-gray-200 shadow-inner shadow-xl">
           <ul className="flex flex-col">
             {navItems.map((item) => {
               const hasDropdown = item.dropdown?.length > 0;

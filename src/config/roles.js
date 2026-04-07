@@ -63,6 +63,9 @@ export const PERMISSIONS = {
   LOCATIONS_EDIT:   'locations.edit',   // Edit existing location pages
   LOCATIONS_DELETE: 'locations.delete', // Delete location pages
 
+  // ── Navigation ────────────────────────────────────────────────────────────────
+  NAV_MANAGE: 'nav.manage', // Edit the site navigation (Owner+)
+
 };
 
 // Role definitions.
@@ -147,6 +150,7 @@ export const ROLES = {
       'locations.create',
       'locations.edit',
       'locations.delete',
+      'nav.manage',
     ],
   },
 

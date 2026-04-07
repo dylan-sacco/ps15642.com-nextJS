@@ -18,6 +18,7 @@ import { getPermissions } from "@/lib/permissions";
 import AdminNav from "@/components/admin/AdminNav";
 import BannerBar from "@/components/BannerBar";
 import { getActiveBanners, getBannerSettings } from "@/lib/banners";
+import { getNavItems } from "@/lib/nav";
 
 export const metadata = {
   title: "P&S Contracting And Landscape",
@@ -29,6 +30,7 @@ export default async function RootLayout({ children }) {
   const permissions = user ? getPermissions(user.role) : [];
   const banners = getActiveBanners();
   const settings = getBannerSettings();
+  const navItems = getNavItems();
   const stickyHeader = banners.some(b => b.sticky === true) ||
     (settings.scrollBanner && (settings.scrollBannerSticky === true));
 
@@ -44,12 +46,12 @@ export default async function RootLayout({ children }) {
         {stickyHeader ? (
           <div className="sticky top-0 z-50">
             <BannerBar banners={banners} settings={settings} />
-            <NavBar stickyDisabled />
+            <NavBar stickyDisabled items={navItems} />
           </div>
         ) : (
           <>
             <BannerBar banners={banners} settings={settings} />
-            <NavBar />
+            <NavBar items={navItems} />
           </>
         )}
         {user && <AdminNav username={user.username} permissions={permissions} />}
