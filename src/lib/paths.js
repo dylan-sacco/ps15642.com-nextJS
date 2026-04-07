@@ -11,3 +11,4 @@ export const BEFORE_AFTER_FILE = path.join(process.cwd(), 'data/before-after.jso
 export const LOCATIONS_DIR = path.join(process.cwd(), 'content/pages/locations');
 export const BANNERS_FILE = path.join(process.cwd(), 'data/banners.json');
 export const BANNER_SETTINGS_FILE = path.join(process.cwd(), 'data/banner-settings.json');
+export const PROJECTS_DIR = path.join(process.cwd(), 'content/projects');

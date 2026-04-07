@@ -20,11 +20,11 @@ export const metadata = {
     title: "Gallery | P&S Contracting and Landscape",
     description:
       "Take a look at our finished projects showcasing quality work and craftsmanship.",
-    url: "https://ps15642.com/gallery",
+    url: "/gallery",
     siteName: "P&S Contracting and Landscape",
     images: [
       {
-        url: "https://ps15642.com/hs1.webp",
+        url: "/hs1.webp",
         width: 1800,
         height: 800,
         alt: "Gallery - P&S Contracting and Landscape",

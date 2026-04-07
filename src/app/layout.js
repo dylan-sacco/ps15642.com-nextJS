@@ -20,6 +20,7 @@ import BannerBar from "@/components/BannerBar";
 import { getActiveBanners, getBannerSettings } from "@/lib/banners";
 
 export const metadata = {
+  metadataBase: new URL('https://ps15642.com'),
   title: "P&S Contracting And Landscape",
   description: "For 15 years, P&S Contracting and Landscape has been the premier landscaping company throughout all of Westmoreland County, Pennsylvania.",
 };

@@ -11,9 +11,9 @@ export const metadata = {
   openGraph: {
     title: 'Blog | P&S Contracting and Landscape',
     description: 'Landscaping tips, guides, and insights.',
-    url: 'https://ps15642.com/blog',
+    url: '/blog',
     siteName: 'P&S Contracting and Landscape',
-    images: [{ url: 'https://ps15642.com/hs1.webp', width: 1800, height: 800 }],
+    images: [{ url: '/hs1.webp', width: 1800, height: 800 }],
     locale: 'en_US',
     type: 'website',
   },

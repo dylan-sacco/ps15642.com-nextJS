@@ -11,11 +11,11 @@ export const metadata = {
     title: "Services | P&S Contracting and Landscape",
     description:
       "Professional landscaping, hardscaping, and maintenance services by P&S Contracting and Landscape.",
-    url: "https://ps15642.com/services",
+    url: "/services",
     siteName: "P&S Contracting and Landscape",
     images: [
       {
-        url: "https://ps15642.com/hs1.webp",
+        url: "/hs1.webp",
         width: 1800,
         height: 800,
         alt: "Our Services - P&S Contracting and Landscape",

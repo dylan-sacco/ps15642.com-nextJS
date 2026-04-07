@@ -7,7 +7,13 @@
       "Bash(sed -i 's|href=\"/articles\"|href=\"/blog\"|g' src/app/blog/tag/[tag]/page.js src/app/blog/[slug]/page.js src/app/admin/blog/page.js)",
       "Bash(sed -i 's|href={`/articles/${|href={`/blog/${|g' src/app/admin/blog/page.js)",
       "Bash(sed -i 's|GET /api/admin/articles|GET /api/admin/blog|g; s|POST /api/admin/articles|POST /api/admin/blog|g; s|DELETE /api/admin/articles|DELETE /api/admin/blog|g; s|PUT /api/admin/articles|PUT /api/admin/blog|g' src/app/api/admin/blog/route.js src/app/api/admin/blog/[slug]/route.js)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(mkdir -p \"C:\\\\Users\\\\dsacco.SJC\\\\Documents\\\\GitHub\\\\ps15642.com-nextJS\\\\src\\\\app\\\\api\\\\admin\\\\projects\\\\[slug]\")",
+      "Bash(mkdir -p \"C:\\\\Users\\\\dsacco.SJC\\\\Documents\\\\GitHub\\\\ps15642.com-nextJS\\\\src\\\\app\\\\admin\\\\projects\\\\[slug]\\\\edit\")",
+      "Bash(mkdir -p \"C:\\\\Users\\\\dsacco.SJC\\\\Documents\\\\GitHub\\\\ps15642.com-nextJS\\\\src\\\\app\\\\projects\\\\[slug]\")",
+      "Bash(npx next:*)",
+      "Bash(npx eslint:*)",
+      "Bash(node_modules/.bin/eslint src/app/projects src/app/api/admin/projects src/app/admin/projects src/components/admin/ProjectEditor.js src/components/admin/RenderProjects.js src/lib/projects.js)"
     ]
   }
 }

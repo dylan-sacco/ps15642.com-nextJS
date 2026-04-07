@@ -16,11 +16,11 @@ export const metadata = {
     title: "P&S Contracting and Landscape | Westmoreland County, PA",
     description:
       "Transform your property with expert landscaping from P&S Contracting and Landscape.",
-    url: "https://ps15642.com/",
+    url: "/",
     siteName: "P&S Contracting and Landscape",
     images: [
       {
-        url: "https://ps15642.com/hs1.webp",
+        url: "/hs1.webp",
         width: 1800,
         height: 800,
         alt: "Home page preview - P&S Contracting",

@@ -63,6 +63,14 @@ export const PERMISSIONS = {
   LOCATIONS_EDIT:   'locations.edit',   // Edit existing location pages
   LOCATIONS_DELETE: 'locations.delete', // Delete location pages
 
+  // ── Projects ──────────────────────────────────────────────────────────────────
+  PROJECTS_VIEW:            'projects.view',            // See the projects list in admin
+  PROJECTS_CREATE:          'projects.create',          // Create new draft projects
+  PROJECTS_EDIT_DRAFT:      'projects.edit.draft',      // Edit unpublished / draft projects
+  PROJECTS_EDIT_PUBLISHED:  'projects.edit.published',  // Edit already-published projects
+  PROJECTS_PUBLISH:         'projects.publish',         // Publish or unpublish projects
+  PROJECTS_DELETE:          'projects.delete',          // Permanently delete projects
+
 };
 
 // Role definitions.
@@ -81,6 +89,9 @@ export const ROLES = {
       'blog.view',
       'blog.create',
       'blog.edit.draft',
+      'projects.view',
+      'projects.create',
+      'projects.edit.draft',
     ],
   },
 
@@ -106,6 +117,12 @@ export const ROLES = {
       'locations.view',
       'locations.create',
       'locations.edit',
+      'projects.view',
+      'projects.create',
+      'projects.edit.draft',
+      'projects.edit.published',
+      'projects.publish',
+      'projects.delete',
     ],
   },
 
@@ -147,6 +164,12 @@ export const ROLES = {
       'locations.create',
       'locations.edit',
       'locations.delete',
+      'projects.view',
+      'projects.create',
+      'projects.edit.draft',
+      'projects.edit.published',
+      'projects.publish',
+      'projects.delete',
     ],
   },
 

@@ -20,14 +20,14 @@ export async function generateMetadata({ params }) {
     const raw = fs.readFileSync(filePath, 'utf8');
     const { data } = matter(raw);
     if (!data.published) return {};
-    const ogImage = data.image || 'https://ps15642.com/hs1.webp';
+    const ogImage = data.image || '/hs1.webp';
     return {
       title: `${data.title} | P&S Contracting and Landscape`,
       description: data.excerpt || '',
       openGraph: {
         title: data.title,
         description: data.excerpt || '',
-        url: `https://ps15642.com/blog/${slug}`,
+        url: `/blog/${slug}`,
         siteName: 'P&S Contracting and Landscape',
         images: [{ url: ogImage, width: 1200, height: 630 }],
         locale: 'en_US',
@@ -56,7 +56,8 @@ export default async function BlogPostPage({ params }) {
 
   const tags = parseTags(data.tags);
   const related = getRelatedPosts(slug, tags);
-  const ogImage = data.image || 'https://ps15642.com/hs1.webp';
+  const ogImage = data.image || '/hs1.webp';
+  const jsonLdImage = data.image ? `https://ps15642.com${data.image.startsWith('/') ? '' : '/'}${data.image}` : 'https://ps15642.com/hs1.webp';
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -65,7 +66,7 @@ export default async function BlogPostPage({ params }) {
     description: data.excerpt || '',
     datePublished: data.date || '',
     dateModified: data.date || '',
-    image: ogImage,
+    image: jsonLdImage,
     url: `https://ps15642.com/blog/${slug}`,
     author: {
       '@type': 'Organization',

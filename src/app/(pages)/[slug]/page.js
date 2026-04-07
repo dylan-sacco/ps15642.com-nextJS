@@ -15,9 +15,7 @@ export async function generateMetadata({ params }) {
     const { data } = matter(raw);
     const title = data.metaTitle || `${data.heroTitle} | P&S Contracting and Landscape`;
     const description = data.metaDescription || '';
-    const image = data.heroImage
-      ? `https://ps15642.com${data.heroImage}`
-      : 'https://ps15642.com/hs1.webp';
+    const image = data.heroImage || '/hs1.webp';
 
     return {
       title,
@@ -25,7 +23,7 @@ export async function generateMetadata({ params }) {
       openGraph: {
         title,
         description,
-        url: data.ogUrl || `https://ps15642.com/${slug}`,
+        url: data.ogUrl || `/${slug}`,
         siteName: 'P&S Contracting and Landscape',
         images: [{ url: image, width: 1800, height: 800 }],
         locale: 'en_US',

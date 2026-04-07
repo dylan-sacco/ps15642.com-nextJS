@@ -13,6 +13,11 @@ const nextConfig = {
     proxyClientMaxBodySize: '500mb',
   },
   allowedDevOrigins: ['172.22.64.1'],
+  images: {
+    remotePatterns: [
+      // { protocol: 'https', hostname: 'ps15642.com' },
+    ],
+  },
 };
 
 module.exports = nextConfig;
