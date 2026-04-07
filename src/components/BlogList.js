@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+
 function tagToSlug(tag) {
   return tag.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
@@ -23,37 +24,73 @@ export default function BlogList({ posts }) {
     <>
       <div className="space-y-8">
         {visiblePosts.map(article => (
-          <article key={article.slug} className="border-b border-gray-200 pb-8 last:border-0">
-            {article.date && (
-              <time className="text-sm text-gray-400">{article.date}</time>
-            )}
-            <h2 className="text-xl font-bold text-gray-800 mt-1 mb-2">
-              <Link href={`/blog/${article.slug}`} className="hover:text-lime-700 transition-colors">
-                {article.title}
-              </Link>
-            </h2>
-            {article.excerpt && (
-              <p className="text-gray-600 leading-relaxed">{article.excerpt}</p>
-            )}
-            {article.tags && article.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mt-3">
-                {article.tags.map(tag => (
+          <article
+            key={article.slug}
+            className="relative border-b border-gray-200 pb-8 last:border-0 hover:bg-gray-50 -mx-3 px-3 rounded-lg transition-colors cursor-pointer"
+          >
+            <div className="flex gap-4">
+              {/* Text content */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  {article.featured && (
+                    <span className="text-xs font-semibold bg-lime-600 text-white rounded-full px-2.5 py-0.5">
+                      Featured
+                    </span>
+                  )}
+                  {article.date && (
+                    <time className="text-sm text-gray-400">{article.date}</time>
+                  )}
+                  {article.readingTime && (
+                    <span className="text-sm text-gray-400">· {article.readingTime} min read</span>
+                  )}
+                </div>
+
+                <h2 className="text-xl font-bold text-gray-800 mt-1 mb-2">
                   <Link
-                    key={tag}
-                    href={`/blog/tag/${tagToSlug(tag)}`}
-                    className="text-xs bg-lime-50 text-lime-700 border border-lime-200 rounded-full px-2.5 py-0.5 hover:bg-lime-100 transition-colors"
+                    href={`/blog/${article.slug}`}
+                    className="hover:text-lime-700 transition-colors after:absolute after:inset-0 after:rounded-lg"
                   >
-                    {tag}
+                    {article.title}
                   </Link>
-                ))}
+                </h2>
+
+                {article.excerpt && (
+                  <p className="text-gray-600 leading-relaxed line-clamp-2">{article.excerpt}</p>
+                )}
+
+                {article.tags && article.tags.length > 0 && (
+                  <div className="relative z-10 flex flex-wrap gap-1.5 mt-3">
+                    {article.tags.map(tag => (
+                      <Link
+                        key={tag}
+                        href={`/blog/tag/${tagToSlug(tag)}`}
+                        className="text-xs bg-lime-50 text-lime-700 border border-lime-200 rounded-full px-2.5 py-0.5 hover:bg-lime-100 hover:scale-110 transition-all duration-150 origin-center"
+                      >
+                        {tag}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                <Link
+                  href={`/blog/${article.slug}`}
+                  className="relative z-10 inline-block mt-3 text-sm font-medium text-lime-700 hover:text-lime-900 transition-colors"
+                >
+                  Read more →
+                </Link>
               </div>
-            )}
-            <Link
-              href={`/blog/${article.slug}`}
-              className="inline-block mt-3 text-sm font-medium text-lime-700 hover:text-lime-900 transition-colors"
-            >
-              Read more →
-            </Link>
+
+              {/* Thumbnail */}
+              {article.image && (
+                <div className="relative z-10 hidden sm:block flex-shrink-0 w-28 h-28 md:w-36 md:h-36">
+                  <img
+                    src={article.image}
+                    alt={article.title}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </div>
+              )}
+            </div>
           </article>
         ))}
       </div>

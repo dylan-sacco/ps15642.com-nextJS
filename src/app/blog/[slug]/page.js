@@ -4,13 +4,20 @@ import matter from 'gray-matter';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { BLOGS_DIR } from '@/lib/paths';
-import { getRelatedPosts, tagToSlug } from '@/lib/blog';
+import { getRelatedPosts, getAdjacentPosts, tagToSlug, readingTime } from '@/lib/blog';
 import MarkdownPreview from '@/components/admin/MarkdownPreview';
+import ShareButton from '@/components/ShareButton';
 
 function parseTags(raw) {
   if (!raw) return [];
   if (Array.isArray(raw)) return raw.map(t => String(t).trim()).filter(Boolean);
   return String(raw).split(',').map(t => t.trim()).filter(Boolean);
+}
+
+function isScheduled(date) {
+  if (!date) return false;
+  const today = new Date().toISOString().split('T')[0];
+  return date > today;
 }
 
 export async function generateMetadata({ params }) {
@@ -19,7 +26,7 @@ export async function generateMetadata({ params }) {
   try {
     const raw = fs.readFileSync(filePath, 'utf8');
     const { data } = matter(raw);
-    if (!data.published) return {};
+    if (!data.published || isScheduled(data.date)) return {};
     const ogImage = data.image || 'https://ps15642.com/hs1.webp';
     return {
       title: `${data.title} | P&S Contracting and Landscape`,
@@ -41,6 +48,40 @@ export async function generateMetadata({ params }) {
   }
 }
 
+function PostNav({ prev, next }) {
+  if (!prev && !next) return null;
+  return (
+    <nav className="flex items-stretch gap-3">
+      <div className="flex-1">
+        {prev && (
+          <Link
+            href={`/blog/${prev.slug}`}
+            className="flex flex-col h-full p-3 rounded-lg border border-gray-200 hover:border-lime-400 hover:bg-gray-50 transition-colors group"
+          >
+            <span className="text-xs text-gray-400 mb-1">← Older</span>
+            <span className="text-sm font-medium text-gray-700 group-hover:text-lime-700 transition-colors line-clamp-2">
+              {prev.title}
+            </span>
+          </Link>
+        )}
+      </div>
+      <div className="flex-1 flex justify-end">
+        {next && (
+          <Link
+            href={`/blog/${next.slug}`}
+            className="flex flex-col h-full w-full p-3 rounded-lg border border-gray-200 hover:border-lime-400 hover:bg-gray-50 transition-colors group text-right"
+          >
+            <span className="text-xs text-gray-400 mb-1">Newer →</span>
+            <span className="text-sm font-medium text-gray-700 group-hover:text-lime-700 transition-colors line-clamp-2">
+              {next.title}
+            </span>
+          </Link>
+        )}
+      </div>
+    </nav>
+  );
+}
+
 export default async function BlogPostPage({ params }) {
   const { slug } = await params;
 
@@ -52,11 +93,14 @@ export default async function BlogPostPage({ params }) {
   const raw = fs.readFileSync(filePath, 'utf8');
   const { data, content } = matter(raw);
 
-  if (!data.published) notFound();
+  if (!data.published || isScheduled(data.date)) notFound();
 
   const tags = parseTags(data.tags);
   const related = getRelatedPosts(slug, tags);
+  const { prev, next } = getAdjacentPosts(slug);
+  const minutes = readingTime(content);
   const ogImage = data.image || 'https://ps15642.com/hs1.webp';
+  const postUrl = `https://ps15642.com/blog/${slug}`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -66,7 +110,7 @@ export default async function BlogPostPage({ params }) {
     datePublished: data.date || '',
     dateModified: data.date || '',
     image: ogImage,
-    url: `https://ps15642.com/blog/${slug}`,
+    url: postUrl,
     author: {
       '@type': 'Organization',
       name: 'P&S Contracting and Landscape',
@@ -91,14 +135,27 @@ export default async function BlogPostPage({ params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <Link href="/blog" className="text-sm text-gray-400 hover:text-lime-700 transition-colors mb-8 inline-block">
-        ← All Posts
-      </Link>
+      {/* Top nav row */}
+      <div className="flex items-center justify-between mb-8">
+        <Link href="/blog" className="text-sm text-gray-400 hover:text-lime-700 transition-colors">
+          ← All Posts
+        </Link>
+        <ShareButton url={postUrl} />
+      </div>
+
+      {/* Top prev/next */}
+      <div className="mb-8">
+        <PostNav prev={prev} next={next} />
+      </div>
 
       <header className="mb-8">
-        {data.date && (
-          <time className="text-sm text-gray-400 block mb-2">{data.date}</time>
-        )}
+        <div className="flex items-center gap-2 flex-wrap mb-2">
+          {data.date && (
+            <time className="text-sm text-gray-400">{data.date}</time>
+          )}
+          <span className="text-sm text-gray-400">· {minutes} min read</span>
+        </div>
+
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
           {data.title}
         </h1>
@@ -125,6 +182,16 @@ export default async function BlogPostPage({ params }) {
       <hr className="border-gray-200 mb-8" />
 
       <MarkdownPreview body={content} />
+
+      {/* Bottom prev/next */}
+      <div className="mt-12 pt-8 border-t border-gray-200">
+        <PostNav prev={prev} next={next} />
+      </div>
+
+      {/* Share */}
+      <div className="flex justify-center mt-6">
+        <ShareButton url={postUrl} />
+      </div>
 
       {/* Related articles */}
       {related.length > 0 && (

@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function BeforeAfterSlider({ beforeSrc, afterSrc, title, description }) {
   const [position, setPosition] = useState(50);
   const containerRef = useRef(null);
+  const touchStartRef = useRef(null);
+  const lockAxisRef = useRef(null);
 
   function handleMove(clientX) {
     const rect = containerRef.current?.getBoundingClientRect();
@@ -13,13 +15,52 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, title, descript
     setPosition(pct);
   }
 
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    function onTouchStart(e) {
+      touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      lockAxisRef.current = null;
+    }
+
+    function onTouchMove(e) {
+      if (!touchStartRef.current) return;
+      const dx = Math.abs(e.touches[0].clientX - touchStartRef.current.x);
+      const dy = Math.abs(e.touches[0].clientY - touchStartRef.current.y);
+
+      if (!lockAxisRef.current) {
+        lockAxisRef.current = dx > dy ? 'horizontal' : 'vertical';
+      }
+
+      if (lockAxisRef.current === 'horizontal') {
+        e.preventDefault();
+        handleMove(e.touches[0].clientX);
+      }
+    }
+
+    function onTouchEnd() {
+      touchStartRef.current = null;
+      lockAxisRef.current = null;
+    }
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchmove', onTouchMove, { passive: false });
+    el.addEventListener('touchend', onTouchEnd, { passive: true });
+
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove', onTouchMove);
+      el.removeEventListener('touchend', onTouchEnd);
+    };
+  }, []);
+
   return (
     <div className="rounded-lg overflow-hidden shadow-md border border-gray-200">
       <div
         ref={containerRef}
         className="relative select-none overflow-hidden cursor-col-resize aspect-video"
         onMouseMove={e => handleMove(e.clientX)}
-        onTouchMove={e => handleMove(e.touches[0].clientX)}
       >
         {/* After (base layer) */}
         {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -94,6 +94,35 @@ export async function PUT(request, { params }) {
   }
 }
 
+// PATCH /api/admin/blog/[slug] — quick field toggles (featured, etc.)
+export async function PATCH(request, { params }) {
+  const { error } = await requireApiPermission('blog.publish');
+  if (error) return error;
+
+  const { slug } = await params;
+  if (!safeSlug(slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
+
+  const filePath = path.join(BLOGS_DIR, `${slug}.md`);
+  if (!fs.existsSync(filePath)) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+
+  try {
+    const updates = await request.json();
+    const raw = fs.readFileSync(filePath, 'utf8');
+    const { data, content } = matter(raw);
+
+    const allowed = ['featured'];
+    for (const key of allowed) {
+      if (key in updates) data[key] = !!updates[key];
+    }
+
+    fs.writeFileSync(filePath, matter.stringify(content, data), 'utf8');
+    return NextResponse.json({ success: true, ...Object.fromEntries(allowed.map(k => [k, data[k]])) });
+  } catch (err) {
+    console.error('Article patch error:', err);
+    return NextResponse.json({ error: 'Failed to update article' }, { status: 500 });
+  }
+}
+
 // DELETE /api/admin/blog/[slug]
 export async function DELETE(request, { params }) {
   const { error } = await requireApiPermission('blog.delete');

@@ -12,6 +12,12 @@ export function tagToSlug(tag) {
     .replace(/^-|-$/g, '');
 }
 
+/** Estimated reading time in minutes at 180 wpm (moderate reading ability) */
+export function readingTime(content) {
+  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 180));
+}
+
 /** Parse a gray-matter tags value into a clean string array */
 function parseTags(raw) {
   if (!raw) return [];
@@ -35,12 +41,14 @@ export function getAllPosts() {
           date: data.date || '',
           excerpt: data.excerpt || '',
           published: !!data.published,
+          featured: !!data.featured,
           tags: parseTags(data.tags),
           image: data.image || '',
+          readingTime: readingTime(content),
           content,
         };
       } catch {
-        return { slug, title: slug, date: '', excerpt: '', published: false, tags: [], image: '', content: '' };
+        return { slug, title: slug, date: '', excerpt: '', published: false, featured: false, tags: [], image: '', readingTime: 1, content: '' };
       }
     });
   } catch {
@@ -49,9 +57,24 @@ export function getAllPosts() {
 }
 
 export function getPublishedPosts() {
+  const today = new Date().toISOString().split('T')[0];
   return getAllPosts()
-    .filter(a => a.published)
-    .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    .filter(a => a.published && (!a.date || a.date <= today))
+    .sort((a, b) => {
+      if (a.featured !== b.featured) return a.featured ? -1 : 1;
+      return (b.date || '').localeCompare(a.date || '');
+    });
+}
+
+/** Returns the previous (older) and next (newer) published posts relative to slug */
+export function getAdjacentPosts(slug) {
+  const posts = getPublishedPosts();
+  const idx = posts.findIndex(p => p.slug === slug);
+  if (idx === -1) return { prev: null, next: null };
+  return {
+    prev: idx < posts.length - 1 ? posts[idx + 1] : null,
+    next: idx > 0 ? posts[idx - 1] : null,
+  };
 }
 
 /** Find articles sharing at least one tag with the given slug, sorted by relevance */

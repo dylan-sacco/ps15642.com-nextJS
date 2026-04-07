@@ -23,11 +23,14 @@ function getBlogs() {
       .map(file => {
         const slug = file.replace(/\.md$/, '');
         try {
-          const raw = fs.readFileSync(path.join(BLOGS_DIR, file), 'utf8');
-          const { data } = matter(raw);
-          return { slug, title: data.title || slug, date: data.date || '', excerpt: data.excerpt || '', published: !!data.published };
+          const filePath = path.join(BLOGS_DIR, file);
+          const raw = fs.readFileSync(filePath, 'utf8');
+          const { data, content } = matter(raw);
+          const mtime = fs.statSync(filePath).mtimeMs;
+          const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
+          return { slug, title: data.title || slug, date: data.date || '', excerpt: data.excerpt || '', published: !!data.published, featured: !!data.featured, mtime, wordCount };
         } catch {
-          return { slug, title: slug, date: '', excerpt: '', published: false };
+          return { slug, title: slug, date: '', excerpt: '', published: false, featured: false, mtime: 0, wordCount: 0 };
         }
       })
       .sort((a, b) => (b.date || '').localeCompare(a.date || ''));

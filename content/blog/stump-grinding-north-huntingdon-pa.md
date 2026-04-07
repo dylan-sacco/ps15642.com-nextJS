@@ -1,7 +1,10 @@
 ---
-title: "What Actually Happens When You Leave a Stump in Your Yard"
+title: What Actually Happens When You Leave a Stump in Your Yard
 date: '2026-04-07'
-excerpt: 'Most homeowners skip stump grinding to save money and figure the stump will just rot away. Here is what actually happens over the next few years — and why it costs more to ignore it.'
+excerpt: >-
+  Most homeowners skip stump grinding to save money and figure the stump will
+  just rot away. Here is what actually happens over the next few years — and why
+  it costs more to ignore it.
 published: true
 tags:
   - Stump Grinding
@@ -10,6 +13,7 @@ tags:
   - North Huntingdon
   - Westmoreland County
 image: 'https://picsum.photos/id/75/1200/630'
+featured: true
 ---
 
 We hear it pretty often after a tree removal: "Just leave the stump, we'll deal with it later." Sometimes that means the homeowner is planning to rent a grinder and handle it themselves. Sometimes it just means they don't want to spend the extra money that day. Either way, the stump stays.
