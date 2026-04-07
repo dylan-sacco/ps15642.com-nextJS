@@ -3,8 +3,8 @@ import H1Drop from "@/components/H1Drop";
 import ParallaxCard from "@/components/ParallaxCard";
 import TextSpan from "@/components/TextSpan";
 import ZoomContainerBS from "@/components/ZoomContainerBS";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import { getFeaturedTestimonials } from "@/lib/testimonials";
+// import TestimonialsSection from "@/components/TestimonialsSection";
+// import { getFeaturedTestimonials } from "@/lib/testimonials";
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
@@ -69,7 +69,7 @@ const zoomContainerList = [
 export default async function Home() {
   const foundingYear = 2007;
   const yearsInBusiness = new Date().getFullYear() - foundingYear;
-  const testimonials = getFeaturedTestimonials();
+  // const testimonials = getFeaturedTestimonials();
 
   return (
     <div>
@@ -100,7 +100,7 @@ export default async function Home() {
         ))}
       </div>
 
-      <TestimonialsSection testimonials={testimonials} />
+      {/* <TestimonialsSection testimonials={testimonials} /> */}
 
       <div id={process.env.FEATURABLE} data-featurable-async ></div>
       <Script
