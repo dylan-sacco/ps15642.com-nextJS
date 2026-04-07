@@ -53,7 +53,7 @@ export default function NavBar({ stickyDisabled = false }) {
 
   return (
     <div className={`bg-white shadow-md z-50${stickyDisabled ? '' : ' sticky top-0'}`}>
-      <nav className="flex justify-between items-center max-w-6xl lg:text-[30px] md:text-[20px] pl-4">
+      <nav className="flex justify-between items-center max-w-6xl lg:text-[30px] md:text-[20px] pl-4 m-auto">
         {/* Logo */}
         <Link href="/">
           {/* eslint-disable-next-line @next/next/no-img-element */}
