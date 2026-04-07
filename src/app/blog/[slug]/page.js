@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { BLOGS_DIR } from '@/lib/paths';
 import { getRelatedPosts, tagToSlug } from '@/lib/blog';
+import TagChip from '@/components/TagChip';
+import BlogListItem from '@/components/BlogListItem';
 import MarkdownPreview from '@/components/admin/MarkdownPreview';
 
 function parseTags(raw) {
@@ -110,13 +112,7 @@ export default async function BlogPostPage({ params }) {
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-4">
             {tags.map(tag => (
-              <Link
-                key={tag}
-                href={`/blog/tag/${tagToSlug(tag)}`}
-                className="text-xs font-medium bg-lime-50 text-lime-700 border border-lime-200 rounded-full px-3 py-1 hover:bg-lime-100 transition-colors"
-              >
-                {tag}
-              </Link>
+              <TagChip key={tag} tag={tag} />
             ))}
           </div>
         )}
@@ -132,17 +128,7 @@ export default async function BlogPostPage({ params }) {
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Related Posts</h2>
           <div className="space-y-4">
             {related.map(article => (
-              <div key={article.slug}>
-                <Link
-                  href={`/blog/${article.slug}`}
-                  className="font-medium text-gray-800 hover:text-lime-700 transition-colors"
-                >
-                  {article.title}
-                </Link>
-                {article.excerpt && (
-                  <p className="text-sm text-gray-500 mt-0.5">{article.excerpt}</p>
-                )}
-              </div>
+              <BlogListItem key={article.slug} article={article} minimal />
             ))}
           </div>
         </aside>

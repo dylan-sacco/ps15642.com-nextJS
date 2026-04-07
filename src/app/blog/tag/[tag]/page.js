@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPublishedPosts, tagToSlug } from '@/lib/blog';
+import BlogListItem from '@/components/BlogListItem';
 import H1Drop from '@/components/H1Drop';
 import ParallaxCard from '@/components/ParallaxCard';
 
@@ -56,42 +57,7 @@ export default async function TagPage({ params }) {
 
         <div className="space-y-8">
           {blog.map(article => (
-            <article key={article.slug} className="border-b border-gray-200 pb-8 last:border-0">
-              {article.date && (
-                <time className="text-sm text-gray-400">{article.date}</time>
-              )}
-              <h2 className="text-xl font-bold text-gray-800 mt-1 mb-2">
-                <Link href={`/blog/${article.slug}`} className="hover:text-lime-700 transition-colors">
-                  {article.title}
-                </Link>
-              </h2>
-              {article.excerpt && (
-                <p className="text-gray-600 leading-relaxed">{article.excerpt}</p>
-              )}
-              {article.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mt-3">
-                  {article.tags.map(tag => (
-                    <Link
-                      key={tag}
-                      href={`/blog/tag/${tagToSlug(tag)}`}
-                      className={`text-xs rounded-full px-2.5 py-0.5 border transition-colors ${
-                        tagToSlug(tag) === tagSlug
-                          ? 'bg-lime-600 text-white border-lime-600'
-                          : 'bg-lime-50 text-lime-700 border-lime-200 hover:bg-lime-100'
-                      }`}
-                    >
-                      {tag}
-                    </Link>
-                  ))}
-                </div>
-              )}
-              <Link
-                href={`/blog/${article.slug}`}
-                className="inline-block mt-3 text-sm font-medium text-lime-700 hover:text-lime-900 transition-colors"
-              >
-                Read more →
-              </Link>
-            </article>
+            <BlogListItem key={article.slug} article={article} activeTagSlug={tagSlug} />
           ))}
         </div>
       </div>
