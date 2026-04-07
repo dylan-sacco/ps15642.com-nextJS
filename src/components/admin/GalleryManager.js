@@ -686,7 +686,7 @@ export default function GalleryManager({ initialImages }) {
             ...img,
             filename: data.newName,
             url: `/api/uploads/${newBase}`,
-            thumbUrl: newIsVideo && img.thumbUrl ? `/api/uploads/${newBase}.thumb.webp` : null,
+            thumbUrl: img.thumbUrl ? `/api/uploads/${newBase}.thumb.webp` : null,
           };
         })
       );
