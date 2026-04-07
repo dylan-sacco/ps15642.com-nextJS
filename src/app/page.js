@@ -7,6 +7,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import { getFeaturedTestimonials } from "@/lib/testimonials";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 
 export const metadata = {
   title: "P&S Contracting and Landscape | Westmoreland County, PA",
@@ -102,7 +103,10 @@ export default async function Home() {
       <TestimonialsSection testimonials={testimonials} />
 
       <div id={process.env.FEATURABLE} data-featurable-async ></div>
-      <script src="https://featurable.com/assets/bundle.js" defer></script>
+      <Script
+        src="https://featurable.com/assets/bundle.js"
+        strategy="afterInteractive"
+      />
 
       {/* Contact Section */}
       <GreenCard>
