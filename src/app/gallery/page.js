@@ -24,7 +24,7 @@ export const metadata = {
     siteName: "P&S Contracting and Landscape",
     images: [
       {
-        url: "https://ps15642.com/hs1.webp",
+        url: "https://ps15642.com/hardscape.jpg",
         width: 1800,
         height: 800,
         alt: "Gallery - P&S Contracting and Landscape",
@@ -44,7 +44,7 @@ export default async function GalleryPage({ searchParams }) {
 
   return (
     <div>
-      <ParallaxCard>
+      <ParallaxCard imgUrl='/hardscape.jpg'>
         <H1Drop color="text-white" size="text-4xl md:text-6xl">
           Our Gallery
         </H1Drop>

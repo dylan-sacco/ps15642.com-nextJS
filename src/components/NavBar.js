@@ -13,7 +13,7 @@ const navItems = [
   {
     name: 'More', href: '/blog', dropdown: [
       { name: 'Services', href: '/services' },
-      { name: 'Blog', href: '/blog' },
+      // { name: 'Blog', href: '/blog' },
       { name: 'Get A Quote', href: '/quote' },
       { name: 'Locations', href: '/locations'}
     ],
