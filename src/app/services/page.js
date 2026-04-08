@@ -1,3 +1,5 @@
+import ScrollReveal from "@/components/ScrollReveal";
+
 export const metadata = {
   title: "Services | P&S Contracting and Landscape",
   description:
@@ -95,8 +97,9 @@ export default function ServicesPage() {
   return (
     <div>
       {/* ── Intro ─────────────────────────────────────────────────────────── */}
-      <section className="bg-[#1a3022] text-white">
-        <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+      <section className="bg-[#1a3022] text-white relative overflow-hidden">
+        <div className="absolute inset-0 section-glow pointer-events-none" aria-hidden="true" />
+        <div className="max-w-4xl mx-auto px-6 py-16 text-center relative z-10">
           <p className="text-xs font-semibold tracking-[0.3em] uppercase text-lime-400 mb-5">
             What We Offer
           </p>
@@ -116,11 +119,13 @@ export default function ServicesPage() {
       {/* ── Quick Highlights ──────────────────────────────────────────────── */}
       <section className="border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {highlights.map(h => (
-            <div key={h.label}>
-              <p className="text-4xl font-bold text-lime-700">{h.value}</p>
-              <p className="text-sm text-gray-500 mt-1">{h.label}</p>
-            </div>
+          {highlights.map((h, i) => (
+            <ScrollReveal key={h.label} delay={i * 80} from="scale">
+              <div>
+                <p className="text-4xl font-bold text-lime-700">{h.value}</p>
+                <p className="text-sm text-gray-500 mt-1">{h.label}</p>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>
@@ -128,66 +133,67 @@ export default function ServicesPage() {
       {/* ── Service Cards ─────────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 py-14">
         <div className="grid md:grid-cols-2 gap-6">
-          {services.map(svc => (
-            <div
-              key={svc.slug}
-              className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm flex flex-col"
-            >
-              <div className={`${svc.accent} px-5 py-3`}>
-                <h2 className="text-white font-semibold text-sm tracking-wide">
-                  {svc.label}
-                </h2>
+          {services.map((svc, i) => (
+            <ScrollReveal key={svc.slug} delay={i * 100}>
+              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm card-lift flex flex-col h-full">
+                <div className={`${svc.accent} px-5 py-3`}>
+                  <h2 className="text-white font-semibold text-sm tracking-wide">
+                    {svc.label}
+                  </h2>
+                </div>
+                <div className="px-5 pt-4 pb-2 flex-1">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    {svc.heading}
+                  </h3>
+                  <p className="text-sm text-gray-500 mb-4 leading-relaxed">
+                    {svc.summary}
+                  </p>
+                  <ul className="space-y-2">
+                    {svc.items.map(item => (
+                      <li
+                        key={item}
+                        className="text-sm text-gray-600 flex items-start gap-2"
+                      >
+                        <span className="text-lime-500 mt-0.5 flex-shrink-0">&#10003;</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="px-5 py-4">
+                  <a
+                    href={`/${svc.slug}`}
+                    className="inline-block text-sm font-semibold text-lime-700 hover:text-lime-900 transition-colors"
+                  >
+                    Learn more &rarr;
+                  </a>
+                </div>
               </div>
-              <div className="px-5 pt-4 pb-2 flex-1">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                  {svc.heading}
-                </h3>
-                <p className="text-sm text-gray-500 mb-4 leading-relaxed">
-                  {svc.summary}
-                </p>
-                <ul className="space-y-2">
-                  {svc.items.map(item => (
-                    <li
-                      key={item}
-                      className="text-sm text-gray-600 flex items-start gap-2"
-                    >
-                      <span className="text-lime-500 mt-0.5 flex-shrink-0">&#10003;</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="px-5 py-4">
-                <a
-                  href={`/${svc.slug}`}
-                  className="inline-block text-sm font-semibold text-lime-700 hover:text-lime-900 transition-colors"
-                >
-                  Learn more &rarr;
-                </a>
-              </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
-      <section className="bg-gray-50 border-t border-gray-100">
-        <div className="max-w-4xl mx-auto px-6 py-14 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-            Not sure where to start?
-          </h2>
-          <p className="text-gray-500 md:text-lg mb-8 max-w-xl mx-auto">
-            Every estimate is free. We&apos;ll come out, look at the property, and
-            give you honest advice before any money changes hands.
-          </p>
-          <a
-            href="/contact"
-            className="inline-block bg-lime-700 hover:bg-lime-800 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
-          >
-            Get a Free Estimate
-          </a>
-        </div>
-      </section>
+      <ScrollReveal>
+        <section className="bg-gray-50 border-t border-gray-100">
+          <div className="max-w-4xl mx-auto px-6 py-14 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Not sure where to start?
+            </h2>
+            <p className="text-gray-500 md:text-lg mb-8 max-w-xl mx-auto">
+              Every estimate is free. We&apos;ll come out, look at the property, and
+              give you honest advice before any money changes hands.
+            </p>
+            <a
+              href="/contact"
+              className="inline-block bg-lime-700 hover:bg-lime-800 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
+            >
+              Get a Free Estimate
+            </a>
+          </div>
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

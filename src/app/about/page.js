@@ -1,4 +1,5 @@
 import MeetTheTeam from "@/components/MeetTheTeam";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const dynamic = 'force-dynamic';
 
@@ -69,11 +70,11 @@ const seasons = [
 export default function AboutPage() {
   return (
     <div>
-      {/* <PageHeader title="About P&S Contracting and Landscape" imgUrl="/hs1.webp" /> */}
-
       {/* ── Mission Statement ──────────────────────────────────────────────── */}
-      <section className="bg-[#1a3022] text-white">
-        <div className="max-w-4xl mx-auto px-6 py-16 text-center">
+      <section className="bg-[#1a3022] text-white relative overflow-hidden">
+        {/* Animated glow overlay */}
+        <div className="absolute inset-0 section-glow pointer-events-none" aria-hidden="true" />
+        <div className="max-w-4xl mx-auto px-6 py-16 text-center relative z-10">
           <p className="text-xs font-semibold tracking-[0.3em] uppercase text-lime-400 mb-5">
             Our Mission
           </p>
@@ -96,163 +97,170 @@ export default function AboutPage() {
       {/* ── Stats Row ─────────────────────────────────────────────────────── */}
       <section className="border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {stats.map(s => {
+          {stats.map((s, i) => {
             const inner = (
               <>
                 <p className="text-4xl font-bold text-lime-700">{s.value}</p>
                 <p className="text-sm text-gray-500 mt-1">{s.label}</p>
               </>
             );
-            return s.href ? (
-              <a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group hover:opacity-80 transition-opacity"
-                title={`View source for ${s.label}`}
-              >
-                {inner}
-                <span className="text-[10px] text-gray-400 group-hover:text-lime-600 transition-colors">
-                  verified ↗
-                </span>
-              </a>
-            ) : (
-              <div key={s.label}>{inner}</div>
+            return (
+              <ScrollReveal key={s.label} delay={i * 80} from="scale">
+                {s.href ? (
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group hover:opacity-80 transition-opacity block"
+                    title={`View source for ${s.label}`}
+                  >
+                    {inner}
+                    <span className="text-[10px] text-gray-400 group-hover:text-lime-600 transition-colors">
+                      verified ↗
+                    </span>
+                  </a>
+                ) : (
+                  <div>{inner}</div>
+                )}
+              </ScrollReveal>
             );
           })}
         </div>
       </section>
 
       {/* ── Our Story ─────────────────────────────────────────────────────── */}
-      <section className="max-w-4xl mx-auto px-6 py-14">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-          Our Roots
-        </h2>
-        <div className="space-y-5 text-gray-600 md:text-lg leading-relaxed">
-          <p>
-            P&amp;S Contracting and Landscape was founded in 2007 out of a
-            simple belief: that the land around your home deserves as much care
-            and thought as the home itself. What started as a small crew serving
-            the Irwin area has grown into one of Westmoreland County&apos;s most
-            trusted outdoor contractors — family-owned, deeply local, and built
-            on a foundation of quality work and honest relationships.
-          </p>
-          <p>
-            We are licensed, bonded, and insured, and we take on every project
-            — residential or commercial — with the same level of dedication we
-            would bring to our own properties. Over eighteen years, we&apos;ve
-            earned a reputation for showing up on time, working clean, and
-            delivering results that speak for themselves.
-          </p>
-          <p>
-            Our customers consistently describe us as professional, detail-oriented,
-            and genuinely invested in the outcome. We think that says it all. A
-            perfect 5-star rating on Angi and a 100% recommendation rate on
-            Facebook aren&apos;t goals we set — they&apos;re the natural result of
-            doing the work right, every single time.
-          </p>
-        </div>
-      </section>
+      <ScrollReveal>
+        <section className="max-w-4xl mx-auto px-6 py-14">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            Our Roots
+          </h2>
+          <div className="space-y-5 text-gray-600 md:text-lg leading-relaxed">
+            <p>
+              P&amp;S Contracting and Landscape was founded in 2007 out of a
+              simple belief: that the land around your home deserves as much care
+              and thought as the home itself. What started as a small crew serving
+              the Irwin area has grown into one of Westmoreland County&apos;s most
+              trusted outdoor contractors — family-owned, deeply local, and built
+              on a foundation of quality work and honest relationships.
+            </p>
+            <p>
+              We are licensed, bonded, and insured, and we take on every project
+              — residential or commercial — with the same level of dedication we
+              would bring to our own properties. Over eighteen years, we&apos;ve
+              earned a reputation for showing up on time, working clean, and
+              delivering results that speak for themselves.
+            </p>
+            <p>
+              Our customers consistently describe us as professional, detail-oriented,
+              and genuinely invested in the outcome. We think that says it all. A
+              perfect 5-star rating on Angi and a 100% recommendation rate on
+              Facebook aren&apos;t goals we set — they&apos;re the natural result of
+              doing the work right, every single time.
+            </p>
+          </div>
+        </section>
+      </ScrollReveal>
 
       {/* ── Seasonal Services ─────────────────────────────────────────────── */}
       <section className="bg-gray-50 border-t border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-6 py-14">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            What We Do
-          </h2>
-          <p className="text-gray-500 mb-10 md:text-lg">
-            We work year-round, letting each season guide where we focus our energy.
-          </p>
+          <ScrollReveal>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+              What We Do
+            </h2>
+            <p className="text-gray-500 mb-10 md:text-lg">
+              We work year-round, letting each season guide where we focus our energy.
+            </p>
+          </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6">
-            {seasons.map(season => (
-              <div
-                key={season.name}
-                className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm"
-              >
-                <div className={`${season.accent} px-5 py-3`}>
-                  <h3 className="text-white font-semibold text-sm tracking-wide">
-                    {season.name}
-                  </h3>
+            {seasons.map((season, i) => (
+              <ScrollReveal key={season.name} delay={i * 110}>
+                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm card-lift h-full">
+                  <div className={`${season.accent} px-5 py-3`}>
+                    <h3 className="text-white font-semibold text-sm tracking-wide">
+                      {season.name}
+                    </h3>
+                  </div>
+                  <ul className="px-5 py-4 space-y-2">
+                    {season.items.map(item => (
+                      <li
+                        key={item}
+                        className="text-sm text-gray-600 flex items-start gap-2"
+                      >
+                        <span className="text-lime-500 mt-0.5 flex-shrink-0">&#10003;</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="px-5 py-4 space-y-2">
-                  {season.items.map(item => (
-                    <li
-                      key={item}
-                      className="text-sm text-gray-600 flex items-start gap-2"
-                    >
-                      <span className="text-lime-500 mt-0.5 flex-shrink-0">&#10003;</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── Passion & Values ──────────────────────────────────────────────── */}
-      <section className="max-w-4xl mx-auto px-6 py-14">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-          Why We Do It
-        </h2>
-        <div className="space-y-5 text-gray-600 md:text-lg leading-relaxed">
-          <p>
-            Landscaping isn&apos;t just maintenance — it&apos;s an act of care
-            for the place you live. Every plant bed we install, every tree we
-            shape, every patio we lay is a small but real contribution to making
-            a neighborhood feel more like home. That&apos;s what drives us.
-          </p>
-          <p>
-            We&apos;ve watched large-scale housing developments clear entire
-            acres of mature trees and natural growth — and then hand buyers a
-            bare lot and a handshake. Our passion is stepping into that space
-            and rebuilding something living. Not just functional landscaping, but
-            landscapes that grow, that change with the seasons, that outlast the
-            people who planted them.
-          </p>
-          <p>
-            We offer free estimates because we believe every homeowner deserves
-            honest advice before they spend a dime. We offer a 10% senior
-            discount because this community has given us eighteen years of
-            trust, and that deserves to be returned. And we show up for
-            emergency calls because your property&apos;s safety doesn&apos;t
-            wait for a convenient time slot.
-          </p>
-        </div>
+      <ScrollReveal>
+        <section className="max-w-4xl mx-auto px-6 py-14">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            Why We Do It
+          </h2>
+          <div className="space-y-5 text-gray-600 md:text-lg leading-relaxed">
+            <p>
+              Landscaping isn&apos;t just maintenance — it&apos;s an act of care
+              for the place you live. Every plant bed we install, every tree we
+              shape, every patio we lay is a small but real contribution to making
+              a neighborhood feel more like home. That&apos;s what drives us.
+            </p>
+            <p>
+              We&apos;ve watched large-scale housing developments clear entire
+              acres of mature trees and natural growth — and then hand buyers a
+              bare lot and a handshake. Our passion is stepping into that space
+              and rebuilding something living. Not just functional landscaping, but
+              landscapes that grow, that change with the seasons, that outlast the
+              people who planted them.
+            </p>
+            <p>
+              We offer free estimates because we believe every homeowner deserves
+              honest advice before they spend a dime. We offer a 10% senior
+              discount because this community has given us eighteen years of
+              trust, and that deserves to be returned. And we show up for
+              emergency calls because your property&apos;s safety doesn&apos;t
+              wait for a convenient time slot.
+            </p>
+          </div>
 
-        {/* Goals block */}
-        <div className="mt-10 grid sm:grid-cols-3 gap-4">
-          {[
-            {
-              heading: "Restore",
-              body: "Return natural beauty to properties cleared by development and years of neglect.",
-            },
-            {
-              heading: "Sustain",
-              body: "Design landscapes that thrive through every season with minimal environmental impact.",
-            },
-            {
-              heading: "Serve",
-              body: "Treat every client&apos;s property with the same pride and care we would our own.",
-            },
-          ].map(goal => (
-            <div
-              key={goal.heading}
-              className="rounded-xl bg-lime-50 border border-lime-100 p-5"
-            >
-              <h3 className="font-bold text-lime-800 text-base mb-1">
-                {goal.heading}
-              </h3>
-              <p
-                className="text-sm text-gray-600 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: goal.body }}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
+          {/* Goals block */}
+          <div className="mt-10 grid sm:grid-cols-3 gap-4">
+            {[
+              {
+                heading: "Restore",
+                body: "Return natural beauty to properties cleared by development and years of neglect.",
+              },
+              {
+                heading: "Sustain",
+                body: "Design landscapes that thrive through every season with minimal environmental impact.",
+              },
+              {
+                heading: "Serve",
+                body: "Treat every client&apos;s property with the same pride and care we would our own.",
+              },
+            ].map((goal, i) => (
+              <ScrollReveal key={goal.heading} delay={i * 100}>
+                <div className="rounded-xl bg-lime-50 border border-lime-100 p-5 card-lift h-full">
+                  <h3 className="font-bold text-lime-800 text-base mb-1">
+                    {goal.heading}
+                  </h3>
+                  <p
+                    className="text-sm text-gray-600 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: goal.body }}
+                  />
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </section>
+      </ScrollReveal>
 
       {/* ── Meet the Team ─────────────────────────────────────────────────── */}
       <MeetTheTeam />

@@ -78,10 +78,13 @@ export default function BlogPostHeader({
             font-size: 12px;
             font-weight: 500;
             letter-spacing: 0.06em;
-            color: rgba(255,255,255,0.62);
+            color: rgba(255,255,255,0.9);
             text-decoration: none;
             z-index: 3;
             transition: color 0.15s;
+            padding: .5rem 1rem;
+            border-radius: .5rem;
+            backdrop-filter: blur(10px);
           }
           .bph-back:hover { color: #fff; }
 

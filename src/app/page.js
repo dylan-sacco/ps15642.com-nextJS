@@ -4,6 +4,7 @@ import HeroEarthwork from "@/components/HeroEarthwork";
 import ParallaxCard from "@/components/ParallaxCard";
 import TextSpan from "@/components/TextSpan";
 import ZoomContainerBS from "@/components/ZoomContainerBS";
+import ScrollReveal from "@/components/ScrollReveal";
 // import TestimonialsSection from "@/components/TestimonialsSection";
 // import { getFeaturedTestimonials } from "@/lib/testimonials";
 import Image from "next/image";
@@ -85,23 +86,27 @@ export default async function Home() {
       </ParallaxCard> */}
 
       {/* About Section */}
-      <TextSpan>
-        For {yearsInBusiness} years, P&S Contracting and Landscape has been the premier landscaping company throughout all of Westmoreland County, Pennsylvania. By providing stellar landscaping services in all facets: design, maintenance, soft/hard-scaping and installation for all of our commercial and residential clients, we are now largely regarded as the absolute best landscaping company in the business!
-      </TextSpan>
+      <ScrollReveal>
+        <TextSpan>
+          For {yearsInBusiness} years, P&S Contracting and Landscape has been the premier landscaping company throughout all of Westmoreland County, Pennsylvania. By providing stellar landscaping services in all facets: design, maintenance, soft/hard-scaping and installation for all of our commercial and residential clients, we are now largely regarded as the absolute best landscaping company in the business!
+        </TextSpan>
+      </ScrollReveal>
 
       {/* hoverZoom section */}
-      <div className="max-w-6xl grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-4 sm:p-6 mx-auto">
-        {zoomContainerList.map((item, index) => (
-          <ZoomContainerBS
-            key={index}
-            title={item.title}
-            description={item.description}
-            buttonText={item.buttonText}
-            buttonURL={item.buttonURL}
-            imageURL={item.imageURL}
-          />
-        ))}
-      </div>
+      <ScrollReveal>
+        <div className="max-w-6xl grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-4 sm:p-6 mx-auto">
+          {zoomContainerList.map((item, index) => (
+            <ZoomContainerBS
+              key={index}
+              title={item.title}
+              description={item.description}
+              buttonText={item.buttonText}
+              buttonURL={item.buttonURL}
+              imageURL={item.imageURL}
+            />
+          ))}
+        </div>
+      </ScrollReveal>
 
       {/* <TestimonialsSection testimonials={testimonials} /> */}
 
@@ -121,6 +126,7 @@ export default async function Home() {
         In need of a complete overhaul of your current landscaping layout; or maybe just a few additions for that added elegance, such as a mini grove of trees or a tasteful flower bed? Feel free to give us a call for your cost-free consultation!
       </GreenCard>
 
+      <ScrollReveal>
       <div className="max-w-6xl mx-auto p-6 text-center">
         <H1Drop>
           <Link href="/locations" className="hover:text-lime-700 transition-colors">
@@ -171,6 +177,7 @@ export default async function Home() {
           {/* <div>Darragh, PA</div> */}
         </div>
       </div>
+      </ScrollReveal>
     </div>
   );
 }

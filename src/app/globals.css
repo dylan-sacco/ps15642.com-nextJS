@@ -33,3 +33,25 @@ body {
 img {
   transition: transform 0.3s ease;
 }
+
+/* ── Animated glow for dark hero/intro sections ───────────────────── */
+@keyframes section-glow {
+  0%, 100% {
+    background: radial-gradient(ellipse 80% 60% at 10% 60%, rgba(132, 204, 22, 0.08) 0%, transparent 70%);
+  }
+  50% {
+    background: radial-gradient(ellipse 80% 60% at 90% 40%, rgba(132, 204, 22, 0.08) 0%, transparent 70%);
+  }
+}
+.section-glow {
+  animation: section-glow 14s ease-in-out infinite;
+}
+
+/* ── Card hover lift ──────────────────────────────────────────────── */
+.card-lift {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -6px rgba(0,0,0,0.12);
+}
