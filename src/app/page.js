@@ -1,5 +1,6 @@
 import GreenCard from "@/components/GreenCard";
 import H1Drop from "@/components/H1Drop";
+import HeroEarthwork from "@/components/HeroEarthwork";
 import ParallaxCard from "@/components/ParallaxCard";
 import TextSpan from "@/components/TextSpan";
 import ZoomContainerBS from "@/components/ZoomContainerBS";
@@ -73,13 +74,15 @@ export default async function Home() {
 
   return (
     <div>
+      <HeroEarthwork/>
+
       {/* Paralax effect */}
-      <ParallaxCard imgUrl={"/hs1.webp"} >
+      {/* <ParallaxCard imgUrl={"/hs1.webp"} >
         <H1Drop color="text-white">
           <h1 className=" text-4xl md:text-6xl font-bold font-serif">P & S</h1>
           <p className=" text-2xl md:text-4xl font-serif">Contracting and Landscape</p>
         </H1Drop>
-      </ParallaxCard>
+      </ParallaxCard> */}
 
       {/* About Section */}
       <TextSpan>
@@ -102,11 +105,16 @@ export default async function Home() {
 
       {/* <TestimonialsSection testimonials={testimonials} /> */}
 
-      <div id={process.env.FEATURABLE} data-featurable-async ></div>
-      <Script
-        src="https://featurable.com/assets/bundle.js"
-        strategy="afterInteractive"
-      />
+      { 
+        process.env.FEATURABLE && 
+        <>
+          <div id={process.env.FEATURABLE} data-featurable-async ></div>
+          <Script
+            src="https://featurable.com/assets/bundle.js"
+            strategy="afterInteractive"
+          />
+        </>
+      }
 
       {/* Contact Section */}
       <GreenCard>
