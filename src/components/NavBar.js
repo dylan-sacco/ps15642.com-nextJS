@@ -48,20 +48,20 @@ export default function NavBar({ stickyDisabled = false }) {
 
         {/* Desktop Nav */}
         <ul className="hidden md:flex self-stretch items-stretch">
-          {navItems.map((item) => {
+          {navItems.map((item, index) => {
             const hasDropdown = item.dropdown?.length > 0;
             const isActive = pathname === item.href ||
               (hasDropdown && item.dropdown.some(d => pathname === d.href));
 
             return (
               <li
-                key={item.href}
+                key={item.href || index}
                 className="relative flex items-stretch"
                 onMouseEnter={() => hasDropdown && setOpenDropdown(item.href)}
                 onMouseLeave={() => hasDropdown && setOpenDropdown(null)}
               >
                 <Link
-                  href={item.href}
+                  href={item.href|| ""}
                   className={`transition lg:px-6 px-5 flex items-center gap-1 ${
                     isActive ? 'bg-lime-600 text-white' : 'hover:bg-green-100'
                   }`}

@@ -4,7 +4,7 @@ export const navItems = [
   { name: 'Gallery', href: '/gallery' },
   { name: 'Contact', href: '/contact' },
   {
-    name: 'More', href: '/blog', dropdown: [
+    name: 'More', dropdown: [
       { name: 'Services', href: '/services' },
       // { name: 'Blog', href: '/blog' },
       { name: 'Get A Quote', href: '/quote' },
