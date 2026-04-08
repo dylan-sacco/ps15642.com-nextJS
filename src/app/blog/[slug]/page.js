@@ -4,8 +4,9 @@ import matter from 'gray-matter';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { BLOGS_DIR } from '@/lib/paths';
-import { getRelatedPosts, tagToSlug } from '@/lib/blog';
+import { getRelatedPosts } from '@/lib/blog';
 import MarkdownPreview from '@/components/admin/MarkdownPreview';
+import BlogPostHeader from '@/components/BlogPostHeader';
 
 function parseTags(raw) {
   if (!raw) return [];
@@ -84,69 +85,45 @@ export default async function BlogPostPage({ params }) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
-      {/* JSON-LD structured data */}
+    <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <Link href="/blog" className="text-sm text-gray-400 hover:text-lime-700 transition-colors mb-8 inline-block">
-        ← All Posts
-      </Link>
+      {/* Adaptive hero — full-bleed image if the post has one, clean typography if not */}
+      <BlogPostHeader
+        title={data.title}
+        date={data.date || null}
+        tags={tags}
+        excerpt={data.excerpt || null}
+        imageUrl={data.image || null}
+      />
 
-      <header className="mb-8">
-        {data.date && (
-          <time className="text-sm text-gray-400 block mb-2">{data.date}</time>
+      <div className="max-w-3xl mx-auto px-4 py-12">
+        <MarkdownPreview body={content} />
+
+        {related.length > 0 && (
+          <aside className="mt-12 pt-8 border-t border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Related Posts</h2>
+            <div className="space-y-4">
+              {related.map(article => (
+                <div key={article.slug}>
+                  <Link
+                    href={`/blog/${article.slug}`}
+                    className="font-medium text-gray-800 hover:text-lime-700 transition-colors"
+                  >
+                    {article.title}
+                  </Link>
+                  {article.excerpt && (
+                    <p className="text-sm text-gray-500 mt-0.5">{article.excerpt}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </aside>
         )}
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-          {data.title}
-        </h1>
-        {data.excerpt && (
-          <p className="text-lg text-gray-600 mt-3 leading-relaxed">{data.excerpt}</p>
-        )}
-
-        {/* Tag chips */}
-        {tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-4">
-            {tags.map(tag => (
-              <Link
-                key={tag}
-                href={`/blog/tag/${tagToSlug(tag)}`}
-                className="text-xs font-medium bg-lime-50 text-lime-700 border border-lime-200 rounded-full px-3 py-1 hover:bg-lime-100 transition-colors"
-              >
-                {tag}
-              </Link>
-            ))}
-          </div>
-        )}
-      </header>
-
-      <hr className="border-gray-200 mb-8" />
-
-      <MarkdownPreview body={content} />
-
-      {/* Related articles */}
-      {related.length > 0 && (
-        <aside className="mt-12 pt-8 border-t border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Related Posts</h2>
-          <div className="space-y-4">
-            {related.map(article => (
-              <div key={article.slug}>
-                <Link
-                  href={`/blog/${article.slug}`}
-                  className="font-medium text-gray-800 hover:text-lime-700 transition-colors"
-                >
-                  {article.title}
-                </Link>
-                {article.excerpt && (
-                  <p className="text-sm text-gray-500 mt-0.5">{article.excerpt}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </aside>
-      )}
+      </div>
     </div>
   );
 }

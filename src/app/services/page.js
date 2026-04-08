@@ -1,6 +1,5 @@
 import GenericSpan from "@/components/GenericSpan";
-import H1Drop from "@/components/H1Drop";
-import ParallaxCard from "@/components/ParallaxCard";
+import PageHeader from "@/components/PageHeader";
 
 // ✅ Metadata for SEO (App Router format)
 export const metadata = {
@@ -41,14 +40,7 @@ export default function servicePage() {
   ]
   return (
     <div>
-      <ParallaxCard imgUrl="/hs1.webp">
-        <div className="relative">
-          {/* Shadow Text Behind */}
-          <H1Drop color="text-white" size="text-4xl md:text-6xl">
-            Our Services
-          </H1Drop>
-        </div>
-      </ParallaxCard>
+      <PageHeader title="Our Services" imgUrl="/hs1.webp" />
       {content.map((section, index) => {
         return (
           <GenericSpan key={index} title={section.title}>

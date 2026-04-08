@@ -1,6 +1,5 @@
 import Gallery from '@/components/Gallery';
-import H1Drop from '@/components/H1Drop';
-import ParallaxCard from '@/components/ParallaxCard';
+import PageHeader from '@/components/PageHeader';
 import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import Link from 'next/link';
 import fs from 'fs';
@@ -44,11 +43,7 @@ export default async function GalleryPage({ searchParams }) {
 
   return (
     <div>
-      <ParallaxCard imgUrl='/hardscape.jpg'>
-        <H1Drop color="text-white" size="text-4xl md:text-6xl">
-          Our Gallery
-        </H1Drop>
-      </ParallaxCard>
+      <PageHeader title="Our Gallery" subtitle="Landscaping · Hardscape · Before &amp; After" />
 
       {/* Tab bar */}
       <div className="border-b border-gray-200 bg-white sticky top-0 z-10">

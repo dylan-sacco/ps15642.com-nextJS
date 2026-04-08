@@ -2,8 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { notFound } from 'next/navigation';
-import ParallaxCard from '@/components/ParallaxCard';
-import H1Drop from '@/components/H1Drop';
+import PageHeader from '@/components/PageHeader';
 import MarkdownPreview from '@/components/admin/MarkdownPreview';
 import { PAGES_DIR } from '@/lib/paths';
 
@@ -49,11 +48,7 @@ export default async function ServicePage({ params }) {
 
   return (
     <div>
-      <ParallaxCard imgUrl={data.heroImage || '/hs1.webp'}>
-        <H1Drop color="text-white" size="text-4xl md:text-6xl">
-          {data.heroTitle || slug}
-        </H1Drop>
-      </ParallaxCard>
+      <PageHeader title={data.heroTitle || slug} imgUrl={data.heroImage || '/hs1.webp'} />
 
       <div className="max-w-3xl mx-auto px-6 py-12">
         <MarkdownPreview body={content} />

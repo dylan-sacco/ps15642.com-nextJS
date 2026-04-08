@@ -63,6 +63,10 @@ export const PERMISSIONS = {
   LOCATIONS_EDIT:   'locations.edit',   // Edit existing location pages
   LOCATIONS_DELETE: 'locations.delete', // Delete location pages
 
+  // ── Crew ──────────────────────────────────────────────────────────────────────
+  CREW_VIEW:   'crew.view',   // See the crew / meet-the-team manager
+  CREW_MANAGE: 'crew.manage', // Add, edit, reorder, delete crew members
+
 };
 
 // Role definitions.
@@ -106,6 +110,8 @@ export const ROLES = {
       'locations.view',
       'locations.create',
       'locations.edit',
+      'crew.view',
+      'crew.manage',
     ],
   },
 
@@ -147,6 +153,8 @@ export const ROLES = {
       'locations.create',
       'locations.edit',
       'locations.delete',
+      'crew.view',
+      'crew.manage',
     ],
   },
 

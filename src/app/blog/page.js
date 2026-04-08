@@ -1,6 +1,5 @@
 import { getPublishedPosts } from '@/lib/blog';
-import H1Drop from '@/components/H1Drop';
-import ParallaxCard from '@/components/ParallaxCard';
+import PageHeader from '@/components/PageHeader';
 import BlogList from '@/components/BlogList';
 
 export const dynamic = 'force-dynamic';
@@ -24,11 +23,7 @@ export default function BlogPage() {
 
   return (
     <div>
-      <ParallaxCard>
-        <H1Drop color="text-white" size="text-4xl md:text-6xl">
-          Blogs
-        </H1Drop>
-      </ParallaxCard>
+      <PageHeader title="Blog" subtitle="Landscaping Tips &amp; Insights" />
 
       <div className="max-w-3xl mx-auto px-4 py-12">
         <BlogList posts={blog} />
