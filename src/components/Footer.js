@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import EmergencyDisclaimer from '@/components/EmergencyDisclaimer';
 import { FaFacebookSquare, FaInstagram, FaGoogle, FaGithub } from 'react-icons/fa';
 import { headers } from 'next/headers';
 import fs from 'fs';
@@ -117,7 +118,7 @@ export default async function Footer() {
           <span aria-hidden="true">&middot;</span>
           <span>10% Senior Discount</span>
           <span aria-hidden="true">&middot;</span>
-          <span>Emergency Services Available</span>
+          <EmergencyDisclaimer />
         </div>
       </div>
 
