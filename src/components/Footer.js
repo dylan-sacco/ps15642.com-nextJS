@@ -4,6 +4,7 @@ import { FaFacebookSquare, FaInstagram, FaGoogle, FaGithub } from 'react-icons/f
 import { headers } from 'next/headers';
 import fs from 'fs';
 import path from 'path';
+import { footerLinks } from '@/config/footerLinks';
 
 const WHITELIST_FILE = path.join(process.cwd(), 'data', 'ip-whitelist.json');
 
@@ -32,16 +33,6 @@ function isWhitelisted(ip) {
     return false;
   }
 }
-
-const navLinks = [
-  { name: 'Home',     href: '/'         },
-  { name: 'Blog',     href: '/blog'     },
-  { name: 'About',    href: '/about'    },
-  { name: 'Services', href: '/services' },
-  { name: 'Gallery',  href: '/gallery'  },
-  { name: 'FAQ',      href: '/faq'      },
-  { name: 'Contact',  href: '/contact'  },
-];
 
 export default async function Footer() {
   const hdrs = await headers();
@@ -80,7 +71,7 @@ export default async function Footer() {
         <div>
           <h3 className="text-lime-400 font-semibold uppercase tracking-wider text-sm mb-4">Quick Links</h3>
           <ul className="space-y-2">
-            {navLinks.map(({ name, href }) => (
+            {footerLinks.map(({ name, href }) => (
               <li key={href}>
                 <Link href={href} className="text-green-300 hover:text-lime-400 transition text-sm">
                   {name}

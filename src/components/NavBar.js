@@ -4,21 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
-
-const navItems = [
-  { name: 'Home', href: '/' },
-  { name: 'About', href: '/about'},
-  { name: 'Gallery', href: '/gallery' },
-  { name: 'Contact', href: '/contact' },
-  {
-    name: 'More', href: '/blog', dropdown: [
-      { name: 'Services', href: '/services' },
-      // { name: 'Blog', href: '/blog' },
-      { name: 'Get A Quote', href: '/quote' },
-      { name: 'Locations', href: '/locations'}
-    ],
-  },
-];
+import { navItems } from '@/config/navItems';
 
 export default function NavBar({ stickyDisabled = false }) {
   const pathname = usePathname();
