@@ -108,6 +108,19 @@ export default async function Footer() {
 
       </div>
 
+      {/* Trust strip */}
+      <div className="border-t border-green-800">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-xs text-green-500">
+          <span>Licensed &amp; Insured</span>
+          <span aria-hidden="true">&middot;</span>
+          <a href="https://www.bbb.org/us/pa/irwin/profile/landscape-contractors/ps-contracting-and-landscape-0141-71031381" target="_blank" rel="noopener noreferrer" className="hover:text-lime-400 transition-colors">BBB Accredited</a>
+          <span aria-hidden="true">&middot;</span>
+          <span>10% Senior Discount</span>
+          <span aria-hidden="true">&middot;</span>
+          <span>Emergency Services Available</span>
+        </div>
+      </div>
+
       {/* Bottom bar */}
       <div className="border-t border-green-700">
         <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-green-400 text-xs">

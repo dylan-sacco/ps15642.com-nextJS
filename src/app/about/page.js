@@ -1,4 +1,3 @@
-import PageHeader from "@/components/PageHeader";
 import MeetTheTeam from "@/components/MeetTheTeam";
 
 export const dynamic = 'force-dynamic';
@@ -27,10 +26,10 @@ export const metadata = {
 };
 
 const stats = [
-  { value: "18+",   label: "Years in Business"        },
-  { value: "5.0",   label: "Stars on Angi"            },
-  { value: "100%",  label: "Recommendation Rate"      },
-  { value: "Free",  label: "Estimates & Consultations" },
+  { value: "18+",  label: "Years in Business",        href: null },
+  { value: "5.0",  label: "Stars on Angi",            href: "https://www.angi.com/companylist/us/pa/irwin/pands-contracting-and-landscape-reviews-9796939.htm" },
+  { value: "100%", label: "Recommendation Rate",      href: "https://www.facebook.com/PandSContractingandLandscape/" },
+  { value: "Free", label: "Estimates & Consultations", href: null },
 ];
 
 const seasons = [
@@ -97,12 +96,31 @@ export default function AboutPage() {
       {/* ── Stats Row ─────────────────────────────────────────────────────── */}
       <section className="border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {stats.map(s => (
-            <div key={s.label}>
-              <p className="text-4xl font-bold text-lime-700">{s.value}</p>
-              <p className="text-sm text-gray-500 mt-1">{s.label}</p>
-            </div>
-          ))}
+          {stats.map(s => {
+            const inner = (
+              <>
+                <p className="text-4xl font-bold text-lime-700">{s.value}</p>
+                <p className="text-sm text-gray-500 mt-1">{s.label}</p>
+              </>
+            );
+            return s.href ? (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group hover:opacity-80 transition-opacity"
+                title={`View source for ${s.label}`}
+              >
+                {inner}
+                <span className="text-[10px] text-gray-400 group-hover:text-lime-600 transition-colors">
+                  verified ↗
+                </span>
+              </a>
+            ) : (
+              <div key={s.label}>{inner}</div>
+            );
+          })}
         </div>
       </section>
 
@@ -233,21 +251,6 @@ export default function AboutPage() {
               />
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* ── Accreditations strip ──────────────────────────────────────────── */}
-      <section className="bg-gray-900 text-white">
-        <div className=" mx-auto px-6 py-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-sm text-gray-400 text-center">
-          <span>Licensed &amp; Insured</span>
-          <span className="hidden sm:inline text-gray-700">|</span>
-          <span>BBB Accredited</span>
-          <span className="hidden sm:inline text-gray-700">|</span>
-          <span>Top 18% of PA Contractors &mdash; BuildZoom Score 97</span>
-          <span className="hidden sm:inline text-gray-700">|</span>
-          <span>10% Senior Discount</span>
-          <span className="hidden sm:inline text-gray-700">|</span>
-          <span>Emergency Services Available</span>
         </div>
       </section>
 
