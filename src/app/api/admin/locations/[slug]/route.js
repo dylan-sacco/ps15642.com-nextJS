@@ -4,6 +4,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { LOCATIONS_DIR } from '@/lib/paths';
 import { requireApiPermission } from '@/lib/adminAuth';
+import { generateLocationsSitemap } from '@/lib/sitemap';
 
 function safeSlug(slug) {
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
@@ -54,10 +55,12 @@ export async function PUT(request, { params }) {
       }
       fs.writeFileSync(newFilePath, fileContent, 'utf8');
       fs.unlinkSync(filePath);
+      try { generateLocationsSitemap(); } catch (e) { console.error('Sitemap update failed:', e); }
       return NextResponse.json({ success: true, newSlug });
     }
 
     fs.writeFileSync(filePath, fileContent, 'utf8');
+    try { generateLocationsSitemap(); } catch (e) { console.error('Sitemap update failed:', e); }
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('Location update error:', err);
@@ -77,5 +80,6 @@ export async function DELETE(request, { params }) {
   if (!fs.existsSync(filePath)) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
   fs.unlinkSync(filePath);
+  try { generateLocationsSitemap(); } catch (e) { console.error('Sitemap update failed:', e); }
   return NextResponse.json({ success: true });
 }

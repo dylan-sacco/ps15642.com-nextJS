@@ -29,3 +29,16 @@ https://www.opengraph.xyz/
 
 Google Search Console for Boosting top page search
 https://search.google.com/search-console
+
+Google Search Central - Structured data markup that Google Search Supports
+https://developers.google.com/search/docs/appearance/structured-data/search-gallery
+
+## ChangeLog
+
+v2.0.1
+
+- Update to indexed Sitemap. Now web page creates a more organized sitemap view. Separately makes indexes for blogs, locations, and blog tags. 
+
+v2.0.0
+
+- Remodel of the Entire website. Addition of Admin Interface to be able to change website content live. 

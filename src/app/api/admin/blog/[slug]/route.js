@@ -5,6 +5,7 @@ import matter from 'gray-matter';
 import { BLOGS_DIR } from '@/lib/paths';
 import { requireApiPermission } from '@/lib/adminAuth';
 import { hasPermission } from '@/lib/permissions';
+import { generateBlogSitemaps } from '@/lib/sitemap';
 
 function safeSlug(slug) {
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
@@ -83,10 +84,12 @@ export async function PUT(request, { params }) {
       }
       fs.writeFileSync(newFilePath, fileContent, 'utf8');
       fs.unlinkSync(filePath);
+      try { generateBlogSitemaps(); } catch (e) { console.error('Sitemap update failed:', e); }
       return NextResponse.json({ success: true, newSlug });
     }
 
     fs.writeFileSync(filePath, fileContent, 'utf8');
+    try { generateBlogSitemaps(); } catch (e) { console.error('Sitemap update failed:', e); }
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('Article update error:', err);
@@ -106,5 +109,6 @@ export async function DELETE(request, { params }) {
   if (!fs.existsSync(filePath)) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
   fs.unlinkSync(filePath);
+  try { generateBlogSitemaps(); } catch (e) { console.error('Sitemap update failed:', e); }
   return NextResponse.json({ success: true });
 }
