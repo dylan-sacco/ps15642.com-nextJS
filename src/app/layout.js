@@ -42,7 +42,7 @@ export default async function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {stickyHeader ? (
-          <div className="sticky top-0 z-50">
+          <div className="sticky top-0 z-500">
             <BannerBar banners={banners} settings={settings} />
             <NavBar stickyDisabled />
           </div>
