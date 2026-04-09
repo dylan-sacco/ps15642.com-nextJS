@@ -14,10 +14,10 @@ export default function BeforeAfterSlider({ beforeSrc, afterSrc, title, descript
   }
 
   return (
-    <div className="rounded-lg overflow-hidden shadow-md border border-gray-200">
+    <div className="rounded-lg overflow-hidden shadow-md border border-gray-200 ">
       <div
         ref={containerRef}
-        className="relative select-none overflow-hidden cursor-col-resize aspect-video"
+        className="relative select-none overflow-hidden cursor-col-resize aspect-video touch-none touch-pan-x"
         onMouseMove={e => handleMove(e.clientX)}
         onTouchMove={e => handleMove(e.touches[0].clientX)}
       >

@@ -38,7 +38,7 @@ export default function NavBar({ stickyDisabled = false }) {
   // }, [lastScrollY, isMobile]);
 
   return (
-    <div className={`bg-white shadow-md z-500 ${stickyDisabled ? '' : ' sticky top-0'}`}>
+    <div className={`bg-white shadow-md z-50 ${stickyDisabled ? '' : ' sticky top-0'}`}>
       <nav className="flex justify-between items-center max-w-6xl lg:text-[30px] md:text-[20px] pl-4 m-auto">
         {/* Logo */}
         <Link href="/">
@@ -78,7 +78,7 @@ export default function NavBar({ stickyDisabled = false }) {
                 {hasDropdown && openDropdown === item.href && (
                   <ul className="absolute top-full left-0 bg-white shadow-lg border border-gray-100 rounded-b-md min-w-[140px] z-50">
                     {item.dropdown.map(d => (
-                      <li key={d.href}>
+                      <li key={d.name + d.href}>
                         <Link
                           href={d.href}
                           className={`block px-5 py-3 text-sm transition ${
