@@ -108,8 +108,12 @@ export default async function Home() {
         </div>
       </ScrollReveal>
 
-      {/* <TestimonialsSection testimonials={testimonials} /> */}
+      {/* Contact Section */}
+      <GreenCard>
+        In need of a complete overhaul of your current landscaping layout; or maybe just a few additions for that added elegance, such as a mini grove of trees or a tasteful flower bed? Feel free to give us a call for your cost-free consultation!
+      </GreenCard>
 
+      {/* <TestimonialsSection testimonials={testimonials} /> */}
       { 
         process.env.FEATURABLE && 
         <>
@@ -120,11 +124,6 @@ export default async function Home() {
           />
         </>
       }
-
-      {/* Contact Section */}
-      <GreenCard>
-        In need of a complete overhaul of your current landscaping layout; or maybe just a few additions for that added elegance, such as a mini grove of trees or a tasteful flower bed? Feel free to give us a call for your cost-free consultation!
-      </GreenCard>
 
       <ScrollReveal>
       <div className="max-w-6xl mx-auto p-6 text-center">
