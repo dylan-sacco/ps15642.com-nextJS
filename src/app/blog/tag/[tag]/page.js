@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getPublishedPosts, tagToSlug } from '@/lib/blog';
 import H1Drop from '@/components/H1Drop';
 import ParallaxCard from '@/components/ParallaxCard';
+import TagsLinked from '@/components/blog/Tags';
 
 export async function generateMetadata({ params }) {
   const { tag: tagSlug } = await params;
@@ -70,19 +71,7 @@ export default async function TagPage({ params }) {
               )}
               {article.tags.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mt-3">
-                  {article.tags.map(tag => (
-                    <Link
-                      key={tag}
-                      href={`/blog/tag/${tagToSlug(tag)}`}
-                      className={`text-xs rounded-full px-2.5 py-0.5 border transition-colors ${
-                        tagToSlug(tag) === tagSlug
-                          ? 'bg-lime-600 text-white border-lime-600'
-                          : 'bg-lime-50 text-lime-700 border-lime-200 hover:bg-lime-100'
-                      }`}
-                    >
-                      {tag}
-                    </Link>
-                  ))}
+                  <TagsLinked tags={article.tags} invert selected={tagSlug} />
                 </div>
               )}
               <Link

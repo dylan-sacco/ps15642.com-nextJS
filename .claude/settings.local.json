@@ -10,7 +10,9 @@
       "Bash(grep:*)",
       "WebSearch",
       "Bash(node --no-warnings scripts/generate-sitemap.mjs)",
-      "WebFetch(domain:developers.google.com)"
+      "WebFetch(domain:developers.google.com)",
+      "Bash(gh repo:*)",
+      "Bash(gh issue create --title 'SEO: Add Google Structured Data \\(Rich Results Enhancements\\)' --body ':*)"
     ]
   },
   "enabledPlugins": {

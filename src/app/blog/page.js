@@ -1,6 +1,6 @@
 import { getPublishedPosts } from '@/lib/blog';
 import PageHeader from '@/components/PageHeader';
-import BlogList from '@/components/BlogList';
+import BlogList from '@/components/blog/BlogList';
 
 export const dynamic = 'force-dynamic';
 

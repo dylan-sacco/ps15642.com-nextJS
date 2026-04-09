@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import TagsLinked from './Tags';
 function tagToSlug(tag) {
   return tag.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
@@ -37,15 +38,7 @@ export default function BlogList({ posts }) {
             )}
             {article.tags && article.tags.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-3">
-                {article.tags.map(tag => (
-                  <Link
-                    key={tag}
-                    href={`/blog/tag/${tagToSlug(tag)}`}
-                    className="text-xs bg-lime-50 text-lime-700 border border-lime-200 rounded-full px-2.5 py-0.5 hover:bg-lime-100 transition-colors"
-                  >
-                    {tag}
-                  </Link>
-                ))}
+                <TagsLinked tags={article.tags} invert />
               </div>
             )}
             <Link

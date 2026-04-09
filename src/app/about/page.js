@@ -73,7 +73,7 @@ export default function AboutPage() {
       {/* ── Mission Statement ──────────────────────────────────────────────── */}
       <section className="bg-[#1a3022] text-white relative overflow-hidden">
         {/* Animated glow overlay */}
-        <div className="absolute inset-0 section-glow pointer-events-none" aria-hidden="true" />
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true" />
         <div className="max-w-4xl mx-auto px-6 py-16 text-center relative z-10">
           <p className="text-xs font-semibold tracking-[0.3em] uppercase text-lime-400 mb-5">
             Our Mission

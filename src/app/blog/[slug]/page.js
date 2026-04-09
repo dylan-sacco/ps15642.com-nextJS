@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { BLOGS_DIR } from '@/lib/paths';
 import { getRelatedPosts } from '@/lib/blog';
 import MarkdownPreview from '@/components/admin/MarkdownPreview';
-import BlogPostHeader from '@/components/BlogPostHeader';
+import BlogPostHeader from '@/components/blog/PostHeader';
+import PostHeader from '@/components/blog/PostHeader';
 
 function parseTags(raw) {
   if (!raw) return [];
@@ -92,7 +93,7 @@ export default async function BlogPostPage({ params }) {
       />
 
       {/* Adaptive hero — full-bleed image if the post has one, clean typography if not */}
-      <BlogPostHeader
+      <PostHeader
         title={data.title}
         date={data.date || null}
         tags={tags}
