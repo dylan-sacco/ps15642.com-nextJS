@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import MarkdownPreview from './MarkdownPreview';
 import MarkdownCheatSheet from './MarkdownCheatSheet';
 import PhotoPicker from './PhotoPicker';
 import GalleryPickerInput from './GalleryPickerInput';
+import TagInput from './TagInput';
 
 export default function BlogEditor({ initialData = {}, isNew = false, canPublish = false }) {
   const router = useRouter();
@@ -29,8 +30,16 @@ export default function BlogEditor({ initialData = {}, isNew = false, canPublish
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState('');
   const [markdownFocused, setMarkdownFocused] = useState(false);
+  const [allTags, setAllTags] = useState([]);
 
   const textareaRef = useRef(null);
+
+  useEffect(() => {
+    fetch('/api/admin/blog/tags')
+      .then(r => r.ok ? r.json() : [])
+      .then(setAllTags)
+      .catch(() => {});
+  }, []);
 
   function handleTabKey(e) {
     if (e.key !== 'Tab') return;
@@ -219,13 +228,7 @@ export default function BlogEditor({ initialData = {}, isNew = false, canPublish
           <label className="block text-xs font-medium text-gray-600 mb-1">
             Tags <span className="text-gray-400">(comma-separated — e.g. lawn care, spring tips)</span>
           </label>
-          <input
-            type="text"
-            value={tags}
-            onChange={e => setTags(e.target.value)}
-            placeholder="lawn care, spring tips, North Huntingdon"
-            className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm outline-none focus:border-lime-500"
-          />
+          <TagInput value={tags} onChange={setTags} allTags={allTags} />
           <p className="text-xs text-gray-400 mt-1">
             Tags create browseable topic pages and help group related articles. Keep them descriptive, not spammy.
           </p>
