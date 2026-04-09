@@ -28,7 +28,7 @@ export function TagSquare({ tag, invert, selected}) {
         + `${
           slug === selected 
             ? " bg-lime-600 text-white border-lime-600 "
-            : " bg-lime-50 text-lime-700 border-lime-200 hover:bg-lime-400/20 "
+            : " bg-lime-50  border-lime-200 hover:bg-lime-400/20 "
         }`
       }
     >
