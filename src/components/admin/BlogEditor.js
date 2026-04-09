@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import MarkdownPreview from './MarkdownPreview';
 import MarkdownCheatSheet from './MarkdownCheatSheet';
 import PhotoPicker from './PhotoPicker';
+import GalleryPickerInput from './GalleryPickerInput';
 
 export default function BlogEditor({ initialData = {}, isNew = false, canPublish = false }) {
   const router = useRouter();
@@ -234,12 +235,10 @@ export default function BlogEditor({ initialData = {}, isNew = false, canPublish
           <label className="block text-xs font-medium text-gray-600 mb-1">
             OG Image URL <span className="text-gray-400">(optional — used for social sharing previews)</span>
           </label>
-          <input
-            type="text"
-            value={image}
-            onChange={e => setImage(e.target.value)}
-            placeholder="/api/uploads/my-project.jpg"
-            className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm outline-none focus:border-lime-500"
+          <GalleryPickerInput
+          value={image}
+          onChange={e => setImage(e)}
+          placeholder="/api/uploads/my-project.jpg"
           />
         </div>
 
