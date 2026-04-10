@@ -29,7 +29,7 @@ export default function PostHeader({ title, date, tags = [], excerpt, imageUrl }
     <div
       className="relative w-full overflow-hidden flex flex-col justify-end"
       style={{
-        height: 'clamp(300px, 48vh, 500px)',
+        height: 'clamp(300px, 48vh, 500px)', // this max height is causing me problems. Either remove the Max Height, or move the all posts button
         background: 'linear-gradient(135deg, #091810 0%, #0d2218 45%, #112a1b 100%)',
       }}
       role="banner"
@@ -70,7 +70,7 @@ export default function PostHeader({ title, date, tags = [], excerpt, imageUrl }
       {/* ← All Posts */}
       <Link
         href="/blog"
-        className="absolute top-5 z-50 text-[12px] font-medium tracking-[0.06em] text-white/90 hover:text-white transition-colors px-4 py-2 rounded-lg backdrop-blur-sm"
+        className="absolute top-5 z-40 text-[12px] font-medium tracking-[0.06em] text-white/90 hover:text-white transition-colors px-4 py-2 rounded-lg backdrop-blur-sm"
         style={{ left: 'clamp(16px, 5vw, 48px)' }}
       >
         ← All Posts
@@ -78,45 +78,50 @@ export default function PostHeader({ title, date, tags = [], excerpt, imageUrl }
 
       {/* Content — pinned to bottom of header */}
       <div
-        className="relative z-10 w-full max-w-[900px] mx-auto"
-        style={{
-          paddingTop:    'clamp(16px, 5vw, 48px)',
-          paddingLeft:   'clamp(16px, 5vw, 48px)',
-          paddingRight:  'clamp(16px, 5vw, 48px)',
-          paddingBottom: '40px',
-        }}
-      >
-        {date && (
-          <p
-            className="text-[11px] font-medium tracking-[0.2em] uppercase mb-[10px]"
-            style={{ color: 'rgba(255,255,255,0.46)', ...fade(ready, 100) }}
-          >
-            {date}
-          </p>
-        )}
-
-        <h1
-          className="font-bold text-white leading-[1.1] tracking-[-0.015em] mb-4"
-          style={{ fontFamily: PLAYFAIR, fontSize: 'clamp(24px, 4.2vw, 50px)', ...fade(ready, 200, 18, 650) }}
+        id='header-card-content-width-control' 
+        className=' w-full max-w-7xl mx-auto'>
+        <div
+          id='header-card-content'
+          className="relative z-10 w-full max-w-[900px] mt-8"
+          style={{
+            paddingTop:    'clamp(16px, 5vw, 48px)',
+            paddingLeft:   'clamp(16px, 5vw, 48px)',
+            paddingRight:  'clamp(16px, 5vw, 48px)',
+            paddingBottom: '40px',
+          }}
         >
-          {title}
-        </h1>
+          {date && (
+            <p
+              className="text-[11px] font-medium tracking-[0.2em] uppercase mb-[10px]"
+              style={{ color: 'rgba(255,255,255,0.46)', ...fade(ready, 100) }}
+            >
+              {date}
+            </p>
+          )}
 
-        {/* Excerpt shown only for text-only posts — adds context in place of an image */}
-        {excerpt && !imageUrl && (
-          <p
-            className="text-sm leading-relaxed mb-3"
-            style={{ color: 'rgba(255,255,255,0.58)', ...fade(ready, 280) }}
+          <h1
+            className="font-bold text-white leading-[1.1] tracking-[-0.015em] mb-4"
+            style={{ fontFamily: PLAYFAIR, fontSize: 'clamp(24px, 4.2vw, 50px)', ...fade(ready, 200, 18, 650) }}
           >
-            {excerpt}
-          </p>
-        )}
+            {title}
+          </h1>
 
-        {tags.length > 0 && (
-          <div style={fade(ready, 350, 8)}>
-            <TagsLinked tags={tags} />
-          </div>
-        )}
+          {/* Excerpt shown only for text-only posts — adds context in place of an image */}
+          {excerpt && !imageUrl && (
+            <p
+              className="text-sm leading-relaxed mb-3"
+              style={{ color: 'rgba(255,255,255,0.58)', ...fade(ready, 280) }}
+            >
+              {excerpt}
+            </p>
+          )}
+
+          {tags.length > 0 && (
+            <div style={fade(ready, 350, 8)}>
+              <TagsLinked tags={tags} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
