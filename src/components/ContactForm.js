@@ -58,7 +58,7 @@ export default function ContactForm() {
           strategy="afterInteractive"
         />
       )}
-      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto border border-gray-300 bg-white p-6 md:p-8 rounded shadow-lg">
+      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto border border-(--color-border) p-6 md:p-8 rounded shadow-lg">
         <input type="text" name="_gotcha" className="hidden" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -78,8 +78,8 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label htmlFor="message" className="block font-medium text-gray-700 text-lg mb-1">Message</label>
-          <div className="flex items-start border border-gray-300 rounded px-3 py-2 focus-within:ring-2 focus-within:ring-lime-400">
+          <label htmlFor="message" className="block font-medium text-lg mb-1">Message</label>
+          <div className="flex items-start border border-(--color-border) rounded px-3 py-2 focus-within:ring-2 focus-within:ring-(--form-selection)">
             <textarea
               id="message"
               name="message"
@@ -107,11 +107,11 @@ export default function ContactForm() {
 
 function FormField({ label, id, type, placeholder, required = false, icon = null, maxLength, onChange }) {
   return (
-    <div className="w-full overflow-hidden">
-      <label htmlFor={id} className="block font-medium text-gray-700 text-lg mb-1 break-words">
+    <div className="w-full ">
+      <label htmlFor={id} className="block font-medium  text-lg mb-1 wrap-break-words">
         {label}
       </label>
-      <div className="flex items-center border border-gray-300 rounded px-3 py-2 focus-within:ring-2 focus-within:ring-lime-400 divide-x-2 divide-gray-300">
+      <div className="flex items-center border border-(--color-border) rounded px-3 py-2 focus-within:ring-2 focus-within:ring-(--selected) divide-x-2 divide-(--color-border)">
         <input
           type={type}
           id={id}
@@ -124,7 +124,7 @@ function FormField({ label, id, type, placeholder, required = false, icon = null
             }`}
         />
 
-        {icon && <span className="ml-2 text-gray-500">{icon}</span>}
+        {icon && <span className="ml-2 ">{icon}</span>}
       </div>
     </div>
   );

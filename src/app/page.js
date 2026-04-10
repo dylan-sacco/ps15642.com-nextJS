@@ -39,7 +39,7 @@ const zoomContainerList = [
     title: "Contracting",
     description:
       "Whether you need a railing built for your deck or shelves for your garage, we can help you.",
-    buttonText: "Learn More",
+    buttonText: "Learn More →",
     buttonURL: "/contracting",
     imageURL: "/home-image-1.jpg",
   },
@@ -108,6 +108,31 @@ export default async function Home() {
         </div>
       </ScrollReveal>
 
+      <div className="relative" >
+        {zoomContainerList.map((el) => (
+          <div className="sticky top-0 h-screen w-screen flex " key={el.title}>
+            <img 
+              className="absolute top-0 h-screen w-screen object-cover"
+              src={el.imageURL}/>
+            <div className="absolute top-0 bg-black/65 w-screen h-screen" />
+            <ScrollReveal className="relative flex flex-col m-auto text-white font-[Raleway] px-8 max-w-175 ">
+              <h2 className="text-[4rem] font-[Playfair_Display] pb-6 text-base/16">
+                {el.title}
+              </h2>
+              <p
+                className="text-[2rem] pb-4"
+              >{el.description}</p>
+              <Link
+              className=" underline hover:bg-white p-4 px-8 outline outline-white w-fit hover:text-black transition duration-[300ms]"
+              // className=" underline hover:text-gray-200 hover:bg-gray-950/15 p-4 px-8 outline outline-white w-fit"
+                href={el.buttonURL}>
+                  {el.buttonText || "Learn More →"}
+              </Link>
+            </ScrollReveal>
+          </div>
+        ))}
+      </div>
+
       {/* Contact Section */}
       <GreenCard>
         In need of a complete overhaul of your current landscaping layout; or maybe just a few additions for that added elegance, such as a mini grove of trees or a tasteful flower bed? Feel free to give us a call for your cost-free consultation!
@@ -124,6 +149,8 @@ export default async function Home() {
           />
         </>
       }
+
+      
 
       <ScrollReveal>
       <div className="max-w-6xl mx-auto p-6 text-center">
@@ -151,7 +178,7 @@ export default async function Home() {
         </div>
 
         {/* Full service area list */}
-        <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto pb-6 text-sm text-gray-600">
+        <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto pb-6 text-sm">
           <div>North Irwin, PA</div>
           <div>Larimer, PA</div>
           <div>Manor, PA</div>

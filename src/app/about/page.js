@@ -1,5 +1,6 @@
 import MeetTheTeam from "@/components/MeetTheTeam";
 import ScrollReveal from "@/components/ScrollReveal";
+import StatsCard from "@/components/StatsCard";
 
 export const dynamic = 'force-dynamic';
 
@@ -27,9 +28,9 @@ export const metadata = {
 };
 
 const stats = [
-  { value: "18+",  label: "Years in Business",        href: null },
-  { value: "5.0",  label: "Stars on Angi",            href: "https://www.angi.com/companylist/us/pa/irwin/pands-contracting-and-landscape-reviews-9796939.htm" },
-  { value: "100%", label: "Recommendation Rate",      href: "https://www.facebook.com/PandSContractingandLandscape/" },
+  { value: "18+", label: "Years in Business", href: null },
+  { value: "5.0", label: "Stars on Angi", href: "https://www.angi.com/companylist/us/pa/irwin/pands-contracting-and-landscape-reviews-9796939.htm" },
+  { value: "100%", label: "Recommendation Rate", href: "https://www.facebook.com/PandSContractingandLandscape/" },
   { value: "Free", label: "Estimates & Consultations", href: null },
 ];
 
@@ -95,46 +96,26 @@ export default function AboutPage() {
       </section>
 
       {/* ── Stats Row ─────────────────────────────────────────────────────── */}
-      <section className="border-b border-gray-100">
-        <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {stats.map((s, i) => {
-            const inner = (
-              <>
-                <p className="text-4xl font-bold text-lime-700">{s.value}</p>
-                <p className="text-sm text-gray-500 mt-1">{s.label}</p>
-              </>
-            );
-            return (
-              <ScrollReveal key={s.label} delay={i * 80} from="scale">
-                {s.href ? (
-                  <a
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group hover:opacity-80 transition-opacity block"
-                    title={`View source for ${s.label}`}
-                  >
-                    {inner}
-                    <span className="text-[10px] text-gray-400 group-hover:text-lime-600 transition-colors">
-                      verified ↗
-                    </span>
-                  </a>
-                ) : (
-                  <div>{inner}</div>
-                )}
-              </ScrollReveal>
-            );
-          })}
+      <StatsCard
+        stats={stats}
+      />
+
+      {/* accent */}
+      {/* <div className="max-w-4xl mx-auto text-center">
+        <div className="flex items-center justify-center gap-3 mb-5" aria-hidden="true">
+          <div className="h-px w-full bg-linear-to-l from-lime-400/50 to-lime-400/0 rounded-lg" />
+          <div className="min-w-2 min-h-2 rotate-45 bg-lime-500" />
+          <div className="h-px w-full bg-linear-to-r from-lime-400/50 to-lime-400/0 rounded-lg" />
         </div>
-      </section>
+      </div> */}
 
       {/* ── Our Story ─────────────────────────────────────────────────────── */}
       <ScrollReveal>
         <section className="max-w-4xl mx-auto px-6 py-14">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Our Roots
           </h2>
-          <div className="space-y-5 text-gray-600 md:text-lg leading-relaxed">
+          <div className="space-y-5 text-gray-400 md:text-lg leading-relaxed">
             <p>
               P&amp;S Contracting and Landscape was founded in 2007 out of a
               simple belief: that the land around your home deserves as much care
@@ -202,10 +183,10 @@ export default function AboutPage() {
       {/* ── Passion & Values ──────────────────────────────────────────────── */}
       <ScrollReveal>
         <section className="max-w-4xl mx-auto px-6 py-14">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold  mb-6">
             Why We Do It
           </h2>
-          <div className="space-y-5 text-gray-600 md:text-lg leading-relaxed">
+          <div className="space-y-5  md:text-lg leading-relaxed">
             <p>
               Landscaping isn&apos;t just maintenance — it&apos;s an act of care
               for the place you live. Every plant bed we install, every tree we
@@ -261,6 +242,15 @@ export default function AboutPage() {
           </div>
         </section>
       </ScrollReveal>
+
+      {/* accent */}
+      <div className="max-w-4xl mx-auto px-6 py-10 text-center">
+        <div className="flex items-center justify-center gap-3 mb-5" aria-hidden="true">
+          <div className="h-px w-full bg-linear-to-l from-lime-400/50 to-lime-400/0 rounded-lg" />
+          <div className="min-w-2 min-h-2 rotate-45 bg-lime-500" />
+          <div className="h-px w-full bg-linear-to-r from-lime-400/50 to-lime-400/0 rounded-lg" />
+        </div>
+      </div>
 
       {/* ── Meet the Team ─────────────────────────────────────────────────── */}
       <MeetTheTeam />

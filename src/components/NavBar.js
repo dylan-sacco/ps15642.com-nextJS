@@ -38,7 +38,7 @@ export default function NavBar({ stickyDisabled = false }) {
   // }, [lastScrollY, isMobile]);
 
   return (
-    <div className={`bg-white shadow-md z-50 ${stickyDisabled ? '' : ' sticky top-0'}`}>
+    <div className={`bg-(--background) shadow-md z-50 ${stickyDisabled ? '' : ' sticky top-0'}`}>
       <nav className="flex justify-between items-center max-w-6xl lg:text-[30px] md:text-[20px] pl-4 m-auto">
         {/* Logo */}
         <Link href="/">
@@ -63,7 +63,7 @@ export default function NavBar({ stickyDisabled = false }) {
                 <Link
                   href={item.href|| ""}
                   className={`transition lg:px-6 px-5 flex items-center gap-1 ${
-                    isActive ? 'bg-lime-600 text-white' : 'hover:bg-green-100'
+                    isActive ? 'bg-lime-600 ' : 'hover:bg-(--nav-hover)'
                   }`}
                 >
                   {item.name}
@@ -76,14 +76,14 @@ export default function NavBar({ stickyDisabled = false }) {
                 </Link>
 
                 {hasDropdown && openDropdown === item.href && (
-                  <ul className="absolute top-full left-0 bg-white shadow-lg border border-gray-100 rounded-b-md min-w-[140px] z-50">
-                    {item.dropdown.map(d => (
+                  <ul className="absolute top-full left-0 shadow-lg rounded-b-md min-w-[140px] z-50 bg-(--background) border-t  drop-shadow">
+                    {item.dropdown.map((d, index) => (
                       <li key={d.name + d.href}>
                         <Link
                           href={d.href}
                           className={`block px-5 py-3 text-sm transition ${
-                            pathname === d.href ? 'bg-lime-600 text-white' : 'hover:bg-green-100'
-                          }`}
+                            pathname === d.href ? 'bg-lime-600 ' : 'hover:bg-(--nav-hover)'
+                          } ${item.dropdown.length -1 == index? " rounded-b-md" : ""}`}
                         >
                           {d.name}
                         </Link>
@@ -97,14 +97,14 @@ export default function NavBar({ stickyDisabled = false }) {
         </ul>
 
         {/* Mobile Menu Button */}
-        <button id='navDropdown' title='Hamburger Menu Dropdown' onClick={toggleMenu} className="md:hidden text-black px-4 py-3">
+        <button id='navDropdown' title='Hamburger Menu Dropdown' onClick={toggleMenu} className="md:hidden  px-4 py-3">
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
 
       {/* Mobile Tray Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-inner shadow-xl">
+        <div className="md:hidden  border-t border-(--nav-hover) shadow-(--select)">
           <ul className="flex flex-col">
             {navItems.map((item) => {
               const hasDropdown = item.dropdown?.length > 0;
@@ -119,8 +119,8 @@ export default function NavBar({ stickyDisabled = false }) {
                       onClick={() => toggleMobileItem(item.href)}
                       className={`w-full flex items-center justify-between p-4 transition ${
                         isActive
-                          ? 'bg-amber-700 text-white font-semibold border-b-4 border-amber-500'
-                          : 'hover:bg-green-100'
+                          ? 'bg-(--selected)  font-semibold border-b-4 border-(--nav-hover)'
+                          : 'hover:bg-(--nav-hover)'
                       }`}
                     >
                       <span>{item.name}</span>
@@ -131,8 +131,8 @@ export default function NavBar({ stickyDisabled = false }) {
                       href={item.href}
                       className={`block transition p-4 ${
                         pathname === item.href
-                          ? 'bg-amber-700 text-white font-semibold border-b-4 border-amber-500'
-                          : 'hover:bg-green-100'
+                          ? 'bg-(--selected)  font-semibold border-b-4 border-(--selected-accent)'
+                          : 'hover:bg-(--nav-hover)'
                       }`}
                       onClick={() => setIsOpen(false)}
                     >
@@ -141,15 +141,15 @@ export default function NavBar({ stickyDisabled = false }) {
                   )}
 
                   {hasDropdown && expanded && (
-                    <ul className="bg-gray-50 border-t border-gray-100">
+                    <ul className=" border-t border-gray-100">
                       {item.dropdown.map(d => (
                         <li key={d.href}>
                           <Link
                             href={d.href}
                             className={`block transition p-4 pl-8 text-sm ${
                               pathname === d.href
-                                ? 'bg-amber-700 text-white font-semibold border-b-4 border-amber-500'
-                                : 'hover:bg-green-100'
+                                ? 'bg-(--selected)  font-semibold border-b-4 border-(--nav-hover)'
+                                : 'hover:bg-(--nav-hover)'
                             }`}
                             onClick={() => { setIsOpen(false); toggleMobileItem(item.href); }}
                           >

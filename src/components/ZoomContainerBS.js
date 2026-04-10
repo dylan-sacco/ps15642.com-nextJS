@@ -24,11 +24,11 @@ export default function ZoomContainerBS({
       </div>
 
       {/* Overlay — always flex-centered so the block sits in the middle */}
-      <div className="relative z-10 h-full bg-black/50 flex items-center justify-center p-3 sm:p-5">
-        <div className="text-white text-center  w-80">
+      <div className="relative z-10 h-full bg-black/50 flex items-center justify-center p-3 sm:p-5 ">
+        <div className=" text-center  w-80">
 
           {/* Title — always visible */}
-          <p className="text-sm sm:text-xl lg:text-2xl font-semibold whitespace-pre-line leading-tight">
+          <p className="text-white! text-sm sm:text-xl lg:text-2xl font-semibold whitespace-pre-line leading-tight">
             {title}
           </p>
 
@@ -37,7 +37,7 @@ export default function ZoomContainerBS({
             isActive ? 'max-h-64 opacity-100 mt-2 sm:mt-3' : 'max-h-0 opacity-0 mt-0'
           } group-hover:max-h-64 group-hover:opacity-100 group-hover:mt-2 sm:group-hover:mt-3`}>
             <hr className="w-full border-white/50 mb-2 sm:mb-3 border-dashed border-[2px]" />
-            <p className="mb-2 sm:mb-3 text-xs sm:text-sm lg:text-base">{description}</p>
+            <p className="mb-2 sm:mb-3 text-xs sm:text-sm lg:text-base text-white!">{description}</p>
             <hr className="w-full border-white/50 mb-2 sm:mb-3 border-dashed border-[2px]" />
             <a href={buttonURL}>
               <button className="bg-lime-500 hover:bg-lime-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-sm transition-colors">

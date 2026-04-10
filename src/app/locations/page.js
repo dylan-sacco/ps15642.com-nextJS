@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { LOCATIONS_DIR } from '@/lib/paths';
 import H1Drop from '@/components/H1Drop';
 import GreenCard from '@/components/GreenCard';
+import PageHeader from '@/components/PageHeader';
 
 export const metadata = {
   title: 'Service Areas | P&S Contracting and Landscape',
@@ -32,14 +33,27 @@ export default function LocationsPage() {
 
   return (
     <div>
-      <div className="max-w-4xl mx-auto px-6 py-14 text-center">
-        <H1Drop>Our Service Areas</H1Drop>
+      <PageHeader
+      title={"Our Service Areas"}
+      subtitle={`Rates and services may differ for your location `}
+      />
+
+      <div className="max-w-4xl mx-auto px-6 pt-4 text-center">
         <p className="mt-4 text-gray-600 text-lg max-w-2xl mx-auto">
           P&amp;S Contracting and Landscape proudly serves communities throughout
           Westmoreland County and southwestern Pennsylvania. From residential
           landscaping and hardscaping to full contracting work, our team brings
           years of experience directly to your neighborhood.
         </p>
+      </div>
+
+      {/* accent */}
+      <div className="max-w-4xl mx-auto px-6 py-10 text-center">
+        <div className="flex items-center justify-center gap-3 mb-5" aria-hidden="true">
+          <div className="h-px w-full bg-linear-to-l from-lime-400/50 to-lime-400/0 rounded-lg" />
+          <div className="min-w-2 min-h-2 rotate-45 bg-lime-500" />
+          <div className="h-px w-full bg-linear-to-r from-lime-400/50 to-lime-400/0 rounded-lg" />
+        </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-6 pb-14">

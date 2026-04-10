@@ -8,7 +8,7 @@ export default function TextSpan({ children }) {
         <div className="h-px w-10 bg-lime-400/50" />
       </div>
 
-      <p className="text-xl md:text-2xl text-gray-700 leading-relaxed">
+      <p className="text-xl md:text-2xl leading-relaxed">
         {children}
       </p>
 

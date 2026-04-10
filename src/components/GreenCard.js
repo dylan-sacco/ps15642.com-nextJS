@@ -16,7 +16,7 @@ export default function GreenCard({ children }) {
           >&ldquo;</div>
 
           <p
-            className="text-white text-xl md:text-3xl leading-relaxed"
+            className="text-white! text-xl md:text-3xl leading-relaxed"
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
           >
             {children}

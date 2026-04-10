@@ -1,4 +1,5 @@
 import ScrollReveal from "@/components/ScrollReveal";
+import StatsCard from "@/components/StatsCard";
 
 export const metadata = {
   title: "Services | P&S Contracting and Landscape",
@@ -117,18 +118,9 @@ export default function ServicesPage() {
       </section>
 
       {/* ── Quick Highlights ──────────────────────────────────────────────── */}
-      <section className="border-b border-gray-100">
-        <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {highlights.map((h, i) => (
-            <ScrollReveal key={h.label} delay={i * 80} from="scale">
-              <div>
-                <p className="text-4xl font-bold text-lime-700">{h.value}</p>
-                <p className="text-sm text-gray-500 mt-1">{h.label}</p>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </section>
+      <StatsCard
+        stats={highlights}
+      />
 
       {/* ── Service Cards ─────────────────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 py-14">
@@ -186,7 +178,7 @@ export default function ServicesPage() {
               give you honest advice before any money changes hands.
             </p>
             <a
-              href="/contact"
+              href="/quote"
               className="inline-block bg-lime-700 hover:bg-lime-800 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
             >
               Get a Free Estimate
