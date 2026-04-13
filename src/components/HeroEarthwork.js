@@ -68,7 +68,7 @@ export default function HeroEarthwork({ imgUrl = "/hs1.webp" }) {
           left: -2%;
           width: 48%;
           height: 5px;
-          background: #84cc16;
+          background: var(--brand-mid);
           transform: skewX(-22deg);
           transform-origin: left bottom;
         }
@@ -79,7 +79,7 @@ export default function HeroEarthwork({ imgUrl = "/hs1.webp" }) {
           left: 4px;
           width: 28%;
           height: 2px;
-          background: rgba(132, 204, 22, 0.38);
+          background: color-mix(in srgb, var(--brand-mid) 38%, transparent);
           transform: skewX(0);
         }
 
@@ -110,7 +110,7 @@ export default function HeroEarthwork({ imgUrl = "/hs1.webp" }) {
           font-weight: 700;
           letter-spacing: 0.38em;
           text-transform: uppercase;
-          color: #a3e635;
+          color: var(--brand-accent);
           margin: 0 0 14px;
           opacity: 0;
           transform: translateY(18px);
@@ -171,14 +171,14 @@ export default function HeroEarthwork({ imgUrl = "/hs1.webp" }) {
           font-weight: 700;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          background: #84cc16;
+          background: var(--brand-mid);
           color: #07110a;
           padding: 14px 26px;
           text-decoration: none;
           display: inline-block;
           transition: background 0.18s;
         }
-        .hw-btn-primary:hover { background: #a3e635; }
+        .hw-btn-primary:hover { background: var(--brand-accent); }
 
         .hw-btn-ghost {
           font-family: 'Raleway', sans-serif;

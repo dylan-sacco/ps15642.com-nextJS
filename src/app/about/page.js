@@ -72,11 +72,12 @@ export default function AboutPage() {
   return (
     <div>
       {/* ── Mission Statement ──────────────────────────────────────────────── */}
-      <section className="bg-[#1a3022] text-white relative overflow-hidden">
+      {/* Static Style For Light and dark */}
+      <section className="bg-surface-panel text-white relative overflow-hidden">
         {/* Animated glow overlay */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true" />
         <div className="max-w-4xl mx-auto px-6 py-16 text-center relative z-10">
-          <p className="text-xs font-semibold tracking-[0.3em] uppercase text-lime-400 mb-5">
+          <p className="text-xs font-semibold tracking-[0.3em] uppercase text-lime-400! mb-5">
             Our Mission
           </p>
           <blockquote className="text-2xl md:text-3xl font-semibold leading-snug">
@@ -85,7 +86,7 @@ export default function AboutPage() {
             <span className="text-lime-400">Our mission is to give it back</span>{" "}
             — one yard at a time.
           </blockquote>
-          <p className="mt-6 text-white/65 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-6 text-white/65! text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
             At P&amp;S Contracting and Landscape, we believe beautiful outdoor
             spaces don&apos;t just improve your property — they restore something
             essential to the communities we all share. Planned housing
@@ -143,20 +144,20 @@ export default function AboutPage() {
       </ScrollReveal>
 
       {/* ── Seasonal Services ─────────────────────────────────────────────── */}
-      <section className="bg-gray-50 border-t border-b border-gray-100">
+      <section className=" bg-surface-alt">
         <div className="max-w-5xl mx-auto px-6 py-14">
           <ScrollReveal>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">
               What We Do
             </h2>
-            <p className="text-gray-500 mb-10 md:text-lg">
+            <p className=" mb-10 md:text-lg">
               We work year-round, letting each season guide where we focus our energy.
             </p>
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6">
             {seasons.map((season, i) => (
               <ScrollReveal key={season.name} delay={i * 110}>
-                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm card-lift h-full">
+                <div className="bg-surface rounded-xl border border-border-base overflow-hidden shadow-sm card-lift h-full">
                   <div className={`${season.accent} px-5 py-3`}>
                     <h3 className="text-white font-semibold text-sm tracking-wide">
                       {season.name}
@@ -166,7 +167,7 @@ export default function AboutPage() {
                     {season.items.map(item => (
                       <li
                         key={item}
-                        className="text-sm text-gray-600 flex items-start gap-2"
+                        className="text-sm flex items-start gap-2"
                       >
                         <span className="text-lime-500 mt-0.5 flex-shrink-0">&#10003;</span>
                         {item}
@@ -228,12 +229,12 @@ export default function AboutPage() {
               },
             ].map((goal, i) => (
               <ScrollReveal key={goal.heading} delay={i * 100}>
-                <div className="rounded-xl bg-lime-50 border border-lime-100 p-5 card-lift h-full">
-                  <h3 className="font-bold text-lime-800 text-base mb-1">
+                <div className="rounded-xl  border border-border-base bg-surface-alt p-5 card-lift h-full">
+                  <h3 className="font-bold  text-base mb-1">
                     {goal.heading}
                   </h3>
                   <p
-                    className="text-sm text-gray-600 leading-relaxed"
+                    className="text-sm leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: goal.body }}
                   />
                 </div>

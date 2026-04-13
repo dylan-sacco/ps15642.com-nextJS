@@ -13,7 +13,7 @@ export default function PageHeader({ title, subtitle, imgUrl }) {
     >
       {/* Background — image or solid colour */}
       <div
-        className="absolute inset-0 bg-[#1a3022]"
+        className="absolute inset-0 bg-surface-panel"
         style={
           imgUrl
             ? {
@@ -34,10 +34,7 @@ export default function PageHeader({ title, subtitle, imgUrl }) {
       {/* Bottom lime accent bar */}
       <div
         className="absolute bottom-0 left-0 right-0 h-[3px]"
-        style={{
-          background:
-            "linear-gradient(90deg, #84cc16 0%, #4ade80 60%, transparent 100%)",
-        }}
+        style={{ background: "var(--gradient-accent-bar)" }}
         aria-hidden="true"
       />
 

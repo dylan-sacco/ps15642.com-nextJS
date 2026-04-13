@@ -40,7 +40,7 @@ export default async function Footer() {
   const ip = hdrs.get('x-real-ip') ?? hdrs.get('x-forwarded-for')?.split(',')[0].trim() ?? '';
   const showAdmin = isWhitelisted(ip);
   return (
-    <footer className="bg-green-900 text-white">
+    <footer className="bg-surface-footer text-on-dark">
 
       {/* Main grid */}
       <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-3 gap-10">
@@ -48,21 +48,21 @@ export default async function Footer() {
         {/* Brand */}
         <div>
           <img src="/logo.png" alt="P&S Contracting and Landscape" className="h-14 mb-4 brightness-0 invert" />
-          <p className="text-green-300 text-sm leading-relaxed">
+          <p className="text-on-dark-muted text-sm leading-relaxed">
             Serving Westmoreland County, PA since 2007. Professional landscaping,
             hardscaping, and property maintenance you can count on.
           </p>
-          <div className="flex gap-4 mt-5 text-green-300">
-            <a href="https://www.facebook.com/PandSContractingandLandscape/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-lime-400 transition">
+          <div className="flex gap-4 mt-5 text-on-dark-muted">
+            <a href="https://www.facebook.com/PandSContractingandLandscape/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-brand-accent transition">
               <FaFacebookSquare size={22} />
             </a>
-            <a href="https://www.instagram.com/p.s.contracting/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-lime-400 transition">
+            <a href="https://www.instagram.com/p.s.contracting/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-brand-accent transition">
               <FaInstagram size={22} />
             </a>
-            <a href="https://www.bbb.org/us/pa/irwin/profile/landscape-contractors/ps-contracting-and-landscape-0141-71031381" target="_blank" rel="noopener noreferrer" aria-label="BBB" className="hover:text-lime-400 transition font-bold text-lg leading-none flex items-center">
+            <a href="https://www.bbb.org/us/pa/irwin/profile/landscape-contractors/ps-contracting-and-landscape-0141-71031381" target="_blank" rel="noopener noreferrer" aria-label="BBB" className="hover:text-brand-accent transition font-bold text-lg leading-none flex items-center">
               BBB
             </a>
-            <a href="https://goo.gl/maps/SYQwxzQwuiNtmQCDA" target="_blank" rel="noopener noreferrer" aria-label="Google Maps" className="hover:text-lime-400 transition">
+            <a href="https://goo.gl/maps/SYQwxzQwuiNtmQCDA" target="_blank" rel="noopener noreferrer" aria-label="Google Maps" className="hover:text-brand-accent transition">
               <FaGoogle size={20} />
             </a>
           </div>
@@ -70,11 +70,11 @@ export default async function Footer() {
 
         {/* Quick links */}
         <div>
-          <h3 className="text-lime-400 font-semibold uppercase tracking-wider text-sm mb-4">Quick Links</h3>
+          <h3 className="text-brand-accent font-semibold uppercase tracking-wider text-sm mb-4">Quick Links</h3>
           <ul className="space-y-2">
             {footerLinks.map(({ name, href }) => (
               <li key={href}>
-                <Link href={href} className="text-green-300 hover:text-lime-400 transition text-sm">
+                <Link href={href} className="text-on-dark-muted hover:text-brand-accent transition text-sm">
                   {name}
                 </Link>
               </li>
@@ -84,22 +84,22 @@ export default async function Footer() {
 
         {/* Contact */}
         <div>
-          <h3 className="text-lime-400 font-semibold uppercase tracking-wider text-sm mb-4">Contact Us</h3>
-          <ul className="space-y-3 text-green-300 text-sm">
+          <h3 className="text-brand-accent font-semibold uppercase tracking-wider text-sm mb-4">Contact Us</h3>
+          <ul className="space-y-3 text-on-dark-muted text-sm">
             <li>
-              <a href="tel:+17243828201" className="flex items-center gap-2 hover:text-lime-400 transition">
+              <a href="tel:+17243828201" className="flex items-center gap-2 hover:text-brand-accent transition">
                 <Phone size={16} className="flex-shrink-0" />
                 (724) 382-8201
               </a>
             </li>
             <li>
-              <a href="mailto:pscontractingandlandscape@gmail.com" className="flex items-center gap-2 hover:text-lime-400 transition break-all">
+              <a href="mailto:pscontractingandlandscape@gmail.com" className="flex items-center gap-2 hover:text-brand-accent transition break-all">
                 <Mail size={16} className="flex-shrink-0" />
                 pscontractingandlandscape@gmail.com
               </a>
             </li>
             <li>
-              <a href="https://goo.gl/maps/SYQwxzQwuiNtmQCDA" target="_blank" rel="noopener noreferrer" className="flex items-start gap-2 hover:text-lime-400 transition">
+              <a href="https://goo.gl/maps/SYQwxzQwuiNtmQCDA" target="_blank" rel="noopener noreferrer" className="flex items-start gap-2 hover:text-brand-accent transition">
                 <MapPin size={16} className="flex-shrink-0 mt-0.5" />
                 Irwin, PA · Westmoreland County
               </a>
@@ -110,11 +110,11 @@ export default async function Footer() {
       </div>
 
       {/* Trust strip */}
-      <div className="border-t border-green-800">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-xs text-green-500">
+      <div className="border-t border-brand-deep">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-xs text-on-dark-muted/70">
           <span>Licensed &amp; Insured</span>
           <span aria-hidden="true">&middot;</span>
-          <a href="https://www.bbb.org/us/pa/irwin/profile/landscape-contractors/ps-contracting-and-landscape-0141-71031381" target="_blank" rel="noopener noreferrer" className="hover:text-lime-400 transition-colors">BBB Accredited</a>
+          <a href="https://www.bbb.org/us/pa/irwin/profile/landscape-contractors/ps-contracting-and-landscape-0141-71031381" target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition-colors">BBB Accredited</a>
           <span aria-hidden="true">&middot;</span>
           <span>10% Senior Discount</span>
           <span aria-hidden="true">&middot;</span>
@@ -123,14 +123,14 @@ export default async function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-green-700">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-green-400 text-xs">
+      <div className="border-t border-brand-deep">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-on-dark-muted text-xs">
           <p>&copy; {new Date().getFullYear()} P&S Contracting and Landscape. All rights reserved.</p>
-          <a href="/feed.xml" className="text-green-500 hover:text-lime-300 transition text-xs flex items-center gap-1" title="RSS Feed">
+          <a href="/feed.xml" className="text-on-dark-muted/70 hover:text-brand-accent transition text-xs flex items-center gap-1" title="RSS Feed">
             RSS Feed
           </a>
           {showAdmin && (
-            <Link href="/admin" className="text-green-500 hover:text-lime-300 transition text-xs">
+            <Link href="/admin" className="text-on-dark-muted/70 hover:text-brand-accent transition text-xs">
               Admin
             </Link>
           )}
@@ -140,7 +140,7 @@ export default async function Footer() {
               href="https://github.com/dylan-sacco/ps15642.com-nextJS"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-lime-500 hover:text-lime-300 transition flex items-center gap-1 ml-1"
+              className="text-brand-mid hover:text-brand-accent transition flex items-center gap-1 ml-1"
             >
               Dylan Sacco <FaGithub size={13} />
             </a>

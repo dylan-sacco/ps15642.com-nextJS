@@ -16,7 +16,7 @@ export default function BlogList({ posts }) {
 
   if (posts.length === 0) {
     return (
-      <p className="text-gray-500 text-center py-16">No posts published yet. Check back soon!</p>
+      <p className="text-center py-16">No posts published yet. Check back soon!</p>
     );
   }
 
@@ -24,12 +24,12 @@ export default function BlogList({ posts }) {
     <>
       <div className="space-y-8">
         {visiblePosts.map(article => (
-          <article key={article.slug} className="border-b border-gray-200 pb-8 last:border-0">
+          <article key={article.slug} className="border-b border-border-base pb-8 last:border-0">
             {article.date && (
               <time className="text-sm text-gray-400">{article.date}</time>
             )}
-            <h2 className="text-xl font-bold text-gray-800 mt-1 mb-2">
-              <Link href={`/blog/${article.slug}`} className="hover:text-lime-700 transition-colors">
+            <h2 className="text-xl font-bold mt-1 mb-2">
+              <Link href={`/blog/${article.slug}`} className="hover:text-on-dark-muted transition-colors">
                 {article.title}
               </Link>
             </h2>

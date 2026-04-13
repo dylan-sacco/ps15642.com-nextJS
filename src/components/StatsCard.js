@@ -2,13 +2,13 @@ import ScrollReveal from "./ScrollReveal";
 
 export default function StatsCard({stats}) {
   return (
-    <section className=" bg-gray-50">
+    <section className=" bg-surface-alt">
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
         {stats.map((s, i) => {
           const inner = (
             <>
-              <p className="text-4xl font-bold text-lime-700">{s.value}</p>
-              <p className="text-sm text-gray-500 mt-1">{s.label}</p>
+              <p className="text-4xl font-bold">{s.value}</p>
+              <p className="text-sm mt-1">{s.label}</p>
             </>
           );
           return (
@@ -29,8 +29,8 @@ export default function StatsCard({stats}) {
 export function StatsCardElement({ value, label, href, linkText = "verified ↗" }) {
   const inner = (
     <>
-      <p className="text-4xl font-bold text-lime-700">{value}</p>
-      <p className="text-sm text-gray-500 mt-1">{label}</p>
+      <p className="text-4xl font-bold ">{value}</p>
+      <p className="text-sm  mt-1">{label}</p>
     </>
   )
   return (

@@ -1,59 +1,123 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────
+   Design Tokens — edit values here to retheme the entire site.
+   Every component references these; nothing else needs to change.
+   ───────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --font-color: var(--border-gray-700);
-  --font-color-500: var(--color-gray-600);
-  --selected: var(--color-lime-600);
-  --form-selection: var(--color-lime-400);
-  --selected-accent: var(--color-lime-900);
-  --nav-hover: var(--color-lime-100);
-  --green: #98f320;
-}
+  /* Surfaces */
+  --surface:             #ffffff;         /* page background */
+  --surface-alt:         #f0fdf4;         /* light section tint (green-50) */
+  --surface-panel:       #1a3022;         /* dark forest-green panels & headers */
+  --surface-footer:      #14532d;         /* footer background (green-900) */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--font-color);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color: var(--font-color);
-  --color-border: var(--background-500);
+  /* Brand (lime) */
+  --brand:               #65a30d;         /* lime-600 — buttons, active nav */
+  --brand-accent:        #a3e635;         /* lime-400 — decorative accents, hover text */
+  --brand-mid:           #84cc16;         /* lime-500 — gradient starts, hero details */
+  --brand-subtle:        #ecfccb;         /* lime-100 — hover bg in light mode */
+  --brand-deep:          #365314;         /* lime-900 — dark accents, dark-mode hover */
+
+  /* Text */
+  --foreground:          #171717;         /* primary body text */
+  --muted:               #4b5563;         /* secondary text (gray-600) */
+  --dim:                 #9ca3af;         /* tertiary / disabled text (gray-400) */
+  --on-dark:             #ffffff;         /* text on dark surfaces */
+  --on-dark-muted:       #107521;         /* muted text on dark surfaces (green-300) */
+
+  /* Borders */
+  --border:              #e5e7eb;         /* gray-200 */
+  --border-subtle:       #f3f4f6;         /* gray-100 */
+
+  /* Nav — derived from brand, override if needed */
+  --nav-hover:           var(--brand-subtle);
+  --nav-active:          var(--brand);
+  --nav-active-accent:   var(--brand-deep);
+
+  /* Gradients — used by GreenCard, PostHeader, PageHeader */
+  --gradient-dark-panel: linear-gradient(135deg, #091810 0%, #0d2218 45%, #112a1b 100%);
+  --gradient-accent-bar: linear-gradient(90deg, var(--brand-mid) 0%, var(--brand-accent) 60%, transparent 100%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #171717;
-    --background-500: var(--color-gray-500);
-    --foreground: #efeff7;
-    --nav-hover:  var(--color-lime-900);
-    --selected: var(--color-lime-600);
-    --form-selection: var(--color-lime-600);
-    --font-color: var(--border-gray-300);
-    --font-color-500: var(--color-gray-400);
+    --surface:           #171717;
+    --surface-alt:       #1c1c1c;
+    --foreground:        #efeff7;
+    --muted:             #9ca3af;         /* gray-400 in dark */
+    --dim:               #6b7280;         /* gray-500 in dark */
+    --border:            #374151;         /* gray-700 */
+    --border-subtle:     #1f2937;         /* gray-800 */
+    --on-dark-muted:     #2fcc51;         /* muted text on dark surfaces (green-300) */
+
+    --nav-hover:         var(--brand-deep);
   }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Tailwind token registration
+   --color-* entries generate bg-*, text-*, border-* utilities.
+   Example: --color-brand → bg-brand, text-brand, border-brand
+   ───────────────────────────────────────────────────────────── */
+@theme inline {
+  /* Surfaces */
+  --color-surface:            var(--surface);
+  --color-surface-alt:        var(--surface-alt);
+  --color-surface-panel:      var(--surface-panel);
+  --color-surface-footer:     var(--surface-footer);
 
-p { 
-  color: var(--font-color-500);
+  /* Brand */
+  --color-brand:              var(--brand);
+  --color-brand-accent:       var(--brand-accent);
+  --color-brand-mid:          var(--brand-mid);
+  --color-brand-subtle:       var(--brand-subtle);
+  --color-brand-deep:         var(--brand-deep);
+
+  /* Text */
+  --color-foreground:         var(--foreground);
+  --color-muted:              var(--muted);
+  --color-dim:                var(--dim);
+  --color-on-dark:            var(--on-dark);
+  --color-on-dark-muted:      var(--on-dark-muted);
+
+  /* Borders */
+  --color-border-base:        var(--border);
+  --color-border-subtle:      var(--border-subtle);
+
+  /* Nav */
+  --color-nav-hover:          var(--nav-hover);
+  --color-nav-active:         var(--nav-active);
+  --color-nav-active-accent:  var(--nav-active-accent);
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Global element defaults
+   ───────────────────────────────────────────────────────────── */
 html {
   scroll-padding-top: 80px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground); 
+  background: var(--surface);
+  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+p {
+  color: var(--muted);
 }
 
 img {
   transition: transform 0.3s ease;
 }
 
-/* ── Card hover lift ──────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   Reusable utilities
+   ───────────────────────────────────────────────────────────── */
 .card-lift {
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
 }

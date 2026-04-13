@@ -38,7 +38,7 @@ export default function NavBar({ stickyDisabled = false }) {
   // }, [lastScrollY, isMobile]);
 
   return (
-    <div className={`bg-(--background) shadow-md z-50 ${stickyDisabled ? '' : ' sticky top-0'}`}>
+    <div className={`bg-surface shadow-md z-50 ${stickyDisabled ? '' : ' sticky top-0'}`}>
       <nav className="flex justify-between items-center max-w-6xl lg:text-[30px] md:text-[20px] pl-4 m-auto">
         {/* Logo */}
         <Link href="/">
@@ -63,7 +63,7 @@ export default function NavBar({ stickyDisabled = false }) {
                 <Link
                   href={item.href|| ""}
                   className={`transition lg:px-6 px-5 flex items-center gap-1 ${
-                    isActive ? 'bg-lime-600 ' : 'hover:bg-(--nav-hover)'
+                    isActive ? 'bg-nav-active' : 'hover:bg-nav-hover'
                   }`}
                 >
                   {item.name}
@@ -76,13 +76,13 @@ export default function NavBar({ stickyDisabled = false }) {
                 </Link>
 
                 {hasDropdown && openDropdown === item.href && (
-                  <ul className="absolute top-full left-0 shadow-lg rounded-b-md min-w-[140px] z-50 bg-(--background) border-t  drop-shadow">
+                  <ul className="absolute top-full left-0 shadow-lg rounded-b-md min-w-[140px] z-50 bg-surface border-t drop-shadow">
                     {item.dropdown.map((d, index) => (
                       <li key={d.name + d.href}>
                         <Link
                           href={d.href}
                           className={`block px-5 py-3 text-sm transition ${
-                            pathname === d.href ? 'bg-lime-600 ' : 'hover:bg-(--nav-hover)'
+                            pathname === d.href ? 'bg-nav-active' : 'hover:bg-nav-hover'
                           } ${item.dropdown.length -1 == index? " rounded-b-md" : ""}`}
                         >
                           {d.name}
@@ -104,7 +104,7 @@ export default function NavBar({ stickyDisabled = false }) {
 
       {/* Mobile Tray Menu */}
       {isOpen && (
-        <div className="md:hidden  border-t border-(--nav-hover) shadow-(--select)">
+        <div className="md:hidden border-t border-nav-hover">
           <ul className="flex flex-col">
             {navItems.map((item) => {
               const hasDropdown = item.dropdown?.length > 0;
@@ -119,8 +119,8 @@ export default function NavBar({ stickyDisabled = false }) {
                       onClick={() => toggleMobileItem(item.href)}
                       className={`w-full flex items-center justify-between p-4 transition ${
                         isActive
-                          ? 'bg-(--selected)  font-semibold border-b-4 border-(--nav-hover)'
-                          : 'hover:bg-(--nav-hover)'
+                          ? 'bg-nav-active font-semibold border-b-4 border-nav-active-accent'
+                          : 'hover:bg-nav-hover'
                       }`}
                     >
                       <span>{item.name}</span>
@@ -131,8 +131,8 @@ export default function NavBar({ stickyDisabled = false }) {
                       href={item.href}
                       className={`block transition p-4 ${
                         pathname === item.href
-                          ? 'bg-(--selected)  font-semibold border-b-4 border-(--selected-accent)'
-                          : 'hover:bg-(--nav-hover)'
+                          ? 'bg-nav-active font-semibold border-b-4 border-nav-active-accent'
+                          : 'hover:bg-nav-hover'
                       }`}
                       onClick={() => setIsOpen(false)}
                     >
@@ -148,8 +148,8 @@ export default function NavBar({ stickyDisabled = false }) {
                             href={d.href}
                             className={`block transition p-4 pl-8 text-sm ${
                               pathname === d.href
-                                ? 'bg-(--selected)  font-semibold border-b-4 border-(--nav-hover)'
-                                : 'hover:bg-(--nav-hover)'
+                                ? 'bg-nav-active font-semibold border-b-4 border-nav-active-accent'
+                                : 'hover:bg-nav-hover'
                             }`}
                             onClick={() => { setIsOpen(false); toggleMobileItem(item.href); }}
                           >

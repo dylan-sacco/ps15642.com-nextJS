@@ -148,7 +148,7 @@ export default async function Home() {
             <Link
               key={loc.href}
               href={loc.href}
-              className="block rounded-xl border border-lime-200 bg-lime-50 px-4 py-5 font-semibold text-lime-800 hover:bg-lime-600 hover:text-white hover:border-lime-600 transition-colors shadow-sm"
+              className="block rounded-xl border border-border-base bg-surface-alt px-4 py-5 font-semibold text-on-dark-muted hover:bg-lime-600 hover:text-white hover:border-lime-600 transition-colors shadow-sm"
             >
               {loc.name}
             </Link>

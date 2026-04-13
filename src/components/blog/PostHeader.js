@@ -30,7 +30,7 @@ export default function PostHeader({ title, date, tags = [], excerpt, imageUrl }
       className="relative w-full overflow-hidden flex flex-col justify-end"
       style={{
         height: 'clamp(300px, 48vh, 500px)', // this max height is causing me problems. Either remove the Max Height, or move the all posts button
-        background: 'linear-gradient(135deg, #091810 0%, #0d2218 45%, #112a1b 100%)',
+        background: 'var(--gradient-dark-panel)',
       }}
       role="banner"
       aria-label={title}
@@ -63,7 +63,7 @@ export default function PostHeader({ title, date, tags = [], excerpt, imageUrl }
       {/* Bottom lime accent bar */}
       <div
         className="absolute bottom-0 left-0 right-0 h-[3px]"
-        style={{ background: 'linear-gradient(90deg, #84cc16 0%, #4ade80 60%, transparent 100%)' }}
+        style={{ background: 'var(--gradient-accent-bar)' }}
         aria-hidden="true"
       />
 

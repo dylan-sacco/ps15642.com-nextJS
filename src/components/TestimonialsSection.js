@@ -79,7 +79,7 @@ export default function TestimonialsSection({ testimonials }) {
         <div className="flex items-center gap-2 px-2">
           <button
             onClick={prev}
-            className="flex-shrink-0 p-1.5 rounded-full bg-white shadow border border-gray-200 text-gray-600 hover:text-green-600 transition-colors"
+            className="flex-shrink-0 p-1.5 rounded-full bg-white shadow border border-gray-200 text-gray-600 hover:text-brand transition-colors"
             aria-label="Previous review"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -91,7 +91,7 @@ export default function TestimonialsSection({ testimonials }) {
 
           <button
             onClick={next}
-            className="flex-shrink-0 p-1.5 rounded-full bg-white shadow border border-gray-200 text-gray-600 hover:text-green-600 transition-colors"
+            className="flex-shrink-0 p-1.5 rounded-full bg-white shadow border border-gray-200 text-gray-600 hover:text-brand transition-colors"
             aria-label="Next review"
           >
             <ChevronRight className="w-5 h-5" />
@@ -104,7 +104,7 @@ export default function TestimonialsSection({ testimonials }) {
             <button
               key={i}
               onClick={() => setCurrent(i)}
-              className={`w-2 h-2 rounded-full transition-colors ${i === current ? 'bg-green-600' : 'bg-gray-300'}`}
+              className={`w-2 h-2 rounded-full transition-colors ${i === current ? 'bg-brand' : 'bg-gray-300'}`}
               aria-label={`Go to review ${i + 1}`}
             />
           ))}

@@ -58,7 +58,7 @@ export default function ContactForm() {
           strategy="afterInteractive"
         />
       )}
-      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto border border-(--color-border) p-6 md:p-8 rounded shadow-lg">
+      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto border border-border-base p-6 md:p-8 rounded shadow-lg">
         <input type="text" name="_gotcha" className="hidden" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -79,7 +79,7 @@ export default function ContactForm() {
 
         <div>
           <label htmlFor="message" className="block font-medium text-lg mb-1">Message</label>
-          <div className="flex items-start border border-(--color-border) rounded px-3 py-2 focus-within:ring-2 focus-within:ring-(--form-selection)">
+          <div className="flex items-start border border-border-base rounded px-3 py-2 focus-within:ring-2 focus-within:ring-on-dark-muted">
             <textarea
               id="message"
               name="message"
@@ -94,7 +94,7 @@ export default function ContactForm() {
 
         <button
           type="submit"
-          className="w-full bg-lime-600 hover:bg-lime-700 text-white text-lg font-semibold py-3 rounded transition"
+          className="w-full bg-brand hover:bg-brand-deep text-foreground text-lg font-semibold py-3 rounded transition"
         >
           Submit
         </button>
@@ -111,7 +111,7 @@ function FormField({ label, id, type, placeholder, required = false, icon = null
       <label htmlFor={id} className="block font-medium  text-lg mb-1 wrap-break-words">
         {label}
       </label>
-      <div className="flex items-center border border-(--color-border) rounded px-3 py-2 focus-within:ring-2 focus-within:ring-(--selected) divide-x-2 divide-(--color-border)">
+      <div className="flex items-center border border-border-base rounded px-3 py-2 focus-within:ring-2 focus-within:ring-on-dark-muted divide-x-2 divide-border-base">
         <input
           type={type}
           id={id}

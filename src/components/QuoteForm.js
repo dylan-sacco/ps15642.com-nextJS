@@ -55,13 +55,13 @@ export default function QuoteForm() {
           strategy="afterInteractive"
         />
       )}
-      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-2xl lg:max-w-3xl mx-auto border border-gray-300 bg-white p-6 md:p-8 rounded shadow-lg">
+      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-2xl lg:max-w-3xl mx-auto border border-border-base bg-surface-alt p-6 md:p-8 rounded shadow-lg">
 
         {/* Service type */}
         <div>
-          <label htmlFor="serviceType" className="block font-medium text-gray-700 text-lg mb-1">Service Needed *</label>
-          <div className="flex items-center border border-gray-300 rounded px-3 py-2 focus-within:ring-2 focus-within:ring-lime-400">
-            <Wrench className="text-gray-500 mr-2 flex-shrink-0" size={20} />
+          <label htmlFor="serviceType" className="block font-medium text-foreground text-lg mb-1">Service Needed *</label>
+          <div className="flex items-center border border-border-base rounded px-3 py-2 focus-within:ring-2 focus-within:ring-on-dark-muted">
+            <Wrench className=" mr-2 flex-shrink-0" size={20} />
             <select id="serviceType" name="serviceType" required onChange={handleChange}
               className="flex-1 outline-none bg-transparent text-base">
               {SERVICE_TYPES.map(s => (
@@ -81,10 +81,10 @@ export default function QuoteForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Field label="Phone" name="phone" type="tel" placeholder="(555) 555-5555" icon={<Phone />} onChange={handleChange} />
           <div>
-            <label htmlFor="startDate" className="block font-medium text-gray-700 text-lg mb-1">Desired Start Date</label>
-            <div className="flex items-center border border-gray-300 rounded px-3 py-2 focus-within:ring-2 focus-within:ring-lime-400">
+            <label htmlFor="startDate" className="block font-medium text-lg mb-1">Desired Start Date</label>
+            <div className="flex items-center border border-border-base rounded px-3 py-2 focus-within:ring-2 focus-within:ring-on-dark-muted">
               <input id="startDate" name="startDate" type="date" onChange={handleChange}
-                className="flex-1 outline-none bg-transparent text-base" />
+                className="flex-1 outline-none bg-transparent" />
               <Calendar className="ml-2 text-gray-500 flex-shrink-0" size={20} />
             </div>
           </div>
@@ -103,8 +103,8 @@ export default function QuoteForm() {
 
         {/* Message */}
         <div>
-          <label htmlFor="message" className="block font-medium text-gray-700 text-lg mb-1">Describe the Work *</label>
-          <div className="flex items-start border border-gray-300 rounded px-3 py-2 focus-within:ring-2 focus-within:ring-lime-400">
+          <label htmlFor="message" className="block font-medium  text-lg mb-1">Describe the Work *</label>
+          <div className="flex items-start border border-border-base rounded px-3 py-2 focus-within:ring-2 focus-within:ring-on-dark-muted">
             <textarea id="message" name="message" rows="4" required
               placeholder="Tell us about the project, size of area, any specific details…"
               onChange={handleChange}
@@ -114,7 +114,7 @@ export default function QuoteForm() {
         </div>
 
         <button type="submit"
-          className="w-full bg-lime-600 hover:bg-lime-700 text-white text-lg font-semibold py-3 rounded transition">
+          className="w-full bg-brand hover:bg-brand-deep text-white text-lg font-semibold py-3 rounded transition">
           Request Free Estimate
         </button>
 
@@ -126,9 +126,9 @@ export default function QuoteForm() {
 
 function Field({ label, name, type, placeholder, required = false, icon = null, maxLength, onChange }) {
   return (
-    <div className="w-full overflow-hidden">
-      <label htmlFor={name} className="block font-medium text-gray-700 text-lg mb-1">{label}</label>
-      <div className="flex items-center border border-gray-300 rounded px-3 py-2 focus-within:ring-2 focus-within:ring-lime-400 divide-x-2 divide-gray-300">
+    <div className="w-full">
+      <label htmlFor={name} className="block font-medium text-lg mb-1">{label}</label>
+      <div className="flex items-center border border-border-base rounded px-3 py-2 focus-within:ring-2 focus-within:ring-on-dark-muted divide-x-2 divide-border-base">
         <input type={type} id={name} name={name} required={required} placeholder={placeholder}
           maxLength={maxLength} onChange={onChange}
           className={`w-full min-w-0 flex-1 outline-none bg-transparent text-base ${icon ? '' : 'pl-2'}`} />
