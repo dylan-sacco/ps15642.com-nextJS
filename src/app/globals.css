@@ -30,9 +30,25 @@
   --border-subtle:       #f3f4f6;         /* gray-100 */
 
   /* Nav — derived from brand, override if needed */
-  --nav-hover:           var(--brand-subtle);
-  --nav-active:          var(--brand);
-  --nav-active-accent:   var(--brand-deep);
+  --nav-hover:            var(--brand-subtle);
+  --nav-active:           var(--brand);           /* desktop active tab */
+  --nav-active-accent:    #375c04;                /* amber-500 — mobile active border */
+  --nav-active-text:      #ffffff;
+
+  /* Links (body / content text)
+     Applied via a:not([class]) — only bare links with no Tailwind class are affected.
+     Nav, footer, and button links override with their own classes automatically. */
+  --link:                 var(--brand);            /* default — follows brand */
+  --link-hover:           var(--brand-deep);        /* darker on hover */
+  --link-visited:         var(--brand-deep);        /* muted — clearly "seen" */
+  --link-on-dark:         var(--brand-accent);      /* links on dark surfaces */
+  --link-on-dark-hover:   var(--on-dark);           /* white on hover */
+
+  /* Accent (tabs, focus rings, selection indicators)
+     Aliased to brand so they move together. Override independently if needed. */
+  --accent:               var(--brand);
+  --accent-hover:         var(--brand-deep);
+  --accent-subtle:        var(--brand-subtle);      /* light tint for selected bg */
 
   /* Gradients — used by GreenCard, PostHeader, PageHeader */
   --gradient-dark-panel: linear-gradient(135deg, #091810 0%, #0d2218 45%, #112a1b 100%);
@@ -51,6 +67,8 @@
     --on-dark-muted:     #2fcc51;         /* muted text on dark surfaces (green-300) */
 
     --nav-hover:         var(--brand-deep);
+    /* In dark mode hover goes lighter — darkening would hide it against dark bg */
+    --link-hover:        var(--brand-mid);
   }
 }
 
@@ -85,9 +103,23 @@
   --color-border-subtle:      var(--border-subtle);
 
   /* Nav */
-  --color-nav-hover:          var(--nav-hover);
-  --color-nav-active:         var(--nav-active);
-  --color-nav-active-accent:  var(--nav-active-accent);
+  --color-nav-hover:              var(--nav-hover);
+  --color-nav-active:             var(--nav-active);
+  --color-nav-active-mobile:      var(--nav-active-mobile);
+  --color-nav-active-accent:      var(--nav-active-accent);
+  --color-nav-active-text:        var(--nav-active-text);
+
+  /* Links */
+  --color-link:                   var(--link);
+  --color-link-hover:             var(--link-hover);
+  --color-link-visited:           var(--link-visited);
+  --color-link-on-dark:           var(--link-on-dark);
+  --color-link-on-dark-hover:     var(--link-on-dark-hover);
+
+  /* Accent */
+  --color-accent:                 var(--accent);
+  --color-accent-hover:           var(--accent-hover);
+  --color-accent-subtle:          var(--accent-subtle);
 
   /* Fonts */
   --font-sans: var(--font-geist-sans);
@@ -111,8 +143,37 @@ p {
   color: var(--muted);
 }
 
+h1, h2, h3, h4, h5, h6, li {
+  color: var(--foreground)
+}
+
+/* a {
+  color: var(--color-link);
+  &:visited {
+    color: var(--color-link-vi);
+  }
+} */
+
 img {
   transition: transform 0.3s ease;
+}
+
+/*
+  Link defaults — a:not([class]) only targets bare <a> tags with no class
+  (e.g. links inside markdown / blog content). Any link that already has a
+  Tailwind class (nav, footer, buttons) is completely unaffected.
+*/
+a:not([class]) {
+  color: var(--link);
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--link) 40%, transparent);
+  transition: color 0.15s ease;
+}
+a:not([class]):hover {
+  color: var(--link-hover);
+}
+a:not([class]):visited {
+  color: var(--link-visited);
 }
 
 /* ─────────────────────────────────────────────────────────────

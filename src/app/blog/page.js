@@ -6,15 +6,24 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Blog | P&S Contracting and Landscape',
-  description: 'Tips, guides, and insights on landscaping and property care from P&S Contracting and Landscape.',
+  description: 'Landscaping tips, seasonal guides, and property care insights from P&S Contracting and Landscape — serving Westmoreland County, PA since 2007.',
+  alternates: {
+    canonical: 'https://ps15642.com/blog',
+  },
   openGraph: {
     title: 'Blog | P&S Contracting and Landscape',
-    description: 'Landscaping tips, guides, and insights.',
+    description: 'Landscaping tips, seasonal guides, and property care insights from Westmoreland County, PA.',
     url: 'https://ps15642.com/blog',
     siteName: 'P&S Contracting and Landscape',
-    images: [{ url: 'https://ps15642.com/hs1.webp', width: 1800, height: 800 }],
+    images: [{ url: 'https://ps15642.com/hs1.webp', width: 1800, height: 800, alt: 'P&S Contracting and Landscape Blog' }],
     locale: 'en_US',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog | P&S Contracting and Landscape',
+    description: 'Landscaping tips and seasonal guides from Westmoreland County, PA.',
+    images: ['https://ps15642.com/hs1.webp'],
   },
 };
 

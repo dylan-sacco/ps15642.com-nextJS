@@ -4,7 +4,25 @@ import ParallaxCard from '@/components/ParallaxCard';
 
 export const metadata = {
   title: 'Request a Free Estimate | P&S Contracting and Landscape',
-  description: 'Get a free, no-obligation estimate from P&S Contracting and Landscape. Fill out our quote request form and we\'ll be in touch.',
+  description: 'Get a free, no-obligation estimate for landscaping, hardscaping, and contracting services in Westmoreland County, PA. Fill out our form and we\'ll be in touch.',
+  alternates: {
+    canonical: 'https://ps15642.com/quote',
+  },
+  openGraph: {
+    title: 'Free Estimate — Landscaping & Contracting | P&S Contracting and Landscape',
+    description: 'Request your free estimate for landscaping, hardscaping, and contracting services in Westmoreland County, PA.',
+    url: 'https://ps15642.com/quote',
+    siteName: 'P&S Contracting and Landscape',
+    images: [{ url: 'https://ps15642.com/hardscape.jpg', width: 1800, height: 800, alt: 'Request a free landscaping estimate — P&S Contracting and Landscape' }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Free Estimate | P&S Contracting and Landscape',
+    description: 'Request a free estimate for landscaping and contracting in Westmoreland County, PA.',
+    images: ['https://ps15642.com/hardscape.jpg'],
+  },
 };
 
 export default function QuotePage() {

@@ -53,7 +53,7 @@ export default function BlogList({ posts }) {
 
       {posts.length > 0 && (
         <div className="flex flex-col items-center gap-3 pt-8">
-          <p className="text-sm text-gray-400">
+          <p className="text-sm ">
             Showing {Math.min(visibleCount, posts.length)} of {posts.length}
           </p>
           {hasMore && (

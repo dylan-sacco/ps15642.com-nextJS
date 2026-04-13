@@ -19,8 +19,6 @@ export default function HeroEarthwork({ imgUrl = "/hs1.webp" }) {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Raleway:wght@300;400;600;700&display=swap');
-
         .hw-root {
           position: relative;
           width: 100%;

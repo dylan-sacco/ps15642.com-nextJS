@@ -26,16 +26,25 @@ export async function generateMetadata({ params }) {
     return {
       title: `${data.title} | P&S Contracting and Landscape`,
       description: data.excerpt || '',
+      alternates: {
+        canonical: `https://ps15642.com/blog/${slug}`,
+      },
       openGraph: {
         title: data.title,
         description: data.excerpt || '',
         url: `https://ps15642.com/blog/${slug}`,
         siteName: 'P&S Contracting and Landscape',
-        images: [{ url: ogImage, width: 1200, height: 630 }],
+        images: [{ url: ogImage, width: 1200, height: 630, alt: data.title }],
         locale: 'en_US',
         type: 'article',
         publishedTime: data.date || undefined,
         tags: parseTags(data.tags),
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: data.title,
+        description: data.excerpt || '',
+        images: [ogImage],
       },
     };
   } catch {
@@ -106,18 +115,18 @@ export default async function BlogPostPage({ params }) {
 
         {related.length > 0 && (
           <aside className="mt-12 pt-8 border-t border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Related Posts</h2>
+            <h2 className="text-lg font-semibold text-foreground mb-4">Related Posts</h2>
             <div className="space-y-4">
               {related.map(article => (
                 <div key={article.slug}>
                   <Link
                     href={`/blog/${article.slug}`}
-                    className="font-medium text-gray-800 hover:text-lime-700 transition-colors"
+                    className="font-medium text-link hover:text-link-hover transition-colors"
                   >
                     {article.title}
                   </Link>
                   {article.excerpt && (
-                    <p className="text-sm text-gray-500 mt-0.5">{article.excerpt}</p>
+                    <p className="text-sm  mt-0.5">{article.excerpt}</p>
                   )}
                 </div>
               ))}

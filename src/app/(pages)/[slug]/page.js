@@ -17,18 +17,28 @@ export async function generateMetadata({ params }) {
     const image = data.heroImage
       ? `https://ps15642.com${data.heroImage}`
       : 'https://ps15642.com/hs1.webp';
+    const canonical = data.ogUrl || `https://ps15642.com/${slug}`;
 
     return {
       title,
       description,
+      alternates: {
+        canonical,
+      },
       openGraph: {
         title,
         description,
-        url: data.ogUrl || `https://ps15642.com/${slug}`,
+        url: canonical,
         siteName: 'P&S Contracting and Landscape',
-        images: [{ url: image, width: 1800, height: 800 }],
+        images: [{ url: image, width: 1800, height: 800, alt: title }],
         locale: 'en_US',
         type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [image],
       },
     };
   } catch {
@@ -46,8 +56,32 @@ export default async function ServicePage({ params }) {
   const raw = fs.readFileSync(filePath, 'utf8');
   const { data, content } = matter(raw);
 
+  const title = data.metaTitle || `${data.heroTitle} | P&S Contracting and Landscape`;
+  const description = data.metaDescription || '';
+  const canonical = data.ogUrl || `https://ps15642.com/${slug}`;
+
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: data.heroTitle || slug,
+    description,
+    provider: {
+      '@id': 'https://ps15642.com/#business',
+      name: 'P&S Contracting and Landscape',
+    },
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: 'Westmoreland County, Pennsylvania',
+    },
+    url: canonical,
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
       <PageHeader title={data.heroTitle || slug} imgUrl={data.heroImage || '/hs1.webp'} />
 
       <div className="max-w-3xl mx-auto px-6 py-12">

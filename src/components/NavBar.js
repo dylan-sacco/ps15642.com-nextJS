@@ -76,7 +76,7 @@ export default function NavBar({ stickyDisabled = false }) {
                 </Link>
 
                 {hasDropdown && openDropdown === item.href && (
-                  <ul className="absolute top-full left-0 shadow-lg rounded-b-md min-w-[140px] z-50 bg-surface border-t drop-shadow">
+                  <ul className="absolute top-full left-0 shadow-lg rounded-b-md min-w-[140px] z-50 bg-surface border-t border-border-base drop-shadow">
                     {item.dropdown.map((d, index) => (
                       <li key={d.name + d.href}>
                         <Link
@@ -104,7 +104,7 @@ export default function NavBar({ stickyDisabled = false }) {
 
       {/* Mobile Tray Menu */}
       {isOpen && (
-        <div className="md:hidden border-t border-nav-hover">
+        <div className="md:hidden border-t border-border-base">
           <ul className="flex flex-col">
             {navItems.map((item) => {
               const hasDropdown = item.dropdown?.length > 0;
@@ -141,7 +141,7 @@ export default function NavBar({ stickyDisabled = false }) {
                   )}
 
                   {hasDropdown && expanded && (
-                    <ul className=" border-t border-gray-100">
+                    <ul className=" border-t border-border-base">
                       {item.dropdown.map(d => (
                         <li key={d.href}>
                           <Link

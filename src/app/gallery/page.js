@@ -14,11 +14,14 @@ const SHOW_ALT_TEXT = false;
 export const metadata = {
   title: "Gallery | P&S Contracting and Landscape",
   description:
-    "View completed landscaping, hardscaping, and property maintenance projects by P&S Contracting and Landscape in Westmoreland County.",
+    "View completed landscaping, hardscaping, and property maintenance projects by P&S Contracting and Landscape in Westmoreland County, PA.",
+  alternates: {
+    canonical: "https://ps15642.com/gallery",
+  },
   openGraph: {
     title: "Gallery | P&S Contracting and Landscape",
     description:
-      "Take a look at our finished projects showcasing quality work and craftsmanship.",
+      "Browse completed landscaping, hardscaping, and contracting projects in Westmoreland County, PA.",
     url: "https://ps15642.com/gallery",
     siteName: "P&S Contracting and Landscape",
     images: [
@@ -26,11 +29,18 @@ export const metadata = {
         url: "https://ps15642.com/hardscape.jpg",
         width: 1800,
         height: 800,
-        alt: "Gallery - P&S Contracting and Landscape",
+        alt: "Completed hardscape project — P&S Contracting and Landscape",
       },
     ],
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Gallery | P&S Contracting and Landscape",
+    description:
+      "Browse our completed landscaping and hardscaping projects in Westmoreland County, PA.",
+    images: ["https://ps15642.com/hardscape.jpg"],
   },
 };
 

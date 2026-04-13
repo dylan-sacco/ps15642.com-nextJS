@@ -13,7 +13,8 @@
       "WebFetch(domain:developers.google.com)",
       "Bash(gh repo:*)",
       "Bash(gh issue create --title 'SEO: Add Google Structured Data \\(Rich Results Enhancements\\)' --body ':*)",
-      "Bash(find /c/Users/dsacco.SJC/Documents/GitHub/ps15642.com-nextJS/src -type f \\\\\\( -name \"*.js\" -o -name \"*.jsx\" -o -name \"*.ts\" -o -name \"*.tsx\" \\\\\\) -exec grep -l \"lime-\\\\|green-\\\\|gray-\\\\|#[0-9a-fA-F]\" {} \\\\;)"
+      "Bash(find /c/Users/dsacco.SJC/Documents/GitHub/ps15642.com-nextJS/src -type f \\\\\\( -name \"*.js\" -o -name \"*.jsx\" -o -name \"*.ts\" -o -name \"*.tsx\" \\\\\\) -exec grep -l \"lime-\\\\|green-\\\\|gray-\\\\|#[0-9a-fA-F]\" {} \\\\;)",
+      "Bash(npx next:*)"
     ]
   },
   "enabledPlugins": {

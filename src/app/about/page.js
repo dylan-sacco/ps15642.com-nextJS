@@ -8,10 +8,13 @@ export const metadata = {
   title: "About Us | P&S Contracting and Landscape",
   description:
     "Learn about P&S Contracting and Landscape — a family-owned landscaping company proudly serving Westmoreland County, PA since 2007.",
+  alternates: {
+    canonical: "https://ps15642.com/about",
+  },
   openGraph: {
     title: "About Us | P&S Contracting and Landscape",
     description:
-      "Discover P&S Contracting and Landscape's values and services across Westmoreland County, PA.",
+      "Family-owned since 2007. Discover P&S Contracting and Landscape's story, values, and services across Westmoreland County, PA.",
     url: "https://ps15642.com/about",
     siteName: "P&S Contracting and Landscape",
     images: [
@@ -19,11 +22,18 @@ export const metadata = {
         url: "https://ps15642.com/hs1.webp",
         width: 1800,
         height: 800,
-        alt: "P&S Contracting and Landscape",
+        alt: "P&S Contracting and Landscape — Westmoreland County, PA",
       },
     ],
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us | P&S Contracting and Landscape",
+    description:
+      "Family-owned landscaping company serving Westmoreland County, PA since 2007.",
+    images: ["https://ps15642.com/hs1.webp"],
   },
 };
 

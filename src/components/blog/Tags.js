@@ -24,7 +24,7 @@ export function TagSquare({ tag, invert, selected}) {
       href={`/blog/tag/${slug}`}
       className={
         "text-[10px] font-semibold tracking-widest uppercase  bg-lime-400/10 border border-lime-400/30 px-[9px] py-[3px] rounded-sm no-underline transition-colors duration-150  "
-        + `${invert ? " text-lime-900 " : " text-lime-400 "}`
+        + `${invert ? " text-link-hover " : "text-link-hover "}`
         + `${
           slug === selected 
             ? " bg-lime-600 text-white border-lime-600 "

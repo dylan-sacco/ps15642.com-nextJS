@@ -11,6 +11,24 @@ export const metadata = {
   title: 'Service Areas | P&S Contracting and Landscape',
   description:
     'P&S Contracting and Landscape proudly serves Westmoreland County and surrounding communities in southwestern Pennsylvania. Find your area and see how we can help.',
+  alternates: {
+    canonical: 'https://ps15642.com/locations',
+  },
+  openGraph: {
+    title: 'Service Areas | P&S Contracting and Landscape',
+    description: 'Serving Irwin, North Huntingdon, Greensburg, Latrobe, and all of Westmoreland County, PA.',
+    url: 'https://ps15642.com/locations',
+    siteName: 'P&S Contracting and Landscape',
+    images: [{ url: 'https://ps15642.com/hs1.webp', width: 1800, height: 800, alt: 'P&S Contracting service areas — Westmoreland County, PA' }],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Service Areas | P&S Contracting and Landscape',
+    description: 'Serving Westmoreland County, PA — Irwin, North Huntingdon, Greensburg, and more.',
+    images: ['https://ps15642.com/hs1.webp'],
+  },
 };
 
 function getLocationPages() {

@@ -18,8 +18,8 @@ export default function MeetTheTeam() {
         : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-14 border-gray-100">
-      <h2 className="text-3xl font-bold text-center mb-1">{title}</h2>
+    <section className="max-w-6xl mx-auto px-6 py-14">
+      <h2 className="text-3xl font-bold text-center mb-1 text-on-dark-muted">{title}</h2>
       {subtitle && (
         <p className="text-center text-sm mb-12">{subtitle}</p>
       )}
@@ -53,11 +53,11 @@ function CrewMemberCard({member}) {
         </div>
       )}
 
-      <h3 className="font-bold  text-lg leading-tight">{member.name}</h3>
-      <p className="text-(--selected)! text-sm font-semibold mt-0.5 mb-3">{member.title}</p>
+      <h3 className="font-bold text-lg leading-tight">{member.name}</h3>
+      <p className="text-on-dark-muted! text-sm font-semibold mt-0.5 mb-3">{member.title}</p>
 
       {member.description && (
-        <p className="text-gray-500 text-sm leading-relaxed max-w-xs">{member.description}</p>
+        <p className=" text-sm leading-relaxed max-w-xs">{member.description}</p>
       )}
 
       {(member.phone || member.email) && (

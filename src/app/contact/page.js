@@ -4,11 +4,14 @@ import { UserRound, Mail, Phone, FileText } from "lucide-react";
 export const metadata = {
   title: "Contact Us | P&S Contracting and Landscape",
   description:
-    "Get in touch with P&S Contracting and Landscape for quotes, inquiries, and service appointments in Westmoreland County, PA.",
+    "Get in touch with P&S Contracting and Landscape for quotes, inquiries, and service appointments in Westmoreland County, PA. Call (724) 382-8201.",
+  alternates: {
+    canonical: "https://ps15642.com/contact",
+  },
   openGraph: {
     title: "Contact Us | P&S Contracting and Landscape",
     description:
-      "Reach out to P&S Contracting and Landscape for expert landscaping services.",
+      "Call (724) 382-8201 or send a message. Serving Westmoreland County, PA since 2007.",
     url: "https://ps15642.com/contact",
     siteName: "P&S Contracting and Landscape",
     images: [
@@ -21,6 +24,13 @@ export const metadata = {
     ],
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Us | P&S Contracting and Landscape",
+    description:
+      "Call (724) 382-8201 or message us. Serving Westmoreland County, PA since 2007.",
+    images: ["https://ps15642.com/hs1.webp"],
   },
 };
 
