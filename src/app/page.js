@@ -109,7 +109,7 @@ export default async function Home() {
         </div>
       </ScrollReveal>
 
-      <CardOverCard zoomContainerList = { zoomContainerList } /> 
+      {/* <CardOverCard zoomContainerList = { zoomContainerList } />  */}
 
       {/* Contact Section */}
       <GreenCard>
