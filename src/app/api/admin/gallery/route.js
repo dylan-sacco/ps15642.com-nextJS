@@ -1,0 +1,60 @@
+import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
+import { GALLERY_DIR, GALLERY_ALT_FILE } from '@/lib/paths';
+import { requireApiPermission } from '@/lib/adminAuth';
+
+export async function GET() {
+  const { error } = await requireApiPermission('gallery.view');
+  if (error) return error;
+
+  try {
+    fs.mkdirSync(GALLERY_DIR, { recursive: true });
+    let altMap = {};
+    try { altMap = JSON.parse(fs.readFileSync(GALLERY_ALT_FILE, 'utf8')); } catch { /* no alt file */ }
+
+    const files = fs.readdirSync(GALLERY_DIR);
+    const imageFiles = files.filter(name =>
+      /\.(jpe?g|png|webp|gif|mp4|mov|webm)$/i.test(name) &&
+      !name.endsWith('.thumb.webp')
+    );
+
+    let order = [];
+    try {
+      order = JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, '_order.json'), 'utf8'));
+    } catch { /* no order file */ }
+
+    // let disabled = new Set();
+    // try {
+    //   disabled = new Set(JSON.parse(fs.readFileSync(path.join(GALLERY_DIR, '_disabled.json'), 'utf8')));
+    // } catch { /* no disabled file */ }
+
+    let sorted;
+    if (order.length > 0) {
+      const orderSet = new Set(order);
+      const ordered = order.filter(name => imageFiles.includes(name));
+      const remaining = imageFiles.filter(name => !orderSet.has(name)).sort();
+      sorted = [...ordered, ...remaining];
+    } else {
+      sorted = [...imageFiles].sort();
+    }
+
+    const images = sorted
+      // .filter(name => !disabled.has(name))
+      .map(name => {
+        const isVideo = /\.(mp4|mov|webm)$/i.test(name);
+        const base = path.parse(name).name;
+        const mtime = Math.floor(fs.statSync(path.join(GALLERY_DIR, name)).mtimeMs / 1000);
+        const thumbFile = `${base}.thumb.webp`;
+        const thumbUrl = fs.existsSync(path.join(GALLERY_DIR, thumbFile))
+          ? `/api/uploads/${thumbFile}?v=${mtime}`
+          : null;
+        return { filename: name, url: `/api/uploads/${base}?v=${mtime}`, thumbUrl, alt: altMap[name] || '' };
+      });
+
+    return NextResponse.json({ images });
+  } catch (err) {
+    console.error('Gallery list error:', err);
+    return NextResponse.json({ error: 'Failed to list images' }, { status: 500 });
+  }
+}

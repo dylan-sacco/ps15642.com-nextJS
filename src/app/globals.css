@@ -20,6 +20,10 @@
   }
 } 
 
+html {
+  scroll-padding-top: 80px;
+}
+
 body {
   background: var(--background);
   /* color: var(--foreground);  */
@@ -28,4 +32,13 @@ body {
 
 img {
   transition: transform 0.3s ease;
+}
+
+/* ── Card hover lift ──────────────────────────────────────────────── */
+.card-lift {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -6px rgba(0,0,0,0.12);
 }

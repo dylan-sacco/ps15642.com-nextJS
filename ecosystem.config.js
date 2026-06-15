@@ -4,9 +4,11 @@ module.exports = {
       name: 'ps15642',
       script: 'npm',
       args: 'start',
-      watch: true, // or true if you want automatic reloads on file changes
+      watch: false, // auto-deploy via GitHub webhook handles restarts
+      instances: 1,
+      exec_mode: 'fork',
       env: {
-        PORT: 8080
+        PORT: 5000
       }
     }
   ]

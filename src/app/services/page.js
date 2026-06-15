@@ -1,8 +1,5 @@
-import GenericSpan from "@/components/GenericSpan";
-import H1Drop from "@/components/H1Drop";
-import ParallaxCard from "@/components/ParallaxCard";
+import ScrollReveal from "@/components/ScrollReveal";
 
-// ✅ Metadata for SEO (App Router format)
 export const metadata = {
   title: "Services | P&S Contracting and Landscape",
   description:
@@ -26,36 +23,177 @@ export const metadata = {
   },
 };
 
-export default function servicePage() {
-  const content = [
-    {
-      title: "Landscape Design-",
-      content: "Choosing to upgrade a dismal or mundane landscape for your home or business is always best approached with the guidance of a professional. You're able to get ahead of potential pitfalls before they occur and you're able to manage your budget accurately. With our licensed professionals on hand, all of our custom landscape designs are personalized from client to client, thus ensuring originality. Having a truly exceptional landscape design can really make your home or office stand out, and goes a long way to providing serenity and comfort to your guests. Using only the latest and greatest in technical application and design-specific flora, our landscape designs are a cut above."
-    }, {
-      title: "Landscape Installation-",
-      content: "Our landscaping roots date back generations. From humble beginnings to being the premier landscaping company in Western Pennsylvania, we have stayed true to the mantra that our hard work and attention to detail will be to the benefit of both our clients and our company respectively. Using the current techniques and applications in horticulture, we are able to do much more than simply planting shrubs. Our transplants and floral relocations are cutting-edge and we use only the choicest materials for our planting beds. With every one of our crewmembers having a deep understanding of plant growth, cycling and gestation, we are able to install foliage that will look amazing and have the added longevity of being cared for by professionals."
-    }, {
-      title: "Softscape Services-",
-      content: "The importance of a properly designed, installed and maintained softscape is often overlooked. Considering it is the organic part of your landscaping design, it is crucial to utilize only the most optimal option in terms of flora, layout, irrigation and cultivation. Here at P&S Contracting and Landscape, we take the extra time and apply the extra effort to allow our customers to have their contributions to the softscape. Guided by our expertise and flair for diversity, it is no wonder we are widely regarded as the best overall landscaping service around! Unsure what setup or design type would be best suited for your home or office? Feel free to reach out to us!"
-    },
-  ]
+const services = [
+  {
+    slug: "landscape",
+    label: "Landscape",
+    heading: "Landscape Design & Installation",
+    summary:
+      "Custom design, planting, and seasonal color for homes and businesses. We work with what the property needs — not a template.",
+    items: [
+      "Shrubs, ornamental trees & perennial beds",
+      "Softscaping & plant bed creation",
+      "Seasonal color planting",
+      "Removal, cleanup & mulching",
+      "Outdoor landscape lighting",
+    ],
+    accent: "bg-lime-600",
+  },
+  {
+    slug: "treeandstump",
+    label: "Tree Service",
+    heading: "Tree Service & Stump Grinding",
+    summary:
+      "Safe removal, trimming, and stump grinding across Westmoreland County. Cleanup is always part of the job.",
+    items: [
+      "Tree removal (including near structures)",
+      "Trimming, pruning & crown work",
+      "Stump grinding below grade",
+      "Storm cleanup & hazard removal",
+      "Dead or leaning tree assessment",
+    ],
+    accent: "bg-emerald-700",
+  },
+  {
+    slug: "hardscape",
+    label: "Hardscape",
+    heading: "Hardscape & Concrete Work",
+    summary:
+      "Patios, sidewalks, retaining walls, and more. Durable concrete work built for Western PA winters.",
+    items: [
+      "Poured concrete patios (broom or stamped)",
+      "Sidewalks, walkways & steps",
+      "Retaining walls & drainage",
+      "Fire pit surrounds & masonry",
+      "Repair & section replacement",
+    ],
+    accent: "bg-stone-600",
+  },
+  {
+    slug: "contracting",
+    label: "Contracting",
+    heading: "Decks & Aluminum Railings",
+    summary:
+      "Pressure-treated, composite, or cedar decks built to code — plus aluminum railing installs on new and existing structures.",
+    items: [
+      "Custom deck design & construction",
+      "Pressure-treated, composite & cedar",
+      "Aluminum railing installation",
+      "Stairs, benches & built-in features",
+      "Railing replacement on existing decks",
+    ],
+    accent: "bg-amber-700",
+  },
+];
+
+const highlights = [
+  { value: "Free", label: "Estimates on every job" },
+  { value: "10%", label: "Senior discount" },
+  { value: "Licensed", label: "Bonded & insured" },
+  { value: "18+", label: "Years serving Westmoreland County" },
+];
+
+export default function ServicesPage() {
   return (
     <div>
-      <ParallaxCard imgUrl="/hs1.webp">
-        <div className="relative">
-          {/* Shadow Text Behind */}
-          <H1Drop color="text-white" size="text-4xl md:text-6xl">
-            Our Services
-          </H1Drop>
+      {/* ── Intro ─────────────────────────────────────────────────────────── */}
+      <section className="bg-[#1a3022] text-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true" />
+        <div className="max-w-4xl mx-auto px-6 py-16 text-center relative z-10">
+          <p className="text-xs font-semibold tracking-[0.3em] uppercase text-lime-400 mb-5">
+            What We Offer
+          </p>
+          <h1 className="text-3xl md:text-4xl font-bold leading-snug mb-6">
+            Full-service outdoor work —{" "}
+            <span className="text-lime-400">one crew, every season.</span>
+          </h1>
+          <p className="text-white/65 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+            From spring planting to fall hardscape installs to winter tree work,
+            we handle the full range of what your property needs. Every job comes
+            with a free estimate and the same crew that&apos;s been doing this across
+            Westmoreland County for over eighteen years.
+          </p>
         </div>
-      </ParallaxCard>
-      {content.map((section, index) => {
-        return (
-          <GenericSpan title={section.title}>
-            {section.content}
-          </GenericSpan>
-        )
-      })}
+      </section>
+
+      {/* ── Quick Highlights ──────────────────────────────────────────────── */}
+      <section className="border-b border-gray-100">
+        <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {highlights.map((h, i) => (
+            <ScrollReveal key={h.label} delay={i * 80} from="scale">
+              <div>
+                <p className="text-4xl font-bold text-lime-700">{h.value}</p>
+                <p className="text-sm text-gray-500 mt-1">{h.label}</p>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Service Cards ─────────────────────────────────────────────────── */}
+      <section className="max-w-5xl mx-auto px-6 py-14">
+        <div className="grid md:grid-cols-2 gap-6">
+          {services.map((svc, i) => (
+            <ScrollReveal key={svc.slug} delay={i * 100}>
+              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm card-lift flex flex-col h-full">
+                <div className={`${svc.accent} px-5 py-3`}>
+                  <h2 className="text-white font-semibold text-sm tracking-wide">
+                    {svc.label}
+                  </h2>
+                </div>
+                <div className="px-5 pt-4 pb-2 flex-1">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                    {svc.heading}
+                  </h3>
+                  <p className="text-sm text-gray-500 mb-4 leading-relaxed">
+                    {svc.summary}
+                  </p>
+                  <ul className="space-y-2">
+                    {svc.items.map(item => (
+                      <li
+                        key={item}
+                        className="text-sm text-gray-600 flex items-start gap-2"
+                      >
+                        <span className="text-lime-500 mt-0.5 flex-shrink-0">&#10003;</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="px-5 py-4">
+                  <a
+                    href={`/${svc.slug}`}
+                    className="inline-block text-sm font-semibold text-lime-700 hover:text-lime-900 transition-colors"
+                  >
+                    Learn more &rarr;
+                  </a>
+                </div>
+              </div>
+            </ScrollReveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA ───────────────────────────────────────────────────────────── */}
+      <ScrollReveal>
+        <section className="bg-gray-50 border-t border-gray-100">
+          <div className="max-w-4xl mx-auto px-6 py-14 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Not sure where to start?
+            </h2>
+            <p className="text-gray-500 md:text-lg mb-8 max-w-xl mx-auto">
+              Every estimate is free. We&apos;ll come out, look at the property, and
+              give you honest advice before any money changes hands.
+            </p>
+            <a
+              href="/contact"
+              className="inline-block bg-lime-700 hover:bg-lime-800 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
+            >
+              Get a Free Estimate
+            </a>
+          </div>
+        </section>
+      </ScrollReveal>
     </div>
   );
 }
