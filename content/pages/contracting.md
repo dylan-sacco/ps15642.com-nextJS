@@ -1,8 +1,8 @@
 ---
 heroTitle: "Decks & Aluminum Railings"
 heroImage: "/hs1.webp"
-metaTitle: "Decks & Aluminum Railings | P&S Contracting and Landscape"
-metaDescription: "Custom deck construction and aluminum railing installation in North Huntingdon, PA. Built to last through Pennsylvania winters."
+metaTitle: "Deck Builder & Railings in Irwin, PA | P&S Contracting"
+metaDescription: "Custom decks and aluminum railings built to last through Pennsylvania winters. Family-owned, serving Irwin & Westmoreland County since 2007. Free estimates."
 ogUrl: "https://ps15642.com/contracting"
 ---
 

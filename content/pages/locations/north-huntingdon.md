@@ -1,8 +1,8 @@
 ---
 heroTitle: "Landscaping & Contracting in North Huntingdon, PA"
 heroImage: "/hs1.webp"
-metaTitle: "Landscaping & Lawn Care in North Huntingdon, PA | P&S Contracting and Landscape"
-metaDescription: "P&S Contracting and Landscape provides professional lawn care, landscaping, hardscaping, and more throughout North Huntingdon Township, PA."
+metaTitle: "Landscaper in North Huntingdon, PA | P&S Contracting"
+metaDescription: "Lawn care, landscaping, patios, retaining walls and tree work across North Huntingdon Township. Family-owned local crew since 2007. Free estimates."
 ---
 
 ## Serving North Huntingdon Township

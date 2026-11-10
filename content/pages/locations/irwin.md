@@ -1,8 +1,8 @@
 ---
 heroTitle: "Serving Irwin, PA — Our Home Community"
 heroImage: "/hs1.webp"
-metaTitle: "Landscaping & Contracting in Irwin, PA | P&S Contracting and Landscape"
-metaDescription: "P&S Contracting and Landscape has served Irwin, PA since 2007. Lawn care, landscaping, hardscaping, decks, and more — right in our backyard."
+metaTitle: "Landscaper in Irwin, PA | P&S Contracting & Landscape"
+metaDescription: "Irwin's hometown landscaper since 2007. Lawn care, landscaping, patios, retaining walls, decks and tree work. Free estimates: (724) 382-8201."
 ---
 
 ## Rooted in Irwin Since 2007

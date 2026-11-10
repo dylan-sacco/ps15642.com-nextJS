@@ -2,14 +2,14 @@ import ScrollReveal from "@/components/ScrollReveal";
 import StatsCard from "@/components/StatsCard";
 
 export const metadata = {
-  title: "Services | P&S Contracting and Landscape",
+  title: "Landscaping, Hardscaping & Tree Services | P&S Contracting",
   description:
-    "Explore our landscaping, hardscaping, drainage, and maintenance services tailored for homes and businesses in Westmoreland County, PA.",
+    "Landscape design, patios, retaining walls, decks, drainage, tree removal and stump grinding for homes and businesses in Westmoreland County, PA. Free estimates.",
   alternates: {
     canonical: "https://ps15642.com/services",
   },
   openGraph: {
-    title: "Services | P&S Contracting and Landscape",
+    title: "Landscaping, Hardscaping & Tree Services | P&S Contracting",
     description:
       "Landscaping, hardscaping, contracting, tree service, and property maintenance in Westmoreland County, PA.",
     url: "https://ps15642.com/services",
@@ -27,7 +27,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Services | P&S Contracting and Landscape",
+    title: "Landscaping, Hardscaping & Tree Services | P&S Contracting",
     description:
       "Landscaping, hardscaping, tree service, and more in Westmoreland County, PA.",
     images: ["https://ps15642.com/hs1.webp"],

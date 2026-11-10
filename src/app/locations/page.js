@@ -8,14 +8,14 @@ import GreenCard from '@/components/GreenCard';
 import PageHeader from '@/components/PageHeader';
 
 export const metadata = {
-  title: 'Service Areas | P&S Contracting and Landscape',
+  title: 'Service Areas in Westmoreland County, PA | P&S Contracting',
   description:
     'P&S Contracting and Landscape proudly serves Westmoreland County and surrounding communities in southwestern Pennsylvania. Find your area and see how we can help.',
   alternates: {
     canonical: 'https://ps15642.com/locations',
   },
   openGraph: {
-    title: 'Service Areas | P&S Contracting and Landscape',
+    title: 'Service Areas in Westmoreland County, PA | P&S Contracting',
     description: 'Serving Irwin, North Huntingdon, Greensburg, Latrobe, and all of Westmoreland County, PA.',
     url: 'https://ps15642.com/locations',
     siteName: 'P&S Contracting and Landscape',
@@ -25,7 +25,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Service Areas | P&S Contracting and Landscape',
+    title: 'Service Areas in Westmoreland County, PA | P&S Contracting',
     description: 'Serving Westmoreland County, PA — Irwin, North Huntingdon, Greensburg, and more.',
     images: ['https://ps15642.com/hs1.webp'],
   },

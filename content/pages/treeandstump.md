@@ -1,8 +1,8 @@
 ---
 heroTitle: "Tree Service & Stump Grinding"
 heroImage: "/dave-in-tree.jpg"
-metaTitle: "Tree Service & Stump Grinding | P&S Contracting and Landscape"
-metaDescription: "Tree removal, trimming, pruning, and stump grinding in North Huntingdon, PA. Serving homes and businesses across Westmoreland County."
+metaTitle: "Tree Removal & Stump Grinding in Irwin, PA | P&S Contracting"
+metaDescription: "Tree removal, trimming, pruning and stump grinding for homes and businesses in Irwin, North Huntingdon & Westmoreland County. Call (724) 382-8201."
 ogUrl: "https://ps15642.com/treeandstump"
 ---
 

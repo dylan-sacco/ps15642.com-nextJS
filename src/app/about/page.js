@@ -5,14 +5,14 @@ import StatsCard from "@/components/StatsCard";
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: "About Us | P&S Contracting and Landscape",
+  title: "About Us: Family-Owned Since 2007 | P&S Contracting",
   description:
     "Learn about P&S Contracting and Landscape — a family-owned landscaping company proudly serving Westmoreland County, PA since 2007.",
   alternates: {
     canonical: "https://ps15642.com/about",
   },
   openGraph: {
-    title: "About Us | P&S Contracting and Landscape",
+    title: "About Us: Family-Owned Since 2007 | P&S Contracting",
     description:
       "Family-owned since 2007. Discover P&S Contracting and Landscape's story, values, and services across Westmoreland County, PA.",
     url: "https://ps15642.com/about",
@@ -30,7 +30,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About Us | P&S Contracting and Landscape",
+    title: "About Us: Family-Owned Since 2007 | P&S Contracting",
     description:
       "Family-owned landscaping company serving Westmoreland County, PA since 2007.",
     images: ["https://ps15642.com/hs1.webp"],

@@ -87,6 +87,7 @@ const localBusinessSchema = {
     "@type": "PostalAddress",
     addressLocality: "Irwin",
     addressRegion: "PA",
+    postalCode: "15642",
     addressCountry: "US",
   },
   contactPoint: {

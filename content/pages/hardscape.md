@@ -1,8 +1,8 @@
 ---
 heroTitle: "Hardscape"
 heroImage: "/hardscape.jpg"
-metaTitle: "Hardscape Services | P&S Contracting and Landscape"
-metaDescription: "Concrete patios, sidewalks, retaining walls, and outdoor work in North Huntingdon, PA. Serving Westmoreland County."
+metaTitle: "Patios & Retaining Walls in Irwin, PA | P&S Contracting"
+metaDescription: "Concrete patios, walkways, retaining walls and drainage fixes, built right from the subbase up. Serving Irwin & Westmoreland County since 2007. Free estimates."
 ogUrl: "https://ps15642.com/hardscape"
 ---
 

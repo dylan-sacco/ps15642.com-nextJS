@@ -1,8 +1,8 @@
 ---
 heroTitle: "Landscape Design & Installation"
 heroImage: "/landscape.jpg"
-metaTitle: "Landscape Design & Installation | P&S Contracting and Landscape"
-metaDescription: "Landscape design, planting, softscaping, cleanup, and outdoor lighting in North Huntingdon, PA. Serving Westmoreland County."
+metaTitle: "Landscape Design & Installation in Irwin, PA | P&S Contracting"
+metaDescription: "Landscape design, planting, mulching, cleanups and outdoor lighting from a family-owned local crew. Serving Westmoreland County since 2007. Free estimates."
 ogUrl: "https://ps15642.com/landscape"
 ---
 

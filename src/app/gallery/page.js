@@ -12,14 +12,14 @@ export const dynamic = 'force-dynamic';
 const SHOW_ALT_TEXT = false;
 
 export const metadata = {
-  title: "Gallery | P&S Contracting and Landscape",
+  title: "Patio, Wall & Landscaping Project Photos | P&S Contracting",
   description:
-    "View completed landscaping, hardscaping, and property maintenance projects by P&S Contracting and Landscape in Westmoreland County, PA.",
+    "Real patios, retaining walls, decks and landscape installs we've built for homeowners in Irwin, North Huntingdon, Greensburg and across Westmoreland County.",
   alternates: {
     canonical: "https://ps15642.com/gallery",
   },
   openGraph: {
-    title: "Gallery | P&S Contracting and Landscape",
+    title: "Patio, Wall & Landscaping Project Photos | P&S Contracting",
     description:
       "Browse completed landscaping, hardscaping, and contracting projects in Westmoreland County, PA.",
     url: "https://ps15642.com/gallery",
@@ -37,7 +37,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gallery | P&S Contracting and Landscape",
+    title: "Patio, Wall & Landscaping Project Photos | P&S Contracting",
     description:
       "Browse our completed landscaping and hardscaping projects in Westmoreland County, PA.",
     images: ["https://ps15642.com/hardscape.jpg"],

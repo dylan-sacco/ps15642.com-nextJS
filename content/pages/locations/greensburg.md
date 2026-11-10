@@ -1,8 +1,8 @@
 ---
 heroTitle: "Professional Landscaping in Greensburg, PA"
 heroImage: "/hs1.webp"
-metaTitle: "Landscaping & Contracting in Greensburg, PA | P&S Contracting and Landscape"
-metaDescription: "P&S Contracting and Landscape serves Greensburg and Westmoreland County with professional landscaping, hardscaping, lawn care, and outdoor construction."
+metaTitle: "Landscaper in Greensburg, PA | P&S Contracting & Landscape"
+metaDescription: "Local landscaping, patios, retaining walls, lawn care and tree work in Greensburg, PA. Family-owned and serving Westmoreland County since 2007. Free estimates."
 ---
 
 ## Serving Greensburg & Westmoreland County

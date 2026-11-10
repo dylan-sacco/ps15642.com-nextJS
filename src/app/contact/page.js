@@ -2,14 +2,14 @@ import ContactForm from "@/components/ContactForm";
 import { UserRound, Mail, Phone, FileText } from "lucide-react";
 
 export const metadata = {
-  title: "Contact Us | P&S Contracting and Landscape",
+  title: "Contact a Local Landscaper in Irwin, PA | P&S Contracting",
   description:
-    "Get in touch with P&S Contracting and Landscape for quotes, inquiries, and service appointments in Westmoreland County, PA. Call (724) 382-8201.",
+    "Call (724) 382-8201 or send a message. P&S Contracting and Landscape serves Irwin, North Huntingdon, Greensburg and all of Westmoreland County, PA.",
   alternates: {
     canonical: "https://ps15642.com/contact",
   },
   openGraph: {
-    title: "Contact Us | P&S Contracting and Landscape",
+    title: "Contact a Local Landscaper in Irwin, PA | P&S Contracting",
     description:
       "Call (724) 382-8201 or send a message. Serving Westmoreland County, PA since 2007.",
     url: "https://ps15642.com/contact",
@@ -27,7 +27,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact Us | P&S Contracting and Landscape",
+    title: "Contact a Local Landscaper in Irwin, PA | P&S Contracting",
     description:
       "Call (724) 382-8201 or message us. Serving Westmoreland County, PA since 2007.",
     images: ["https://ps15642.com/hs1.webp"],

@@ -13,16 +13,16 @@ import Script from "next/script";
 import CardOverCard from "@/components/CardOverCard";
 
 export const metadata = {
-  title: "P&S Contracting and Landscape | Westmoreland County, PA",
+  title: "Landscaping & Hardscaping in Westmoreland County, PA | P&S",
   description:
-    "Professional landscaping, hardscaping, and property maintenance services in Westmoreland County, PA. Contact P&S Contracting and Landscape today.",
+    "Family-owned landscaper serving Irwin, North Huntingdon & Greensburg since 2007. Patios, retaining walls, decks & tree work. Free estimates: (724) 382-8201.",
   alternates: {
     canonical: "https://ps15642.com/",
   },
   openGraph: {
-    title: "P&S Contracting and Landscape | Westmoreland County, PA",
+    title: "Landscaping & Hardscaping in Westmoreland County, PA | P&S",
     description:
-      "Transform your property with expert landscaping from P&S Contracting and Landscape.",
+      "Family-owned landscaper serving Westmoreland County since 2007. Patios, retaining walls, decks & tree work. Free estimates.",
     url: "https://ps15642.com/",
     siteName: "P&S Contracting and Landscape",
     images: [
@@ -38,9 +38,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "P&S Contracting and Landscape | Westmoreland County, PA",
+    title: "Landscaping & Hardscaping in Westmoreland County, PA | P&S",
     description:
-      "Professional landscaping, hardscaping, and property maintenance in Westmoreland County, PA.",
+      "Family-owned landscaper serving Westmoreland County since 2007. Patios, retaining walls, decks & tree work. Free estimates.",
     images: ["https://ps15642.com/hs1.webp"],
   },
 };
